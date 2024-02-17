@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UsersRequest;
 use App\Models\Roles;
 use App\Models\Users;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UsersRequest $request)
     {
         try {
             $username = $request->input("username");
@@ -49,7 +50,7 @@ class UsersController extends Controller
             }
             return response()->json([
                 "status" => 'error',
-                "msg" => "Something is wrong to crate user"
+                "msg" => "Something is wrong to create user"
             ],500);
         }catch (\Exception $e){
             Log::info($e->getMessage());
@@ -81,7 +82,7 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Users $users)
+    public function update(UsersRequest $request, Users $users)
     {
         try {
             $username = $request->input("username");

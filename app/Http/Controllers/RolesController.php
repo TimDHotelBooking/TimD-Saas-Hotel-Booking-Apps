@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RolesRequest;
 use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -28,7 +29,7 @@ class RolesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RolesRequest $request)
     {
         try {
             $role_name = $request->input("name");
@@ -43,7 +44,7 @@ class RolesController extends Controller
             }
             return response()->json([
                 "status" => 'error',
-                "msg" => "Something is wrong to crate role"
+                "msg" => "Something is wrong to create role"
             ],500);
         }catch (\Exception $e){
             Log::info($e->getMessage());
@@ -74,7 +75,7 @@ class RolesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Roles $roles)
+    public function update(RolesRequest $request, Roles $roles)
     {
         try {
             $role_name = $request->input("name");

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PaymentsRequest;
+use App\Models\Bookings;
 use App\Models\Payments;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PaymentsController extends Controller
 {
@@ -12,7 +15,8 @@ class PaymentsController extends Controller
      */
     public function index()
     {
-        //
+        $payments = Payments::all();
+        return view("payments.index",compact("payments"));
     }
 
     /**
@@ -20,15 +24,45 @@ class PaymentsController extends Controller
      */
     public function create()
     {
-        //
+        $bookings = Bookings::all();
+        return view("payments.create",compact("bookings"));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PaymentsRequest $request)
     {
-        //
+        try {
+            $booking_id = $request->input("booking_id");
+            $amount_paid = $request->input("amount_paid");
+            $payment_date = $request->input("payment_date");
+            $payment_method = $request->input("payment_method");
+            $transaction_reference = $request->input("transaction_reference");
+            $payment = Payments::create([
+                "booking_id" => $booking_id,
+                "amount_paid" => $amount_paid,
+                "payment_date" => $payment_date,
+                "payment_method" => $payment_method,
+                "transaction_reference" => $transaction_reference,
+            ]);
+            if ($payment){
+                return response()->json([
+                    "status" => 'success',
+                    "msg" => "Payment created successfully"
+                ],200);
+            }
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something is wrong to create payment"
+            ],500);
+        }catch (\Exception $e){
+            Log::info($e->getMessage());
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something went wrong"
+            ],500);
+        }
     }
 
     /**
@@ -44,15 +78,45 @@ class PaymentsController extends Controller
      */
     public function edit(Payments $payments)
     {
-        //
+        $bookings = Bookings::all();
+        return view("payments.edit",compact("payments","bookings"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Payments $payments)
+    public function update(PaymentsRequest $request, Payments $payments)
     {
-        //
+        try {
+            $booking_id = $request->input("booking_id");
+            $amount_paid = $request->input("amount_paid");
+            $payment_date = $request->input("payment_date");
+            $payment_method = $request->input("payment_method");
+            $transaction_reference = $request->input("transaction_reference");
+            $agent = $payments->update([
+                "booking_id" => $booking_id,
+                "amount_paid" => $amount_paid,
+                "payment_date" => $payment_date,
+                "payment_method" => $payment_method,
+                "transaction_reference" => $transaction_reference,
+            ]);
+            if ($agent){
+                return response()->json([
+                    "status" => 'success',
+                    "msg" => "Payment updated successfully"
+                ],200);
+            }
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something is wrong to update payment"
+            ],500);
+        }catch (\Exception $e){
+            Log::info($e->getMessage());
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something went wrong"
+            ],500);
+        }
     }
 
     /**
@@ -60,6 +124,23 @@ class PaymentsController extends Controller
      */
     public function destroy(Payments $payments)
     {
-        //
+        try {
+            if ($payments->delete()){
+                return response()->json([
+                    "status" => 'success',
+                    "msg" => "Payments deleted successfully"
+                ],200);
+            }
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something is wrong to delete payment"
+            ],500);
+        }catch (\Exception $e){
+            Log::info($e->getMessage());
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something went wrong"
+            ],500);
+        }
     }
 }

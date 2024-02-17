@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PropertyRequest;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PropertyController extends Controller
 {
@@ -12,7 +14,8 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        //
+        $properties = Property::all();
+        return view("property.index",compact("properties"));
     }
 
     /**
@@ -20,15 +23,40 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        //
+        return view("property.create");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PropertyRequest $request)
     {
-        //
+        try {
+            $property_name = $request->input("property_name");
+            $location = $request->input("location");
+            $contact_information = $request->input("contact_information");
+            $property = Property::create([
+                "property_name" => $property_name,
+                "location" => $location,
+                "contact_information" => $contact_information
+            ]);
+            if ($property){
+                return response()->json([
+                    "status" => 'success',
+                    "msg" => "Property created successfully"
+                ],200);
+            }
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something is wrong to create property"
+            ],500);
+        }catch (\Exception $e){
+            Log::info($e->getMessage());
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something went wrong"
+            ],500);
+        }
     }
 
     /**
@@ -44,15 +72,40 @@ class PropertyController extends Controller
      */
     public function edit(Property $property)
     {
-        //
+        return view("property.edit",compact("property"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Property $property)
+    public function update(PropertyRequest $request, Property $property)
     {
-        //
+        try {
+            $property_name = $request->input("property_name");
+            $location = $request->input("location");
+            $contact_information = $request->input("contact_information");
+            $property = $property->update([
+                "property_name" => $property_name,
+                "location" => $location,
+                "contact_information" => $contact_information
+            ]);
+            if ($property){
+                return response()->json([
+                    "status" => 'success',
+                    "msg" => "Property updated successfully"
+                ],200);
+            }
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something is wrong to update property"
+            ],500);
+        }catch (\Exception $e){
+            Log::info($e->getMessage());
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something went wrong"
+            ],500);
+        }
     }
 
     /**
@@ -60,6 +113,23 @@ class PropertyController extends Controller
      */
     public function destroy(Property $property)
     {
-        //
+        try {
+            if ($property->delete()){
+                return response()->json([
+                    "status" => 'success',
+                    "msg" => "Property deleted successfully"
+                ],200);
+            }
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something is wrong to delete property"
+            ],500);
+        }catch (\Exception $e){
+            Log::info($e->getMessage());
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something went wrong"
+            ],500);
+        }
     }
 }
