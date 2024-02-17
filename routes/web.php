@@ -13,6 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\DashboardController::class,"index"]);
+
+/*Route::prefix('dashboard.')->name("dashboard")->group(function () {
+    Route::get('/', [\App\Http\Controllers\DashboardController::class,"index"]);
+});*/
+Route::resource("dashboard", \App\Http\Controllers\DashboardController::class)->except("index");
+Route::resource("roles", \App\Http\Controllers\RolesController::class);
+Route::resource("users", \App\Http\Controllers\UsersController::class);
+Route::resource("property", \App\Http\Controllers\PropertyController::class);
+Route::resource("rooms", \App\Http\Controllers\RoomsController::class);
+Route::resource("tariff", \App\Http\Controllers\TariffController::class);
+Route::resource("customers", \App\Http\Controllers\CustomersController::class);
+Route::resource("agents", \App\Http\Controllers\AgentsController::class);
+Route::resource("bookings", \App\Http\Controllers\BookingsController::class);
+Route::resource("payments", \App\Http\Controllers\PaymentsController::class);
+Route::resource("notifications", \App\Http\Controllers\NotificationController::class);
