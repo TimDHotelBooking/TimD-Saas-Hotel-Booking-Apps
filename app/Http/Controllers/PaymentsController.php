@@ -6,6 +6,7 @@ use App\Http\Requests\PaymentsRequest;
 use App\Models\Bookings;
 use App\Models\Payments;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class PaymentsController extends Controller
@@ -45,6 +46,7 @@ class PaymentsController extends Controller
                 "payment_date" => $payment_date,
                 "payment_method" => $payment_method,
                 "transaction_reference" => $transaction_reference,
+                'created_by' => Auth::user()->id
             ]);
             if ($payment){
                 return response()->json([
@@ -99,6 +101,7 @@ class PaymentsController extends Controller
                 "payment_date" => $payment_date,
                 "payment_method" => $payment_method,
                 "transaction_reference" => $transaction_reference,
+                'updated_by' => Auth::user()->id
             ]);
             if ($agent){
                 return response()->json([

@@ -6,6 +6,7 @@ use App\Http\Requests\RoomsRequest;
 use App\Models\Property;
 use App\Models\Rooms;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class RoomsController extends Controller
@@ -43,6 +44,7 @@ class RoomsController extends Controller
                 "room_type" => $room_type,
                 "availability_status" => $availability_status,
                 "price" => $price,
+                'created_by' => Auth::user()->id
             ]);
             if ($room){
                 return response()->json([
@@ -95,6 +97,7 @@ class RoomsController extends Controller
                 "room_type" => $room_type,
                 "availability_status" => $availability_status,
                 "price" => $price,
+                'updated_by' => Auth::user()->id
             ]);
             if ($room){
                 return response()->json([

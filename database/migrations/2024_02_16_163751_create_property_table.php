@@ -16,6 +16,9 @@ return new class extends Migration
             $table->text("property_name");
             $table->text("location");
             $table->text("contact_information");
+            $table->unsignedBigInteger("created_by")->nullable();
+            $table->unsignedBigInteger("updated_by")->nullable();
+            $table->boolean("status")->default(0);
             $table->timestamps();
         });
     }

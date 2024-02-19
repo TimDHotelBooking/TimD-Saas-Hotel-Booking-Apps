@@ -15,5 +15,8 @@ class Customers extends Model
         'last_name',
         'email',
         'phone_number',
+        'created_by',
+        'updated_by',
+        'status'
     ];
 }

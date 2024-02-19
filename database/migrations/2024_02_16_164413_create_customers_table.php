@@ -17,6 +17,9 @@ return new class extends Migration
             $table->text("last_name");
             $table->text("email");
             $table->text("phone_number");
+            $table->unsignedBigInteger("created_by")->nullable();
+            $table->unsignedBigInteger("updated_by")->nullable();
+            $table->boolean("status")->default(0);
             $table->timestamps();
         });
     }

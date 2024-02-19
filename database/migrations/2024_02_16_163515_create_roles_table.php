@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id('role_id');
             $table->text("role_name");
+            $table->unsignedBigInteger("created_by")->nullable();
+            $table->unsignedBigInteger("updated_by")->nullable();
+            $table->boolean("status")->default(0);
             $table->timestamps();
         });
     }

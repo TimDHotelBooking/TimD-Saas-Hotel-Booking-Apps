@@ -6,6 +6,7 @@ use App\Http\Requests\NotificationRequest;
 use App\Models\Notification;
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
@@ -43,6 +44,7 @@ class NotificationController extends Controller
                 "notification_type" => $notification_type,
                 "message" => $message,
                 "is_read" => $is_read,
+                'created_by' => Auth::user()->id
             ]);
             if ($notification){
                 return response()->json([
@@ -95,6 +97,7 @@ class NotificationController extends Controller
                 "notification_type" => $notification_type,
                 "message" => $message,
                 "is_read" => $is_read,
+                'updated_by' => Auth::user()->id
             ]);
             if ($notification){
                 return response()->json([

@@ -18,6 +18,9 @@ return new class extends Migration
             $table->text("room_type");
             $table->boolean("availability_status");
             $table->text("price");
+            $table->unsignedBigInteger("created_by")->nullable();
+            $table->unsignedBigInteger("updated_by")->nullable();
+            $table->boolean("status")->default(0);
             $table->timestamps();
         });
     }

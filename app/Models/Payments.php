@@ -16,5 +16,8 @@ class Payments extends Model
         'payment_date',
         'payment_method',
         'transaction_reference',
+        'created_by',
+        'updated_by',
+        'status'
     ];
 }

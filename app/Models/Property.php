@@ -13,6 +13,9 @@ class Property extends Model
         "property_id",
         "property_name",
         "location",
-        "contact_information"
+        "contact_information",
+        'created_by',
+        'updated_by',
+        'status'
     ];
 }

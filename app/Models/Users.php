@@ -13,7 +13,10 @@ class Users extends Model
         'user_id',
         'username',
         'password',
-        'role_id'
+        'role_id',
+        'created_by',
+        'updated_by',
+        'status'
     ];
 
     public function role(){

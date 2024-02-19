@@ -18,6 +18,9 @@ return new class extends Migration
             $table->date("start_date");
             $table->date("end_date");
             $table->text("price");
+            $table->unsignedBigInteger("created_by")->nullable();
+            $table->unsignedBigInteger("updated_by")->nullable();
+            $table->boolean("status")->default(0);
             $table->timestamps();
         });
     }

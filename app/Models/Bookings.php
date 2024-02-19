@@ -17,5 +17,8 @@ class Bookings extends Model
         'check_out_date',
         'total_amount',
         'agent_id',
+        'created_by',
+        'updated_by',
+        'status'
     ];
 }

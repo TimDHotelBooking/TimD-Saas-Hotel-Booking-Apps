@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RolesRequest;
 use App\Models\Roles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class RolesController extends Controller
@@ -34,7 +35,8 @@ class RolesController extends Controller
         try {
             $role_name = $request->input("name");
             $role = Roles::create([
-                "role_name" => $role_name
+                "role_name" => $role_name,
+                'created_by' => Auth::user()->id
             ]);
             if ($role){
                 return response()->json([
@@ -80,7 +82,8 @@ class RolesController extends Controller
         try {
             $role_name = $request->input("name");
             $role = $roles->update([
-                "role_name" => $role_name
+                "role_name" => $role_name,
+                'updated_by' => Auth::user()->id
             ]);
             if ($role){
                 return response()->json([

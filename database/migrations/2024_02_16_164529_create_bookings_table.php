@@ -22,6 +22,9 @@ return new class extends Migration
             $table->text("total_amount");
             $table->unsignedBigInteger("agent_id");
             $table->foreign("agent_id")->on("agents")->references("agent_id");
+            $table->unsignedBigInteger("created_by")->nullable();
+            $table->unsignedBigInteger("updated_by")->nullable();
+            $table->boolean("status")->default(0);
             $table->timestamps();
         });
     }

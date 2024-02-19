@@ -15,5 +15,8 @@ class Rooms extends Model
         'room_type',
         'availability_status',
         'price',
+        'created_by',
+        'updated_by',
+        'status'
     ];
 }

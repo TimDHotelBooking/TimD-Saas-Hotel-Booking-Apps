@@ -19,6 +19,9 @@ return new class extends Migration
             $table->dateTime("payment_date");
             $table->text("payment_method");
             $table->text("transaction_reference");
+            $table->unsignedBigInteger("created_by")->nullable();
+            $table->unsignedBigInteger("updated_by")->nullable();
+            $table->boolean("status")->default(0);
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PropertyRequest;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class PropertyController extends Controller
@@ -38,7 +39,8 @@ class PropertyController extends Controller
             $property = Property::create([
                 "property_name" => $property_name,
                 "location" => $location,
-                "contact_information" => $contact_information
+                "contact_information" => $contact_information,
+                'created_by' => Auth::user()->id
             ]);
             if ($property){
                 return response()->json([
@@ -87,7 +89,8 @@ class PropertyController extends Controller
             $property = $property->update([
                 "property_name" => $property_name,
                 "location" => $location,
-                "contact_information" => $contact_information
+                "contact_information" => $contact_information,
+                'updated_by' => Auth::user()->id
             ]);
             if ($property){
                 return response()->json([

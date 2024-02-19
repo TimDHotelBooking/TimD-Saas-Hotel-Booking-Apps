@@ -15,5 +15,8 @@ class Tariff extends Model
         'start_date',
         'end_date',
         'price',
+        'created_by',
+        'updated_by',
+        'status'
     ];
 }

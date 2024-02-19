@@ -10,11 +10,14 @@ class Agents extends Model
     use HasFactory;
 
     protected $fillable = [
-      'agent_id',
-      'first_name',
-      'last_name',
-      'email',
-      'phone_number',
-      'property_id',
+        'agent_id',
+        'first_name',
+        'last_name',
+        'email',
+        'phone_number',
+        'property_id',
+        'created_by',
+        'updated_by',
+        'status'
     ];
 }

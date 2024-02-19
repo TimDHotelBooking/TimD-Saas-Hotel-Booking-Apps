@@ -18,6 +18,9 @@ return new class extends Migration
             $table->enum("notification_type",["Email","SMS","App Notification"]);
             $table->longText("message");
             $table->boolean("is_read");
+            $table->unsignedBigInteger("created_by")->nullable();
+            $table->unsignedBigInteger("updated_by")->nullable();
+            $table->boolean("status")->default(0);
             $table->timestamps();
         });
     }

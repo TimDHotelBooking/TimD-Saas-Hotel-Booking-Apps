@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AgentsRequest;
 use App\Models\Agents;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class AgentsController extends Controller
@@ -43,6 +44,7 @@ class AgentsController extends Controller
                 "email" => $email,
                 "phone_number" => $phone_number,
                 "property_id" => $property_id,
+                'created_by' => Auth::user()->id
             ]);
             if ($agent){
                 return response()->json([
@@ -96,6 +98,7 @@ class AgentsController extends Controller
                 "email" => $email,
                 "phone_number" => $phone_number,
                 "property_id" => $property_id,
+                'updated_by' => Auth::user()->id
             ]);
             if ($agent){
                 return response()->json([

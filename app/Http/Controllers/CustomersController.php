@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CustomersRequest;
 use App\Models\Customers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class CustomersController extends Controller
@@ -41,6 +42,7 @@ class CustomersController extends Controller
                 "last_name" => $last_name,
                 "email" => $email,
                 "phone_number" => $phone_number,
+                'created_by' => Auth::user()->id
             ]);
             if ($customer){
                 return response()->json([
@@ -92,6 +94,7 @@ class CustomersController extends Controller
                 "last_name" => $last_name,
                 "email" => $email,
                 "phone_number" => $phone_number,
+                'updated_by' => Auth::user()->id
             ]);
             if ($customer){
                 return response()->json([

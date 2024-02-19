@@ -6,6 +6,7 @@ use App\Http\Requests\UsersRequest;
 use App\Models\Roles;
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class UsersController extends Controller
@@ -40,7 +41,8 @@ class UsersController extends Controller
             $user = Users::create([
                 "username" => $username,
                 "password" => $password,
-                "role_id" => $role_id
+                "role_id" => $role_id,
+                'created_by' => Auth::user()->id
             ]);
             if ($user){
                 return response()->json([
@@ -91,7 +93,8 @@ class UsersController extends Controller
             $user = $users->update([
                 "username" => $username,
                 "password" => $password,
-                "role_id" => $role_id
+                "role_id" => $role_id,
+                'updated_by' => Auth::user()->id
             ]);
             if ($user){
                 return response()->json([

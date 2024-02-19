@@ -6,6 +6,7 @@ use App\Http\Requests\TariffRequest;
 use App\Models\Rooms;
 use App\Models\Tariff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class TariffController extends Controller
@@ -43,6 +44,7 @@ class TariffController extends Controller
                 "start_date" => $start_date,
                 "end_date" => $end_date,
                 "price" => $price,
+                'created_by' => Auth::user()->id
             ]);
             if ($tariff){
                 return response()->json([
@@ -95,6 +97,7 @@ class TariffController extends Controller
                 "start_date" => $start_date,
                 "end_date" => $end_date,
                 "price" => $price,
+                'updated_by' => Auth::user()->id
             ]);
             if ($tariff){
                 return response()->json([
