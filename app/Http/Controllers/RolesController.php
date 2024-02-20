@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\UsersAssignedRoleDataTable;
 use App\Http\Requests\RolesRequest;
 use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
@@ -15,8 +17,7 @@ class RolesController extends Controller
      */
     public function index()
     {
-        $roles = Roles::get();
-        return view("roles.index",compact("roles"));
+        return view('pages/apps.roles.list');
     }
 
     /**
@@ -36,7 +37,7 @@ class RolesController extends Controller
             $role_name = $request->input("name");
             $role = Roles::create([
                 "role_name" => $role_name,
-                'created_by' => Auth::user()->id
+                'created_by' => Auth::user()->user_id
             ]);
             if ($role){
                 return response()->json([
@@ -60,9 +61,10 @@ class RolesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Roles $roles)
+    public function show(Role $role,UsersAssignedRoleDataTable $dataTable)
     {
-        //
+        return $dataTable->with('role', $role)
+            ->render('pages/apps.roles.show', compact('role'));
     }
 
     /**
@@ -83,7 +85,7 @@ class RolesController extends Controller
             $role_name = $request->input("name");
             $role = $roles->update([
                 "role_name" => $role_name,
-                'updated_by' => Auth::user()->id
+                'updated_by' => Auth::user()->user_id
             ]);
             if ($role){
                 return response()->json([

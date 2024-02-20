@@ -44,7 +44,7 @@ class AgentsController extends Controller
                 "email" => $email,
                 "phone_number" => $phone_number,
                 "property_id" => $property_id,
-                'created_by' => Auth::user()->id
+                'created_by' => Auth::user()->user_id
             ]);
             if ($agent){
                 return response()->json([
@@ -98,7 +98,7 @@ class AgentsController extends Controller
                 "email" => $email,
                 "phone_number" => $phone_number,
                 "property_id" => $property_id,
-                'updated_by' => Auth::user()->id
+                'updated_by' => Auth::user()->user_id
             ]);
             if ($agent){
                 return response()->json([

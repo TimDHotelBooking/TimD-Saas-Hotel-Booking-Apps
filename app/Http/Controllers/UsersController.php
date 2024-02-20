@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\UsersDataTable;
 use App\Http\Requests\UsersRequest;
 use App\Models\Roles;
 use App\Models\Users;
@@ -14,11 +15,9 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(UsersDataTable $dataTable)
     {
-        $users = Users::with('role')->get();
-        $roles = Roles::all();
-        return view("users.index",compact("users","roles"));
+        return $dataTable->render('pages/apps.users.list');
     }
 
     /**
@@ -35,14 +34,14 @@ class UsersController extends Controller
     public function store(UsersRequest $request)
     {
         try {
-            $username = $request->input("username");
+            $email = $request->input("email");
             $password = $request->input("password");
             $role_id = $request->input("role_id");
             $user = Users::create([
-                "username" => $username,
+                "email" => $email,
                 "password" => $password,
                 "role_id" => $role_id,
-                'created_by' => Auth::user()->id
+                'created_by' => Auth::user()->user_id
             ]);
             if ($user){
                 return response()->json([
@@ -66,9 +65,9 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Users $users)
+    public function show(Users $user)
     {
-        //
+        return view('pages/apps.users.show', compact('user'));
     }
 
     /**
@@ -76,7 +75,7 @@ class UsersController extends Controller
      */
     public function edit(Users $users)
     {
-        $users = Users::with('role')->find($users->id);
+        $users = Users::with('role')->find($users->user_id);
         $roles = Roles::all();
         return view("roles.edit",compact("users","roles"));
     }
@@ -87,14 +86,14 @@ class UsersController extends Controller
     public function update(UsersRequest $request, Users $users)
     {
         try {
-            $username = $request->input("username");
+            $email = $request->input("email");
             $password = $request->input("password");
             $role_id = $request->input("role_id");
             $user = $users->update([
-                "username" => $username,
+                "email" => $email,
                 "password" => $password,
                 "role_id" => $role_id,
-                'updated_by' => Auth::user()->id
+                'updated_by' => Auth::user()->user_id
             ]);
             if ($user){
                 return response()->json([

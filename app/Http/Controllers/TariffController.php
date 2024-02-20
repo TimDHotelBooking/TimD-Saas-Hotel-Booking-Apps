@@ -44,7 +44,7 @@ class TariffController extends Controller
                 "start_date" => $start_date,
                 "end_date" => $end_date,
                 "price" => $price,
-                'created_by' => Auth::user()->id
+                'created_by' => Auth::user()->user_id
             ]);
             if ($tariff){
                 return response()->json([
@@ -97,7 +97,7 @@ class TariffController extends Controller
                 "start_date" => $start_date,
                 "end_date" => $end_date,
                 "price" => $price,
-                'updated_by' => Auth::user()->id
+                'updated_by' => Auth::user()->user_id
             ]);
             if ($tariff){
                 return response()->json([

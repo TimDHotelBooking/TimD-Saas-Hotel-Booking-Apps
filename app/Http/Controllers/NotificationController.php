@@ -44,7 +44,7 @@ class NotificationController extends Controller
                 "notification_type" => $notification_type,
                 "message" => $message,
                 "is_read" => $is_read,
-                'created_by' => Auth::user()->id
+                'created_by' => Auth::user()->user_id
             ]);
             if ($notification){
                 return response()->json([
@@ -97,7 +97,7 @@ class NotificationController extends Controller
                 "notification_type" => $notification_type,
                 "message" => $message,
                 "is_read" => $is_read,
-                'updated_by' => Auth::user()->id
+                'updated_by' => Auth::user()->user_id
             ]);
             if ($notification){
                 return response()->json([

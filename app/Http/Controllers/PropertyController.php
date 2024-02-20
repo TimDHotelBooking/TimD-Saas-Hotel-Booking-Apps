@@ -40,7 +40,7 @@ class PropertyController extends Controller
                 "property_name" => $property_name,
                 "location" => $location,
                 "contact_information" => $contact_information,
-                'created_by' => Auth::user()->id
+                'created_by' => Auth::user()->user_id
             ]);
             if ($property){
                 return response()->json([
@@ -90,7 +90,7 @@ class PropertyController extends Controller
                 "property_name" => $property_name,
                 "location" => $location,
                 "contact_information" => $contact_information,
-                'updated_by' => Auth::user()->id
+                'updated_by' => Auth::user()->user_id
             ]);
             if ($property){
                 return response()->json([

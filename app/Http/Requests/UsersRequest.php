@@ -23,7 +23,7 @@ class UsersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "username" => "required|string",
+            "email" => "required|string",
             "password" => "required|string",
             "role_id" => ["required",Rule::exists("roles","role_id")],
         ];

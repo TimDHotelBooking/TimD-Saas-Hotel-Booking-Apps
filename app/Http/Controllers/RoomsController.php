@@ -44,7 +44,7 @@ class RoomsController extends Controller
                 "room_type" => $room_type,
                 "availability_status" => $availability_status,
                 "price" => $price,
-                'created_by' => Auth::user()->id
+                'created_by' => Auth::user()->user_id
             ]);
             if ($room){
                 return response()->json([
@@ -97,7 +97,7 @@ class RoomsController extends Controller
                 "room_type" => $room_type,
                 "availability_status" => $availability_status,
                 "price" => $price,
-                'updated_by' => Auth::user()->id
+                'updated_by' => Auth::user()->user_id
             ]);
             if ($room){
                 return response()->json([

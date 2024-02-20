@@ -46,7 +46,7 @@ class PaymentsController extends Controller
                 "payment_date" => $payment_date,
                 "payment_method" => $payment_method,
                 "transaction_reference" => $transaction_reference,
-                'created_by' => Auth::user()->id
+                'created_by' => Auth::user()->user_id
             ]);
             if ($payment){
                 return response()->json([
@@ -101,7 +101,7 @@ class PaymentsController extends Controller
                 "payment_date" => $payment_date,
                 "payment_method" => $payment_method,
                 "transaction_reference" => $transaction_reference,
-                'updated_by' => Auth::user()->id
+                'updated_by' => Auth::user()->user_id
             ]);
             if ($agent){
                 return response()->json([

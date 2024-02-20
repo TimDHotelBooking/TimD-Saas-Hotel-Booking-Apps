@@ -42,7 +42,7 @@ class CustomersController extends Controller
                 "last_name" => $last_name,
                 "email" => $email,
                 "phone_number" => $phone_number,
-                'created_by' => Auth::user()->id
+                'created_by' => Auth::user()->user_id
             ]);
             if ($customer){
                 return response()->json([
@@ -94,7 +94,7 @@ class CustomersController extends Controller
                 "last_name" => $last_name,
                 "email" => $email,
                 "phone_number" => $phone_number,
-                'updated_by' => Auth::user()->id
+                'updated_by' => Auth::user()->user_id
             ]);
             if ($customer){
                 return response()->json([
