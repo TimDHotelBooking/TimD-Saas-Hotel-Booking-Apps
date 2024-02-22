@@ -27,12 +27,78 @@
 				<!--end:Menu content-->
 			</div>--}}
 			<!--end:Menu item-->
+
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('property') ? 'here show' : '' }}">
+                <!--begin:Menu link-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ request()->routeIs('property') ? 'active' : '' }}" href="{{ route('property.index') }}">
+                        <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                        <span class="menu-title">Property</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu link-->
+            </div>
+
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('bookings') ? 'here show' : '' }}">
+                <!--begin:Menu link-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ request()->routeIs('bookings') ? 'active' : '' }}" href="{{ route('bookings.index') }}">
+                        <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                        <span class="menu-title">Bookings</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu link-->
+            </div>
+
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('customers') ? 'here show' : '' }}">
+                <!--begin:Menu link-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ request()->routeIs('customers') ? 'active' : '' }}" href="{{ route('customers.index') }}">
+                        <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                        <span class="menu-title">Customers</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu link-->
+            </div>
+
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('agents') ? 'here show' : '' }}">
+                <!--begin:Menu link-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ request()->routeIs('agents') ? 'active' : '' }}" href="{{ route('agents.index') }}">
+                        <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                        <span class="menu-title">Agents</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu link-->
+            </div>
+
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('agents') ? 'here show' : '' }}">
+                <!--begin:Menu link-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ request()->routeIs('agents') ? 'active' : '' }}" href="{{ route('agents.index') }}">
+                        <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                        <span class="menu-title">Reports & Analytics</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu link-->
+            </div>
+
 			<!--begin:Menu item-->
 			<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('users.*','roles.*','permissions.*') ? 'here show' : '' }}">
 				<!--begin:Menu link-->
 				<span class="menu-link">
 					<span class="menu-icon">{!! getIcon('abstract-28', 'fs-2') !!}</span>
-					<span class="menu-title">User Management</span>
+					<span class="menu-title">Users & roles</span>
 					<span class="menu-arrow"></span>
 				</span>
 				<!--end:Menu link-->
@@ -77,7 +143,70 @@
 				</div>
 				<!--end:Menu sub-->
 			</div>
+
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('users.*','roles.*','permissions.*') ? 'here show' : '' }}">
+                <!--begin:Menu link-->
+                <span class="menu-link">
+					<span class="menu-icon">{!! getIcon('abstract-28', 'fs-2') !!}</span>
+					<span class="menu-title">Settings</span>
+					<span class="menu-arrow"></span>
+				</span>
+                <!--end:Menu link-->
+                <!--begin:Menu sub-->
+                <div class="menu-sub menu-sub-accordion">
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
+							<span class="menu-bullet">
+								<span class="bullet bullet-dot"></span>
+							</span>
+                            <span class="menu-title">Admin Settings</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {{ request()->routeIs('roles.*') ? 'active' : '' }}" href="{{ route('roles.index') }}">
+							<span class="menu-bullet">
+								<span class="bullet bullet-dot"></span>
+							</span>
+                            <span class="menu-title">System Configuration</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}" href="{{ route('permissions.index') }}">
+							<span class="menu-bullet">
+								<span class="bullet bullet-dot"></span>
+							</span>
+                            <span class="menu-title">Audit Logs</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                </div>
+                <!--end:Menu sub-->
+            </div>
 			<!--end:Menu item-->
+
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('logout') ? 'here show' : '' }}">
+                <!--begin:Menu link-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="button-ajax menu-link px-5" href="#" data-action="{{ route('logout') }}" data-method="post" data-csrf="{{ csrf_token() }}" data-reload="true">
+                        <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                        Sign Out
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu link-->
+            </div>
 		</div>
 		<!--end::Menu-->
 	</div>

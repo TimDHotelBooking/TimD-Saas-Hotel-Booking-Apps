@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\PropertyDataTable;
 use App\Http\Requests\PropertyRequest;
 use App\Models\Property;
 use Illuminate\Http\Request;
@@ -13,10 +14,9 @@ class PropertyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(PropertyDataTable $dataTable)
     {
-        $properties = Property::all();
-        return view("property.index",compact("properties"));
+        return $dataTable->render('property.index');
     }
 
     /**
@@ -74,7 +74,7 @@ class PropertyController extends Controller
      */
     public function edit(Property $property)
     {
-        return view("property.edit",compact("property"));
+        return view('property.show', compact('property'));
     }
 
     /**

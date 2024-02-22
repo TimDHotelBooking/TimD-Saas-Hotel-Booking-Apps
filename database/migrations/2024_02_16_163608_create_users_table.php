@@ -16,14 +16,15 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('password');
-            $table->unsignedBigInteger("created_by")->nullable();
-            $table->unsignedBigInteger("updated_by")->nullable();
+            $table->text("phone_number")->nullable();
             $table->boolean("status")->default(0);
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('avatar')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->datetime('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->unsignedBigInteger("created_by")->nullable();
+            $table->unsignedBigInteger("updated_by")->nullable();
             $table->timestamps();
         });
     }

@@ -44,3 +44,7 @@ Breadcrumbs::for('permissions.index', function (BreadcrumbTrail $trail) {
     $trail->push('Permission List', route('permissions.index'));
 });
 
+Breadcrumbs::for('property.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Property List', route('property.index'));
+});
