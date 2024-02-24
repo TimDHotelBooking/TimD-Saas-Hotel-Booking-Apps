@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\RoomsDataTable;
 use App\Http\Requests\RoomsRequest;
 use App\Models\Property;
 use App\Models\Rooms;
@@ -14,10 +15,9 @@ class RoomsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(RoomsDataTable $dataTable)
     {
-        $rooms = Rooms::all();
-        return view("rooms.index",compact("rooms"));
+        return $dataTable->render('rooms.index');
     }
 
     /**

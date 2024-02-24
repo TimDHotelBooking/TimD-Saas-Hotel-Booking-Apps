@@ -16,6 +16,7 @@ class AddPropertyModal extends Component
     public $property_name;
     public $location;
     public $contact_information;
+    public $status;
 
     public $edit_mode = false;
 
@@ -46,6 +47,7 @@ class AddPropertyModal extends Component
                 'property_name' => $this->property_name,
                 'location' => $this->location,
                 'contact_information' => $this->contact_information,
+                'status' => $this->status,
                 'updated_by' => Auth::user()->user_id
             ];
 
@@ -96,6 +98,7 @@ class AddPropertyModal extends Component
         $this->property_name = $property->property_name;
         $this->location = $property->location;
         $this->contact_information = $property->contact_information;
+        $this->status = $property->status;
     }
 
     public function hydrate()

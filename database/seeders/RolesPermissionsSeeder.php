@@ -21,14 +21,15 @@ class RolesPermissionsSeeder extends Seeder
         ];
 
         $permissions_by_role = [
+            'Super Admin' => [],
             'admin' => []
         ];
 
-        foreach ($permissions_by_role['admin'] as $permission) {
+       /* foreach ($permissions_by_role['admin'] as $permission) {
             foreach ($abilities as $ability) {
                 Permission::create(['name' => $ability . ' ' . $permission]);
             }
-        }
+        }*/
 
         foreach ($permissions_by_role as $role => $permissions) {
             $full_permissions_list = [];
@@ -37,7 +38,10 @@ class RolesPermissionsSeeder extends Seeder
                     $full_permissions_list[] = $ability . ' ' . $permission;
                 }
             }
-            Role::create(['name' => $role])->syncPermissions($full_permissions_list);
+            $is_exists = Role::where('name',$role)->count();
+            if ($is_exists == 0){
+                Role::create(['name' => $role])->syncPermissions($full_permissions_list);
+            }
         }
     }
 }

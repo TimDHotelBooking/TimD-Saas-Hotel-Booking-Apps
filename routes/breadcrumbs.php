@@ -48,3 +48,8 @@ Breadcrumbs::for('property.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Property List', route('property.index'));
 });
+
+Breadcrumbs::for('rooms.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Room List', route('rooms.index'));
+});

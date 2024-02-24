@@ -65,6 +65,46 @@
                             <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <!--end::Input group-->
+
+                        <div class="mb-7">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-5">Status</label>
+                            <!--end::Label-->
+                            @error('status')
+                            <span class="text-danger">{{ $message }}</span> @enderror
+                            <!--begin::Roles-->
+                                <!--begin::Input row-->
+                                <div class="d-flex fv-row">
+
+                                    <div class="form-check form-check-custom form-check-solid mx-5">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" id="kt_modal_update_role_option_1" wire:model="status" name="status" type="radio" value="1" checked="checked"/>
+                                        <!--end::Input-->
+                                        <!--begin::Label-->
+                                        <label class="form-check-label" for="kt_modal_update_role_option_1">
+                                            <div class="fw-bold text-gray-800">
+                                                Active
+                                            </div>
+                                        </label>
+                                        <!--end::Label-->
+                                    </div>
+
+                                    <div class="form-check form-check-custom form-check-solid mx-5">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" id="kt_modal_update_role_option_0" wire:model="status" name="status" type="radio" value="0" />
+                                        <!--end::Input-->
+                                        <!--begin::Label-->
+                                        <label class="form-check-label" for="kt_modal_update_role_option_0">
+                                            <div class="fw-bold text-gray-800">
+                                                In Active
+                                            </div>
+                                        </label>
+                                        <!--end::Label-->
+                                    </div>
+                                </div>
+                                <!--end::Input row-->
+                            <!--end::Roles-->
+                        </div>
                     </div>
                     <!--end::Scroll-->
                     <!--begin::Actions-->

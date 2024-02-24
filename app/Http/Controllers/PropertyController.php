@@ -24,7 +24,7 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        return view("property.create");
+        //
     }
 
     /**
@@ -74,7 +74,7 @@ class PropertyController extends Controller
      */
     public function edit(Property $property)
     {
-        return view('property.show', compact('property'));
+       //
     }
 
     /**

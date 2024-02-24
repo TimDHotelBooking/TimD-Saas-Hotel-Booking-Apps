@@ -41,13 +41,13 @@
                 <!--end:Menu link-->
             </div>
 
-            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('bookings') ? 'here show' : '' }}">
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('rooms') ? 'here show' : '' }}">
                 <!--begin:Menu link-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link {{ request()->routeIs('bookings') ? 'active' : '' }}" href="{{ route('bookings.index') }}">
+                    <a class="menu-link {{ request()->routeIs('rooms') ? 'active' : '' }}" href="{{ route('rooms.index') }}">
                         <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
-                        <span class="menu-title">Bookings</span>
+                        <span class="menu-title">Rooms</span>
                     </a>
                     <!--end:Menu link-->
                 </div>

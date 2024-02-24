@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Property;
+use App\Models\Rooms;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class PropertyDataTable extends DataTable
+class RoomsDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,14 +22,14 @@ class PropertyDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('status', function (Property $property) {
-                return $property->status == '1' ? 'Active' : 'In Active';
+            ->editColumn('status', function (Rooms $room) {
+                return $room->availability_status == '1' ? 'Active' : 'In Active';
             })
-            ->editColumn('created_at', function (Property $property) {
-                return $property->created_at->format('d M Y, h:i a');
+            ->editColumn('created_at', function (Rooms $room) {
+                return $room->created_at->format('d M Y, h:i a');
             })
-            ->addColumn('action', function (Property $property) {
-                return view('property.columns._actions', compact('property'));
+            ->addColumn('action', function (Rooms $room) {
+                return view('rooms.columns._actions', compact('room'));
             })
             ->setRowId('id');
     }
@@ -37,7 +37,7 @@ class PropertyDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Property $model): QueryBuilder
+    public function query(Rooms $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -48,14 +48,14 @@ class PropertyDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('property-table')
+                    ->setTableId('rooms-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('rt' . "<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",)
                     ->addTableClass('table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer text-gray-600 fw-semibold')
                     ->setTableHeadClass('text-start text-muted fw-bold fs-7 text-uppercase gs-0')
-                    ->orderBy(2)
-                    ->drawCallback("function() {" . file_get_contents(resource_path('views/property/columns/_draw-scripts.js')) . "}");
+                    ->orderBy(1)
+                    ->drawCallback("function() {" . file_get_contents(resource_path('views/rooms/columns/_draw-scripts.js')) . "}");
     }
 
     /**
@@ -64,17 +64,16 @@ class PropertyDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('property_id'),
-            Column::make('property_name'),
-            Column::make('location'),
-            Column::make('contact_information'),
-            Column::make('status'),
+            Column::make('room_id'),
+            Column::make('room_type'),
+            Column::make('status','availability_status'),
+            Column::make('price'),
             Column::make('created_at'),
             Column::computed('action')
-                ->addClass('text-end text-nowrap')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60),
+                ->width(60)
+                ->addClass('text-end text-nowrap'),
         ];
     }
 
@@ -83,6 +82,6 @@ class PropertyDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Property_' . date('YmdHis');
+        return 'Rooms_' . date('YmdHis');
     }
 }
