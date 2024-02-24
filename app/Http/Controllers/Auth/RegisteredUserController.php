@@ -57,7 +57,7 @@ class RegisteredUserController extends Controller
             'last_login_ip' => $request->getClientIp()
         ]);
 
-        $admin_role = Role::where('name','admin')->first();
+        $admin_role = Role::where('name','Super Admin')->first();
 
         if (!empty($admin_role)){
             $user->assignRole($admin_role);

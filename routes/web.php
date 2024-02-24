@@ -27,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource("rooms", \App\Http\Controllers\RoomsController::class);
     Route::resource("tariff", \App\Http\Controllers\TariffController::class);
     Route::resource("customers", \App\Http\Controllers\CustomersController::class);
-    Route::resource("agents", \App\Http\Controllers\AgentsController::class);
+    Route::resource("property_agents", \App\Http\Controllers\PropertyAgentsController::class);
     Route::resource("bookings", \App\Http\Controllers\BookingsController::class);
     Route::resource("payments", \App\Http\Controllers\PaymentsController::class);
     Route::resource("notifications", \App\Http\Controllers\NotificationController::class);

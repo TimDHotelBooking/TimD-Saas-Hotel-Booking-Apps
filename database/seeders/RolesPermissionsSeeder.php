@@ -22,7 +22,8 @@ class RolesPermissionsSeeder extends Seeder
 
         $permissions_by_role = [
             'Super Admin' => [],
-            'admin' => []
+            'Property Admin' => [],
+            'Property Agent' => []
         ];
 
        /* foreach ($permissions_by_role['admin'] as $permission) {

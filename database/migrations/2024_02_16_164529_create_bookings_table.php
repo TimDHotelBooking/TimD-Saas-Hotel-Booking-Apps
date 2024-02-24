@@ -17,15 +17,16 @@ return new class extends Migration
             $table->foreign("customer_id")->on("customers")->references("customer_id");
             $table->unsignedBigInteger("room_id");
             $table->foreign("room_id")->on("rooms")->references("room_id");
+            $table->unsignedBigInteger("agent_id");
+            $table->foreign("agent_id")->on("users")->references("user_id");
             $table->date("check_in_date");
             $table->date("check_out_date");
             $table->text("total_amount");
-            $table->unsignedBigInteger("agent_id");
-            $table->foreign("agent_id")->on("agents")->references("agent_id");
             $table->unsignedBigInteger("created_by")->nullable();
             $table->unsignedBigInteger("updated_by")->nullable();
             $table->boolean("status")->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

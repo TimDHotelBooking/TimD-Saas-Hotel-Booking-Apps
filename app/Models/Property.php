@@ -12,6 +12,7 @@ class Property extends Model
     protected $primaryKey = 'property_id';
     protected $fillable = [
         "property_id",
+        "property_admin_id",
         "property_name",
         "location",
         "contact_information",
@@ -19,4 +20,8 @@ class Property extends Model
         'updated_by',
         'status'
     ];
+
+    public function agent(){
+        return $this->hasOne(Users::class,"user_id","property_admin_id");
+    }
 }

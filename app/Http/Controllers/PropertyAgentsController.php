@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AgentsRequest;
+use App\Http\Requests\PropertyAgentsRequest;
 use App\Models\Agents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class AgentsController extends Controller
+class PropertyAgentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,7 +31,7 @@ class AgentsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AgentsRequest $request)
+    public function store(PropertyAgentsRequest $request)
     {
         try {
             $first_name = $request->input("first_name");
@@ -84,7 +85,7 @@ class AgentsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AgentsRequest $request, Agents $agents)
+    public function update(PropertyAgentsRequest $request, Agents $agents)
     {
         try {
             $first_name = $request->input("first_name");

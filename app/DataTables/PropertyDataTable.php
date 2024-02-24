@@ -22,7 +22,9 @@ class PropertyDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('status', function (Property $property) {
+            ->editColumn('property_admin_id', function (Property $property) {
+                return !empty($property->agent) ? $property->agent->name ?? '' : '-';
+            })->editColumn('status', function (Property $property) {
                 return $property->status == '1' ? 'Active' : 'In Active';
             })
             ->editColumn('created_at', function (Property $property) {
@@ -68,6 +70,7 @@ class PropertyDataTable extends DataTable
             Column::make('property_name'),
             Column::make('location'),
             Column::make('contact_information'),
+            Column::make('property_admin_id'),
             Column::make('status'),
             Column::make('created_at'),
             Column::computed('action')

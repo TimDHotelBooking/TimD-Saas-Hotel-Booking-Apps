@@ -31,6 +31,25 @@
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Property Admin</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <select class="form-control form-control-solid  mb-3 mb-lg-0" name="admin_id" wire:model="admin_id">
+                                <option aria-hidden="true" aria-disabled="true" value="">Select Property</option>
+                                @if(!empty($property_admins) && count($property_admins) > 0)
+                                    @foreach($property_admins as $property_admin)
+                                        <option @if(!empty($property_admin->property_admin_id == $property_admin->user_id)) selected @endif value="{{ $property_admin->user_id }}" >{{ $property_admin->name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <!--end::Input-->
+                            @error('admin_id')
+                            <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
                             <label class="required fw-semibold fs-6 mb-2">Property Name</label>
                             <!--end::Label-->
                             <!--begin::Input-->

@@ -67,20 +67,20 @@
                 <!--end:Menu link-->
             </div>
 
-            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('agents') ? 'here show' : '' }}">
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('property_agents') ? 'here show' : '' }}">
                 <!--begin:Menu link-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link {{ request()->routeIs('agents') ? 'active' : '' }}" href="{{ route('agents.index') }}">
+                    <a class="menu-link {{ request()->routeIs('property_agents') ? 'active' : '' }}" href="{{ route('property_agents.index') }}">
                         <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
-                        <span class="menu-title">Agents</span>
+                        <span class="menu-title">Property Agents</span>
                     </a>
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu link-->
             </div>
 
-            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('agents') ? 'here show' : '' }}">
+            {{--<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('agents') ? 'here show' : '' }}">
                 <!--begin:Menu link-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
@@ -91,7 +91,7 @@
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu link-->
-            </div>
+            </div>--}}
 
 			<!--begin:Menu item-->
 			<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('users.*','roles.*','permissions.*') ? 'here show' : '' }}">

@@ -12,8 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Users extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
-    use HasRoles;
+    use HasApiTokens, HasFactory, Notifiable,HasRoles;
     protected $primaryKey = 'user_id';
     protected $fillable = [
         'user_id',
@@ -25,10 +24,6 @@ class Users extends Authenticatable implements MustVerifyEmail
         'updated_by',
         'status'
     ];
-
-    public function role(){
-        return $this->belongsTo(Roles::class,'role_id','role_id');
-    }
 
     public function getProfilePhotoUrlAttribute()
     {

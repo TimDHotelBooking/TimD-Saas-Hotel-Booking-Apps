@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Property;
 
+use App\Models\AgentsProperty;
 use App\Models\Property;
 use App\Models\Users;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,7 @@ use Spatie\Permission\Models\Role;
 
 class AddPropertyModal extends Component
 {
+    public $admin_id;
     public $property_id;
     public $property_name;
     public $location;
@@ -21,6 +23,7 @@ class AddPropertyModal extends Component
     public $edit_mode = false;
 
     protected $rules = [
+        'admin_id' => 'required',
         'property_name' => 'required|string',
         'location' => 'required|string',
         'contact_information' => 'required|string',
@@ -33,7 +36,8 @@ class AddPropertyModal extends Component
 
     public function render()
     {
-        return view('livewire.property.add-property-modal');
+        $property_admins = Users::role('Property Admin')->get();
+        return view('livewire.property.add-property-modal',compact('property_admins'));
     }
 
     public function submit()
@@ -44,6 +48,7 @@ class AddPropertyModal extends Component
         DB::transaction(function () {
             // Prepare the data for creating a new property
             $data = [
+                'property_admin_id' => $this->admin_id,
                 'property_name' => $this->property_name,
                 'location' => $this->location,
                 'contact_information' => $this->contact_information,
@@ -95,6 +100,7 @@ class AddPropertyModal extends Component
 
         $property = Property::find($id);
         $this->property_id = $property->property_id;
+        $this->admin_id = $property->property_admin_id;
         $this->property_name = $property->property_name;
         $this->location = $property->location;
         $this->contact_information = $property->contact_information;
