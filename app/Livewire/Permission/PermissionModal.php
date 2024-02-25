@@ -12,7 +12,7 @@ class PermissionModal extends Component
     public Permission $permission;
 
     protected $rules = [
-        'name' => 'required|string',
+        'name' => 'required|string|unique:permissions',
     ];
 
     // This is the list of listeners that this component listens to.
