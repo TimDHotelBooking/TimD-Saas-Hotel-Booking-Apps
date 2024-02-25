@@ -28,25 +28,29 @@
                     <input type="hidden" wire:model="property_id" name="property_id" value="{{ $property_id }}"/>
                     <!--begin::Scroll-->
                     <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_property_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_property_header" data-kt-scroll-wrappers="#kt_modal_add_property_scroll" data-kt-scroll-offset="300px">
-                        <!--begin::Input group-->
-                        <div class="fv-row mb-7">
-                            <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-2">Property Admin</label>
-                            <!--end::Label-->
-                            <!--begin::Input-->
-                            <select class="form-control form-control-solid  mb-3 mb-lg-0" name="admin_id" wire:model="admin_id">
-                                <option aria-hidden="true" aria-disabled="true" value="">Select Property</option>
-                                @if(!empty($property_admins) && count($property_admins) > 0)
-                                    @foreach($property_admins as $property_admin)
-                                        <option @if(!empty($property_admin->property_admin_id == $property_admin->user_id)) selected @endif value="{{ $property_admin->user_id }}" >{{ $property_admin->name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <!--end::Input-->
-                            @error('admin_id')
-                            <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
-                        <!--end::Input group-->
+                        @if(!Auth::user()->isPropertyAdmin())
+                            <!--begin::Input group-->
+                            <div class="fv-row mb-7">
+                                <!--begin::Label-->
+                                <label class="required fw-semibold fs-6 mb-2">Property Admin</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <select class="form-control form-control-solid  mb-3 mb-lg-0" name="admin_id" wire:model="admin_id">
+                                    <option aria-hidden="true" aria-disabled="true" value="">Select Property</option>
+                                    @if(!empty($property_admins) && count($property_admins) > 0)
+                                        @foreach($property_admins as $property_admin)
+                                            <option @if(!empty($property_admin->property_admin_id == $property_admin->user_id)) selected @endif value="{{ $property_admin->user_id }}" >{{ $property_admin->name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <!--end::Input-->
+                                @error('admin_id')
+                                <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <!--end::Input group-->
+                        @else
+                            <input type="hidden" wire:model="admin_id" name="admin_id" value="{{ Auth::user()->user_id }}"/>
+                        @endif
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <!--begin::Label-->

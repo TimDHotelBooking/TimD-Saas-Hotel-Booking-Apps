@@ -1,4 +1,4 @@
-<div class="modal fade" id="kt_modal_update_role" tabindex="-1" aria-hidden="true" wire:ignore.self>
+<div class="modal fade" id="kt_modal_update_role" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" wire:ignore.self>
     <!--begin::Modal dialog-->
     <div class="modal-dialog modal-dialog-centered mw-750px">
         <!--begin::Modal content-->
@@ -6,10 +6,10 @@
             <!--begin::Modal header-->
             <div class="modal-header">
                 <!--begin::Modal title-->
-                <h2 class="fw-bold">Update Role</h2>
+                <h2 class="fw-bold">{{ $edit_mode ? 'Update Role' : 'Add Role' }}</h2>
                 <!--end::Modal title-->
                 <!--begin::Close-->
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal" aria-label="Close">
+                <div class="btn btn-icon btn-sm btn-active-icon-primary" wire:click="dismiss" data-bs-dismiss="modal" aria-label="Close">
                     {!! getIcon('cross','fs-1') !!}
                 </div>
                 <!--end::Close-->
@@ -64,31 +64,33 @@
                                         </td>
                                     </tr>
                                     <!--end::Table row-->
-                                    @foreach($permissions_by_group as $group => $permissions)
-                                        <!--begin::Table row-->
-                                        <tr>
-                                            <!--begin::Label-->
-                                            <td class="text-gray-800">{{ ucwords($group) }}</td>
-                                            <!--end::Label-->
-                                            <!--begin::Input group-->
-                                            @foreach($permissions as $permission)
-                                                <td>
-                                                    <!--begin::Wrapper-->
-                                                    <div class="d-flex">
-                                                        <!--begin::Checkbox-->
-                                                        <label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-                                                            <input class="form-check-input" type="checkbox" wire:model="checked_permissions" value="{{ $permission->name }}"/>
-                                                            <span class="form-check-label">{{ ucwords(Str::before($permission->name, ' ')) }}</span>
-                                                        </label>
-                                                        <!--end::Checkbox-->
-                                                    </div>
-                                                    <!--end::Wrapper-->
-                                                </td>
-                                            @endforeach
-                                            <!--end::Input group-->
-                                        </tr>
-                                        <!--end::Table row-->
-                                    @endforeach
+                                    @if(!empty($permissions_by_group))
+                                        @foreach($permissions_by_group as $group => $permissions)
+                                            <!--begin::Table row-->
+                                            <tr>
+                                                <!--begin::Label-->
+                                                <td class="text-gray-800">{{ ucwords($group) }}</td>
+                                                <!--end::Label-->
+                                                <!--begin::Input group-->
+                                                @foreach($permissions as $permission)
+                                                    <td>
+                                                        <!--begin::Wrapper-->
+                                                        <div class="d-flex">
+                                                            <!--begin::Checkbox-->
+                                                            <label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
+                                                                <input class="form-check-input" type="checkbox" wire:model="checked_permissions" value="{{ $permission->name }}"/>
+                                                                <span class="form-check-label">{{ ucwords(Str::before($permission->name, ' ')) }}</span>
+                                                            </label>
+                                                            <!--end::Checkbox-->
+                                                        </div>
+                                                        <!--end::Wrapper-->
+                                                    </td>
+                                                @endforeach
+                                                <!--end::Input group-->
+                                            </tr>
+                                            <!--end::Table row-->
+                                        @endforeach
+                                    @endif
                                     <!--begin::Table row-->
                                     </tbody>
                                     <!--end::Table body-->
@@ -102,7 +104,7 @@
                     <!--end::Scroll-->
                     <!--begin::Actions-->
                     <div class="text-center pt-15">
-                        <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal" aria-label="Close" wire:loading.attr="disabled">Discard</button>
+                        <button type="reset" class="btn btn-light me-3" wire:click="dismiss" data-bs-dismiss="modal" aria-label="Close" wire:loading.attr="disabled">Discard</button>
                         <button type="submit" class="btn btn-primary">
                             <span class="indicator-label" wire:loading.remove>Submit</span>
                             <span class="indicator-progress" wire:loading wire:target="submit">

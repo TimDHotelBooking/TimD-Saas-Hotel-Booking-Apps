@@ -36,6 +36,10 @@ class AddPropertyModal extends Component
 
     public function render()
     {
+
+        if (Auth::user()->isPropertyAdmin()){
+            $this->admin_id = Auth::user()->user_id;
+        }
         $property_admins = Users::role('Property Admin')->get();
         return view('livewire.property.add-property-modal',compact('property_admins'));
     }
@@ -48,7 +52,7 @@ class AddPropertyModal extends Component
         DB::transaction(function () {
             // Prepare the data for creating a new property
             $data = [
-                'property_admin_id' => $this->admin_id,
+                'property_admin_id' => (Auth::user()->isPropertyAdmin()) ? Auth::user()->user_id : $this->admin_id,
                 'property_name' => $this->property_name,
                 'location' => $this->location,
                 'contact_information' => $this->contact_information,

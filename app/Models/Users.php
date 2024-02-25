@@ -19,11 +19,19 @@ class Users extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'role_id',
+        'phone_number',
         'created_by',
         'updated_by',
         'status'
     ];
+
+    public function isSuperAdmin(){
+        return $this->hasRole("Super Admin");
+    }
+
+    public function isPropertyAdmin(){
+        return $this->hasRole("Property Admin");
+    }
 
     public function getProfilePhotoUrlAttribute()
     {

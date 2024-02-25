@@ -15,9 +15,10 @@ class RolesPermissionsSeeder extends Seeder
     public function run(): void
     {
         $abilities = [
-            'read',
-            'write',
             'create',
+            'view',
+            'edit',
+            'delete',
         ];
 
         $permissions_by_role = [

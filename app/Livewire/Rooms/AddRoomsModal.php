@@ -33,7 +33,13 @@ class AddRoomsModal extends Component
 
     public function render()
     {
-        $properties = Property::where('status',1)->get();
+        $properties = Property::where('status',1);
+        if (!Auth::user()->isSuperAdmin()){
+            $properties->where('property_admin_id',Auth::user()->user_id);
+        }
+
+
+        $properties = $properties->get();
         return view('livewire.rooms.add-rooms-modal',compact('properties'));
     }
 

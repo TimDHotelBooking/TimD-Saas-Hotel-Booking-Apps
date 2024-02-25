@@ -11,8 +11,9 @@ use Spatie\Permission\Models\Role;
 class RoleModal extends Component
 {
     public $name;
-    public $checked_permissions;
+    public $checked_permissions = [];
     public $check_all;
+    public $edit_mode;
 
     public Role $role;
     public Collection $permissions;
@@ -42,31 +43,24 @@ class RoleModal extends Component
         }
 
         $this->role = $role;
-
+        $this->edit_mode = true;
         // Set the name and checked permissions properties to the role's values.
         $this->name = $this->role->name;
         $this->checked_permissions = $this->role->permissions->pluck('name');
     }
 
-    // This function is called when the component is mounted.
-    public function mount()
-    {
-        // Get all permissions.
-        $this->permissions = Permission::all();
-
-        // Set the checked permissions property to an empty array.
-        $this->checked_permissions = [];
-    }
-
     // This function renders the component's view.
     public function render()
     {
+        $this->permissions = Permission::all();
         // Create an array of permissions grouped by ability.
         $permissions_by_group = [];
-        foreach ($this->permissions ?? [] as $permission) {
-            $ability = Str::after($permission->name, ' ');
+        if (!empty($this->permissions)){
+            foreach ($this->permissions ?? [] as $permission) {
+                $ability = Str::after($permission->name, ' ');
 
-            $permissions_by_group[$ability][] = $permission;
+                $permissions_by_group[$ability][] = $permission;
+            }
         }
 
         // Return the view with the permissions_by_group variable passed in.
@@ -82,6 +76,7 @@ class RoleModal extends Component
         if ($this->role->isDirty()) {
             $this->role->save();
         }
+        $this->edit_mode = false;
 
         // Sync the role's permissions with the checked permissions property.
         $this->role->syncPermissions($this->checked_permissions);
@@ -106,5 +101,10 @@ class RoleModal extends Component
     {
         $this->resetErrorBag();
         $this->resetValidation();
+    }
+
+    public function dismiss(){
+        $this->reset();
+        $this->edit_mode = false;
     }
 }

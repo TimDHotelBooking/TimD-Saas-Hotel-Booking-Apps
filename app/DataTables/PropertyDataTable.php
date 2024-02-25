@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Property;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -41,7 +42,11 @@ class PropertyDataTable extends DataTable
      */
     public function query(Property $model): QueryBuilder
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+        if (!Auth::user()->hasRole('Super Admin')){
+            $query = $model->where('property_admin_id',Auth::user()->user_id);
+        }
+        return $query;
     }
 
     /**

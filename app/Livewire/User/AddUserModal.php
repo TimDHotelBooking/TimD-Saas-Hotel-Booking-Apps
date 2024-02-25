@@ -3,6 +3,7 @@
 namespace App\Livewire\User;
 
 use App\Models\Users;
+use Illuminate\Testing\Fluent\Concerns\Has;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,9 @@ class AddUserModal extends Component
     public $user_id;
     public $name;
     public $email;
+    public $password;
+    public $phone_number;
+    public $status;
     public $role;
     public $avatar;
     public $saved_avatar;
@@ -28,6 +32,8 @@ class AddUserModal extends Component
         'name' => 'required|string',
         'email' => 'required|email',
         'role' => 'required|string',
+        'phone_number' => 'required',
+        'status' => 'required',
         'avatar' => 'nullable|sometimes|image|max:1024',
     ];
 
@@ -64,7 +70,14 @@ class AddUserModal extends Component
             // Prepare the data for creating a new user
             $data = [
                 'name' => $this->name,
+                'phone_number' => $this->phone_number,
+                'status' => $this->status,
+                'updated_by' => Auth::user()->id,
             ];
+
+            if (!empty($this->password)){
+                $data['password'] = Hash::make($this->password);
+            }
 
             if ($this->avatar) {
                 $data['profile_photo_path'] = $this->avatar->store('avatars', 'public');
@@ -73,7 +86,7 @@ class AddUserModal extends Component
             }
 
             if (!$this->edit_mode) {
-                $data['password'] = Hash::make($this->email);
+                $data['created_by'] = Auth::user()->id;
             }
 
             // Update or Create a new user record in the database
@@ -134,6 +147,9 @@ class AddUserModal extends Component
         $this->saved_avatar = $user->profile_photo_url;
         $this->name = $user->name;
         $this->email = $user->email;
+        $this->password = '';
+        $this->phone_number = $user->phone_number;
+        $this->status = $user->status;
         $this->role = $user->roles?->first()->name ?? '';
     }
 
