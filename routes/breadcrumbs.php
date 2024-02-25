@@ -53,3 +53,8 @@ Breadcrumbs::for('rooms.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Room List', route('rooms.index'));
 });
+
+Breadcrumbs::for('tariff.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Tariff List', route('tariff.index'));
+});

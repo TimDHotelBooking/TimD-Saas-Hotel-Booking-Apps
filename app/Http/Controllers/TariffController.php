@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\TariffDataTable;
 use App\Http\Requests\TariffRequest;
 use App\Models\Rooms;
 use App\Models\Tariff;
@@ -14,10 +15,9 @@ class TariffController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(TariffDataTable $dataTable)
     {
-        $tariffs = Tariff::all();
-        return view("tariff.edit",compact("tariffs"));
+        return $dataTable->render( 'tariff.index');
     }
 
     /**
@@ -25,8 +25,7 @@ class TariffController extends Controller
      */
     public function create()
     {
-        $rooms = Rooms::all();
-        return view("tariff.create",compact("rooms"));
+        //
     }
 
     /**
@@ -78,8 +77,7 @@ class TariffController extends Controller
      */
     public function edit(Tariff $tariff)
     {
-        $rooms = Rooms::all();
-        return view("tariff.edit",compact("tariff","rooms"));
+        //
     }
 
     /**

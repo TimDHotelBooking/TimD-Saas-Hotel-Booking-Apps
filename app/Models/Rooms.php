@@ -21,4 +21,8 @@ class Rooms extends Model
         'updated_by',
         'status'
     ];
+
+    public function property(){
+        return $this->belongsTo(Property::class,'property_id');
+    }
 }
