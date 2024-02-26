@@ -33,6 +33,10 @@ class Users extends Authenticatable implements MustVerifyEmail
         return $this->hasRole("Property Admin");
     }
 
+    public function isPropertyAgent(){
+        return $this->hasRole("Property Agent");
+    }
+
     public function getProfilePhotoUrlAttribute()
     {
         if ($this->profile_photo_path) {

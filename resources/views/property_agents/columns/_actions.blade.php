@@ -9,32 +9,32 @@
     data-kt-menu="true">
     <!--begin::Menu item-->
     {{--    <div class="menu-item px-3">--}}
-    {{--        <a href="{{ route('customer.show', $customer) }}" class="menu-link px-3">--}}
+    {{--        <a href="{{ route('property_agents.show', $propertyAgents) }}" class="menu-link px-3">--}}
     {{--            View--}}
     {{--        </a>--}}
     {{--    </div>--}}
     <!--end::Menu item-->
 
-    @can('edit customer')
+    @can('edit property agent')
         <!--begin::Menu item-->
         <div class="menu-item px-3">
-            <a href="#" class="menu-link px-3" data-kt-customer-id="{{ $customer->customer_id }}" data-bs-toggle="modal"
-               data-bs-target="#kt_modal_add_customer" data-kt-action="update_row">
+            <a href="#" class="menu-link px-3" data-kt-property_agents-id="{{ $propertyAgents->property_agent_id }}"
+               data-bs-toggle="modal" data-bs-target="#kt_modal_add_property_agents" data-kt-action="update_row">
                 Edit
             </a>
         </div>
     @endcan
     <!--end::Menu item-->
 
-    @can('delete customer')
+    @can('delete property agent')
         <!--begin::Menu item-->
         <div class="menu-item px-3">
-            <a href="#" class="menu-link px-3" data-kt-customer-id="{{ $customer->customer_id  }}"
+            <a href="#" class="menu-link px-3" data-kt-property_agents-id="{{ $propertyAgents->property_agent_id  }}"
                data-kt-action="delete_row">
                 Delete
             </a>
         </div>
+        <!--end::Menu item-->
     @endcan
-    <!--end::Menu item-->
 </div>
 <!--end::Menu-->

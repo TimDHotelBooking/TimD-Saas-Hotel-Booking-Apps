@@ -1,7 +1,7 @@
 <x-default-layout>
 
     @section('title')
-        Tariff
+        Property Agents
     @endsection
 
     <div class="card">
@@ -13,34 +13,34 @@
                 <div class="d-flex align-items-center position-relative my-1">
                     {!! getIcon('magnifier', 'fs-3 position-absolute ms-5') !!}
                     <input type="text" data-kt-user-table-filter="search"
-                           class="form-control form-control-solid w-250px ps-13" placeholder="Search tariff"
+                           class="form-control form-control-solid w-250px ps-13" placeholder="Search property agent"
                            id="mySearchInput"/>
                 </div>
                 <!--end::Search-->
             </div>
             <!--begin::Card title-->
 
-            <!--begin::Card toolbar-->
-            @can('create tariff')
+            @can('create property agent')
+                <!--begin::Card toolbar-->
                 <div class="card-toolbar">
                     <!--begin::Toolbar-->
                     <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                        <!--begin::Add tariff-->
+                        <!--begin::Add property Agents-->
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#kt_modal_add_tariff">
+                                data-bs-target="#kt_modal_add_property_agents">
                             {!! getIcon('plus', 'fs-2', '', 'i') !!}
-                            Add Tariff
+                            Add Property Agent
                         </button>
-                        <!--end::Add tariff-->
+                        <!--end::Add property Agents-->
                     </div>
                     <!--end::Toolbar-->
 
                     <!--begin::Modal-->
-                    <livewire:tariff.add-tariff-modal></livewire:tariff.add-tariff-modal>
+                    <livewire:property-agents.add-property-agents-modal></livewire:property-agents.add-property-agents-modal>
                     <!--end::Modal-->
                 </div>
+                <!--end::Card toolbar-->
             @endcan
-            <!--end::Card toolbar-->
         </div>
         <!--end::Card header-->
 
@@ -59,12 +59,12 @@
         {{ $dataTable->scripts() }}
         <script>
             document.getElementById('mySearchInput').addEventListener('keyup', function () {
-                window.LaravelDataTables['tariff-table'].search(this.value).draw();
+                window.LaravelDataTables['propertyagents-table'].search(this.value).draw();
             });
             document.addEventListener('livewire:init', function () {
                 Livewire.on('success', function () {
-                    $('#kt_modal_add_tariff').modal('hide');
-                    window.LaravelDataTables['tariff-table'].ajax.reload();
+                    $('#kt_modal_add_property_agents').modal('hide');
+                    window.LaravelDataTables['propertyagents-table'].ajax.reload();
                 });
             });
         </script>

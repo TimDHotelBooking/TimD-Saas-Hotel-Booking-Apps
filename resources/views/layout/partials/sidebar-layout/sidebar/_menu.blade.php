@@ -16,7 +16,7 @@
                     <!--begin:Menu link-->
                     <a class="menu-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
                        href="{{ route('dashboard') }}">
-                        <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                        <span class="menu-icon">{!! getIcon('element-7', 'fs-2') !!}</span>
                         <span class="menu-title">Dashboards</span>
                     </a>
                     <!--end:Menu link-->
@@ -100,7 +100,7 @@
                             <!--begin:Menu link-->
                             <a class="menu-link {{ request()->routeIs('customers') ? 'active' : '' }}"
                                href="{{ route('customers.index') }}">
-                                <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                                <span class="menu-icon">{!! getIcon('people', 'fs-2') !!}</span>
                                 <span class="menu-title">Customers</span>
                             </a>
                             <!--end:Menu link-->
@@ -148,7 +148,7 @@
                      class="menu-item menu-accordion {{ request()->routeIs('users.*','roles.*','permissions.*') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
                     <span class="menu-link">
-					<span class="menu-icon">{!! getIcon('abstract-28', 'fs-2') !!}</span>
+					<span class="menu-icon">{!! getIcon('user-square', 'fs-2') !!}</span>
 					<span
                         class="menu-title">{{ \Illuminate\Support\Facades\Auth::user()->isSuperAdmin() ? 'Users & roles' : 'Users'}}</span>
 					<span class="menu-arrow"></span>

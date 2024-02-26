@@ -12,29 +12,34 @@
                 <!--begin::Search-->
                 <div class="d-flex align-items-center position-relative my-1">
                     {!! getIcon('magnifier', 'fs-3 position-absolute ms-5') !!}
-                    <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search customer" id="mySearchInput"/>
+                    <input type="text" data-kt-user-table-filter="search"
+                           class="form-control form-control-solid w-250px ps-13" placeholder="Search customer"
+                           id="mySearchInput"/>
                 </div>
                 <!--end::Search-->
             </div>
             <!--begin::Card title-->
 
             <!--begin::Card toolbar-->
-            <div class="card-toolbar">
-                <!--begin::Toolbar-->
-                <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                    <!--begin::Add customer-->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_customer">
-                        {!! getIcon('plus', 'fs-2', '', 'i') !!}
-                        Add Customer
-                    </button>
-                    <!--end::Add customer-->
-                </div>
-                <!--end::Toolbar-->
+            @can("create customer")
+                <div class="card-toolbar">
+                    <!--begin::Toolbar-->
+                    <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                        <!--begin::Add customer-->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#kt_modal_add_customer">
+                            {!! getIcon('plus', 'fs-2', '', 'i') !!}
+                            Add Customer
+                        </button>
+                        <!--end::Add customer-->
+                    </div>
+                    <!--end::Toolbar-->
 
-                <!--begin::Modal-->
-                <livewire:customer.add-customer-modal></livewire:customer.add-customer-modal>
-                <!--end::Modal-->
-            </div>
+                    <!--begin::Modal-->
+                    <livewire:customer.add-customer-modal></livewire:customer.add-customer-modal>
+                    <!--end::Modal-->
+                </div>
+            @endcan
             <!--end::Card toolbar-->
         </div>
         <!--end::Card header-->

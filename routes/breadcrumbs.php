@@ -63,3 +63,8 @@ Breadcrumbs::for('customers.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Customer List', route('customers.index'));
 });
+
+Breadcrumbs::for('property_agents.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Property Agent List', route('property_agents.index'));
+});

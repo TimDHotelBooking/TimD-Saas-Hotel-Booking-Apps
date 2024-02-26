@@ -12,30 +12,35 @@
                 <!--begin::Search-->
                 <div class="d-flex align-items-center position-relative my-1">
                     {!! getIcon('magnifier', 'fs-3 position-absolute ms-5') !!}
-                    <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search property" id="mySearchInput"/>
+                    <input type="text" data-kt-user-table-filter="search"
+                           class="form-control form-control-solid w-250px ps-13" placeholder="Search property"
+                           id="mySearchInput"/>
                 </div>
                 <!--end::Search-->
             </div>
             <!--begin::Card title-->
 
-            <!--begin::Card toolbar-->
-            <div class="card-toolbar">
-                <!--begin::Toolbar-->
-                <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                    <!--begin::Add property-->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_property">
-                        {!! getIcon('plus', 'fs-2', '', 'i') !!}
-                        Add Property
-                    </button>
-                    <!--end::Add property-->
-                </div>
-                <!--end::Toolbar-->
+            @can('create property')
+                <!--begin::Card toolbar-->
+                <div class="card-toolbar">
+                    <!--begin::Toolbar-->
+                    <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                        <!--begin::Add property-->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#kt_modal_add_property">
+                            {!! getIcon('plus', 'fs-2', '', 'i') !!}
+                            Add Property
+                        </button>
+                        <!--end::Add property-->
+                    </div>
+                    <!--end::Toolbar-->
 
-                <!--begin::Modal-->
-                <livewire:property.add-property-modal></livewire:property.add-property-modal>
-                <!--end::Modal-->
-            </div>
-            <!--end::Card toolbar-->
+                    <!--begin::Modal-->
+                    <livewire:property.add-property-modal></livewire:property.add-property-modal>
+                    <!--end::Modal-->
+                </div>
+                <!--end::Card toolbar-->
+            @endcan
         </div>
         <!--end::Card header-->
 
