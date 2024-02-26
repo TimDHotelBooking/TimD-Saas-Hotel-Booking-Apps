@@ -70,7 +70,7 @@ class UsersDataTable extends DataTable
     {
         return [
             Column::make('user')->addClass('d-flex align-items-center')->name('name'),
-            Column::make('role')->searchable(false),
+            Column::make('role')->searchable(false)->orderable(false),
             Column::make('last_login_at')->title('Last Login'),
             Column::make('created_at')->title('Joined Date')->addClass('text-nowrap'),
             Column::computed('action')
