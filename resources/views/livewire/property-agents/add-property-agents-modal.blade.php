@@ -7,7 +7,7 @@
             <!--begin::Modal header-->
             <div class="modal-header" id="kt_modal_add_property_agents_header">
                 <!--begin::Modal title-->
-                <h2 class="fw-bold">`
+                <h2 class="fw-bold">
                     @if($edit_mode == true)
                         Edit Property Agent
                     @else

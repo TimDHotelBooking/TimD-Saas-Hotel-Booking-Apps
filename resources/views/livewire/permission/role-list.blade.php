@@ -53,7 +53,7 @@
     @endforeach
 
     <!--begin::Add new card-->
-    <div class="ol-md-4">
+    {{--<div class="ol-md-4">
         <!--begin::Card-->
         <div class="card h-md-100">
             <!--begin::Card body-->
@@ -72,6 +72,6 @@
             <!--begin::Card body-->
         </div>
         <!--begin::Card-->
-    </div>
+    </div>--}}
     <!--begin::Add new card-->
 </div>

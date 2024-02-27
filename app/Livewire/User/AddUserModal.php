@@ -44,18 +44,9 @@ class AddUserModal extends Component
 
     public function render()
     {
-        $roles = Role::all();
-
-        $roles_description = [
-            'administrator' => 'Best for business owners and company administrators',
-            'developer' => 'Best for developers or people primarily using the API',
-            'analyst' => 'Best for people who need full access to analytics data, but don\'t need to update business settings',
-            'support' => 'Best for employees who regularly refund payments and respond to disputes',
-            'trial' => 'Best for people who need to preview content data, but don\'t need to make any updates',
-        ];
-
-        foreach ($roles as $i => $role) {
-            $roles[$i]->description = $roles_description[$role->name] ?? '';
+        $roles = Role::where('name','!=','Super Admin')->get();
+        if (Auth::user()->isPropertyAdmin()){
+            $roles = Role::where('name','Property Agent')->get();
         }
 
         return view('livewire.user.add-user-modal', compact('roles'));
@@ -72,7 +63,7 @@ class AddUserModal extends Component
                 'name' => $this->name,
                 'phone_number' => $this->phone_number,
                 'status' => $this->status,
-                'updated_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->user_id,
             ];
 
             if (!empty($this->password)){
@@ -86,7 +77,7 @@ class AddUserModal extends Component
             }
 
             if (!$this->edit_mode) {
-                $data['created_by'] = Auth::user()->id;
+                $data['created_by'] = Auth::user()->user_id;
             }
 
             // Update or Create a new user record in the database

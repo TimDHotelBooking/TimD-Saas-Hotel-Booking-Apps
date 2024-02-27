@@ -21,17 +21,48 @@ class RolesPermissionsSeeder extends Seeder
             'delete',
         ];
 
-        $permissions_by_role = [
-            'Super Admin' => [],
-            'Property Admin' => [],
-            'Property Agent' => []
+        $insert_permissions = [
+            'property',
+            'room',
+            'tariff',
+            'customer',
+            'property agent',
+            'user',
+            'role',
+            'permission',
+            'booking',
+            'payment',
+            'notification'
         ];
 
-       /* foreach ($permissions_by_role['admin'] as $permission) {
+        $permissions_by_role = [
+            'Super Admin' => [
+                'property',
+                'user',
+                'role',
+                'permission',
+            ],
+            'Property Admin' => [
+                'room',
+                'tariff',
+                'property agent',
+                'user',
+            ],
+            'Property Agent' => [
+                'customer',
+                'booking',
+                'payment'
+            ]
+        ];
+
+        foreach ($insert_permissions as $permission) {
             foreach ($abilities as $ability) {
-                Permission::create(['name' => $ability . ' ' . $permission]);
+                $is_exists = Permission::where('name',$ability . ' ' . $permission)->count();
+                if ($is_exists == 0){
+                    Permission::create(['name' => $ability . ' ' . $permission]);
+                }
             }
-        }*/
+        }
 
         foreach ($permissions_by_role as $role => $permissions) {
             $full_permissions_list = [];
@@ -40,9 +71,11 @@ class RolesPermissionsSeeder extends Seeder
                     $full_permissions_list[] = $ability . ' ' . $permission;
                 }
             }
-            $is_exists = Role::where('name',$role)->count();
-            if ($is_exists == 0){
+            $is_exists = Role::where('name',$role)->first();
+            if (empty($is_exists)){
                 Role::create(['name' => $role])->syncPermissions($full_permissions_list);
+            }else{
+                $is_exists->syncPermissions($full_permissions_list);
             }
         }
     }

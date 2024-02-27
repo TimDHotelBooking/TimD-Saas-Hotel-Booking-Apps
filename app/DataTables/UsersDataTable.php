@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Users;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Services\DataTable;
@@ -44,6 +45,10 @@ class UsersDataTable extends DataTable
      */
     public function query(Users $model): QueryBuilder
     {
+
+        if (Auth::user()->isPropertyAdmin()){
+            return $model->role('Property Agent')->where('created_by',Auth::user()->user_id)->newQuery();
+        }
         return $model->newQuery();
     }
 

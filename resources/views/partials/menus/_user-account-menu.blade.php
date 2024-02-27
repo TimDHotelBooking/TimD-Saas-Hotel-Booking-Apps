@@ -20,6 +20,7 @@
 {{--                    <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>--}}
                 </div>
                 <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ Auth::user()->email }}</a>
+                <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ Auth::user()->roleName }}</a>
             </div>
             <!--end::Username-->
         </div>

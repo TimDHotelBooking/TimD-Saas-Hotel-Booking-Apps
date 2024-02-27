@@ -21,7 +21,11 @@ class Property extends Model
         'status'
     ];
 
-    public function agent(){
+    public function admin(){
         return $this->hasOne(Users::class,"user_id","property_admin_id");
+    }
+
+    public function agents() {
+        return $this->belongsToMany(Users::class);
     }
 }

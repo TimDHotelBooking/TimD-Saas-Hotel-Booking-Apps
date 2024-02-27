@@ -35,7 +35,7 @@ class AddTariffModal extends Component
     {
         $rooms = Rooms::where('status',1);
         if (Auth::user()->isPropertyAdmin()){
-            $rooms->where('property_id',Auth::user()->user_id);
+            $rooms->where('created_by',Auth::user()->user_id);
         }
         $rooms = $rooms->get();
         return view('livewire.tariff.add-tariff-modal',compact('rooms'));

@@ -24,7 +24,7 @@ class PropertyDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->editColumn('property_admin_id', function (Property $property) {
-                return !empty($property->agent) ? $property->agent->name ?? '' : '-';
+                return !empty($property->admin) ? $property->admin->name ?? '' : '-';
             })->editColumn('status', function (Property $property) {
                 return $property->status == '1' ? 'Active' : 'In Active';
             })
@@ -43,8 +43,12 @@ class PropertyDataTable extends DataTable
     public function query(Property $model): QueryBuilder
     {
         $query = $model->newQuery();
-        if (!Auth::user()->hasRole('Super Admin')){
+        if (Auth::user()->hasRole('Property Admin')){
             $query = $model->where('property_admin_id',Auth::user()->user_id);
+        }else if (Auth::user()->hasRole('Property Agent')){
+            $query = $model->whereHas('agents',function ($query){
+                $query->where('agent_id',Auth::user()->user_id);
+            });
         }
         return $query;
     }
@@ -75,7 +79,7 @@ class PropertyDataTable extends DataTable
             Column::make('property_name'),
             Column::make('location'),
             Column::make('contact_information'),
-            Column::make('property_admin_id'),
+            Column::make('property_admin_id')->title('Property Admin'),
             Column::make('status'),
             Column::make('created_at'),
             Column::computed('action')

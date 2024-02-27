@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Rooms;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -39,7 +40,11 @@ class RoomsDataTable extends DataTable
      */
     public function query(Rooms $model): QueryBuilder
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+        if (Auth::user()->isPropertyAdmin()){
+            $query = $model->where('created_by',Auth::user()->user_id);
+        }
+        return $query;
     }
 
     /**

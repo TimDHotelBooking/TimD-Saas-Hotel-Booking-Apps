@@ -39,15 +39,15 @@
                      class="menu-item menu-accordion {{ request()->routeIs('property') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
                     @can('view property')
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link {{ request()->routeIs('property') ? 'active' : '' }}"
-                           href="{{ route('property.index') }}">
-                            <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
-                            <span class="menu-title">Property</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ request()->routeIs('property') ? 'active' : '' }}"
+                               href="{{ route('property.index') }}">
+                                <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                                <span class="menu-title">Property</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
                     @endcan
                     <!--end:Menu link-->
                 </div>
@@ -143,7 +143,7 @@
             </div>--}}
 
             <!--begin:Menu item-->
-            @canany('view user','view role','view permission')
+            @if(auth()->user()->isSuperAdmin() || (auth()->user()->can('view user') || auth()->user()->can('view role') || auth()->user()->can('view permission')))
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('users.*','roles.*','permissions.*') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
@@ -157,107 +157,106 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-                        @can('view user')
+                        @if(auth()->user()->isSuperAdmin() || (auth()->user()->can('view user')))
                             <div class="menu-item">
                                 <!--begin:Menu link-->
                                 <a class="menu-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
                                    href="{{ route('users.index') }}">
-							<span class="menu-bullet">
-								<span class="bullet bullet-dot"></span>
-							</span>
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
                                     <span class="menu-title">Users</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
-                        @endcan
-                        <!--end:Menu item-->
+                        @endif
                         <!--begin:Menu item-->
-                        @can('view role')
+                        @if(auth()->user()->isSuperAdmin() || (auth()->user()->can('view role')))
                             <div class="menu-item">
                                 <!--begin:Menu link-->
                                 <a class="menu-link {{ request()->routeIs('roles.*') ? 'active' : '' }}"
                                    href="{{ route('roles.index') }}">
-							<span class="menu-bullet">
-								<span class="bullet bullet-dot"></span>
-							</span>
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
                                     <span class="menu-title">Roles</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
-                        @endcan
+                        @endif
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
-                        @can('view permission')
+                        @if(auth()->user()->isSuperAdmin() || (auth()->user()->can('view permission')))
                             <div class="menu-item">
                                 <!--begin:Menu link-->
                                 <a class="menu-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}"
                                    href="{{ route('permissions.index') }}">
-							<span class="menu-bullet">
-								<span class="bullet bullet-dot"></span>
-							</span>
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
                                     <span class="menu-title">Permissions</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
-                        @endcan
+                        @endif
                         <!--end:Menu item-->
                     </div>
                     <!--end:Menu sub-->
                 </div>
-            @endcanany
+            @endif
 
             {{--<div data-kt-menu-trigger="click"
-                 class="menu-item menu-accordion {{ request()->routeIs('users.*','roles.*','permissions.*') ? 'here show' : '' }}">
-                <!--begin:Menu link-->
-                <span class="menu-link">
-					<span class="menu-icon">{!! getIcon('abstract-28', 'fs-2') !!}</span>
-					<span class="menu-title">Settings</span>
-					<span class="menu-arrow"></span>
-				</span>
-                <!--end:Menu link-->
-                <!--begin:Menu sub-->
-                <div class="menu-sub menu-sub-accordion">
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
-                           href="{{ route('users.index') }}">
-							<span class="menu-bullet">
-								<span class="bullet bullet-dot"></span>
-							</span>
-                            <span class="menu-title">Admin Settings</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link {{ request()->routeIs('roles.*') ? 'active' : '' }}"
-                           href="{{ route('roles.index') }}">
-							<span class="menu-bullet">
-								<span class="bullet bullet-dot"></span>
-							</span>
-                            <span class="menu-title">System Configuration</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}"
-                           href="{{ route('permissions.index') }}">
-							<span class="menu-bullet">
-								<span class="bullet bullet-dot"></span>
-							</span>
-                            <span class="menu-title">Audit Logs</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                </div>
-                <!--end:Menu sub-->
+            class="menu-item menu-accordion {{ request()->routeIs('users.*','roles.*','permissions.*') ? 'here show' : '' }}">
+            <!--begin:Menu link-->
+            <span class="menu-link">
+            <span class="menu-icon">{!! getIcon('abstract-28', 'fs-2') !!}</span>
+            <span class="menu-title">Settings</span>
+            <span class="menu-arrow"></span>
+            </span>
+            <!--end:Menu link-->
+            <!--begin:Menu sub-->
+            <div class="menu-sub menu-sub-accordion">
+            <!--begin:Menu item-->
+            <div class="menu-item">
+            <!--begin:Menu link-->
+            <a class="menu-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
+               href="{{ route('users.index') }}">
+                <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Admin Settings</span>
+            </a>
+            <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+            <!--begin:Menu link-->
+            <a class="menu-link {{ request()->routeIs('roles.*') ? 'active' : '' }}"
+               href="{{ route('roles.index') }}">
+                <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">System Configuration</span>
+            </a>
+            <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+            <!--begin:Menu link-->
+            <a class="menu-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}"
+               href="{{ route('permissions.index') }}">
+                <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Audit Logs</span>
+            </a>
+            <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            </div>
+            <!--end:Menu sub-->
             </div>--}}
             <!--end:Menu item-->
 

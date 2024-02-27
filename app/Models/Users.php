@@ -45,4 +45,20 @@ class Users extends Authenticatable implements MustVerifyEmail
 
         return $this->profile_photo_path;
     }
+
+    public function properties() {
+        return $this->belongsToMany(Property::class,'property_agents','agent_id','property_id');
+    }
+
+    public function getRoleNameAttribute(){
+        if ($this->isSuperAdmin()){
+            return "Super Admin";
+        }else if ($this->isPropertyAdmin()){
+            return "Property Admin";
+        }else if ($this->isPropertyAgent()){
+            return "Property Agent";
+        }else{
+            return '';
+        }
+    }
 }

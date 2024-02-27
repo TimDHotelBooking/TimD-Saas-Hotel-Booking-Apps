@@ -54,6 +54,7 @@ class AddRoomsModal extends Component
                 'room_type' => $this->room_type,
                 'availability_status' => $this->availability_status,
                 'price' => $this->price,
+                'status' => $this->availability_status,
                 'updated_by' => Auth::user()->user_id
             ];
 
