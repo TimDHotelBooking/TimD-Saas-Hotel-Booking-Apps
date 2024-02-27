@@ -20,7 +20,7 @@
             </div>
             <!--begin::Card title-->
 
-            @can('create property')
+            {{-- @can('create property') --}}
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
                     <!--begin::Toolbar-->
@@ -40,7 +40,7 @@
                     <!--end::Modal-->
                 </div>
                 <!--end::Card toolbar-->
-            @endcan
+            {{-- @endcan --}}
         </div>
         <!--end::Card header-->
 

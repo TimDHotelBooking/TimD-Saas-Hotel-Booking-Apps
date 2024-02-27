@@ -34,11 +34,11 @@
             </div>--}}
             <!--end:Menu item-->
 
-            @canany('view property')
+            {{-- @canany('view property') --}}
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('property') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
-                    @can('view property')
+                    {{-- @can('view property') --}}
                     <div class="menu-item">
                         <!--begin:Menu link-->
                         <a class="menu-link {{ request()->routeIs('property') ? 'active' : '' }}"
@@ -48,16 +48,16 @@
                         </a>
                         <!--end:Menu link-->
                     </div>
-                    @endcan
+                    {{-- @endcan --}}
                     <!--end:Menu link-->
                 </div>
-            @endcanany
+            {{-- @endcanany --}}
 
-            @canany('view room')
+            {{-- @canany('view room') --}}
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('rooms') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
-                    @can('view room')
+                    {{-- @can('view room') --}}
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link {{ request()->routeIs('rooms') ? 'active' : '' }}"
@@ -67,16 +67,16 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
-                    @endcan
+                    {{-- @endcan --}}
                     <!--end:Menu link-->
                 </div>
-            @endcanany
+            {{-- @endcanany --}}
 
-            @canany('view tariff')
+            {{-- @canany('view tariff') --}}
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('tariff') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
-                    @can('view tariff')
+                    {{-- @can('view tariff') --}}
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link {{ request()->routeIs('tariff') ? 'active' : '' }}"
@@ -86,16 +86,16 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
-                    @endcan()
+                    {{-- @endcan() --}}
                     <!--end:Menu link-->
                 </div>
-            @endcanany
+            {{-- @endcanany --}}
 
-            @canany('view customer')
+            {{-- @canany('view customer') --}}
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('customers') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
-                    @can('view customer')
+                    {{-- @can('view customer') --}}
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link {{ request()->routeIs('customers') ? 'active' : '' }}"
@@ -105,16 +105,16 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
-                    @endcan
+                    {{-- @endcan --}}
                     <!--end:Menu link-->
                 </div>
-            @endcanany
+            {{-- @endcanany --}}
 
-            @canany('view property agent')
+            {{-- @canany('view property agent') --}}
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('property_agents') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
-                    @can('view property agent')
+                    {{-- @can('view property agent') --}}
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link {{ request()->routeIs('property_agents') ? 'active' : '' }}"
@@ -124,10 +124,10 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
-                    @endcan
+                    {{-- @endcan --}}
                     <!--end:Menu link-->
                 </div>
-            @endcanany
+            {{-- @endcanany --}}
 
             {{--<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('agents') ? 'here show' : '' }}">
                 <!--begin:Menu link-->
@@ -143,7 +143,7 @@
             </div>--}}
 
             <!--begin:Menu item-->
-            @canany('view user','view role','view permission')
+            {{-- @canany('view user','view role','view permission') --}}
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('users.*','roles.*','permissions.*') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
@@ -157,7 +157,7 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-                        @can('view user')
+                        {{-- @can('view user') --}}
                             <div class="menu-item">
                                 <!--begin:Menu link-->
                                 <a class="menu-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
@@ -169,10 +169,10 @@
                                 </a>
                                 <!--end:Menu link-->
                             </div>
-                        @endcan
+                        {{-- @endcan --}}
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
-                        @can('view role')
+                        {{-- @can('view role') --}}
                             <div class="menu-item">
                                 <!--begin:Menu link-->
                                 <a class="menu-link {{ request()->routeIs('roles.*') ? 'active' : '' }}"
@@ -184,10 +184,10 @@
                                 </a>
                                 <!--end:Menu link-->
                             </div>
-                        @endcan
+                        {{-- @endcan --}}
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
-                        @can('view permission')
+                        {{-- @can('view permission') --}}
                             <div class="menu-item">
                                 <!--begin:Menu link-->
                                 <a class="menu-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}"
@@ -199,12 +199,12 @@
                                 </a>
                                 <!--end:Menu link-->
                             </div>
-                        @endcan
+                        {{-- @endcan --}}
                         <!--end:Menu item-->
                     </div>
                     <!--end:Menu sub-->
                 </div>
-            @endcanany
+            {{-- @endcanany --}}
 
             {{--<div data-kt-menu-trigger="click"
                  class="menu-item menu-accordion {{ request()->routeIs('users.*','roles.*','permissions.*') ? 'here show' : '' }}">
