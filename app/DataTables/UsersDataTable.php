@@ -31,7 +31,7 @@ class UsersDataTable extends DataTable
                 return sprintf('<div class="badge badge-light fw-bold">%s</div>', $user->last_login_at ? $user->last_login_at->diffForHumans() : $user->updated_at->diffForHumans());
             })
             ->editColumn('created_at', function (Users $user) {
-                return $user->created_at->format('d M Y, h:i a');
+                return $user->created_at->format('d M Y, h:i a') ?? '-';
             })
             ->addColumn('action', function (Users $user) {
                 return view('pages/apps.users.columns._actions', compact('user'));
@@ -77,7 +77,7 @@ class UsersDataTable extends DataTable
             Column::make('user')->addClass('d-flex align-items-center')->name('name'),
             Column::make('role')->searchable(false)->orderable(false),
             Column::make('last_login_at')->title('Last Login'),
-            Column::make('created_at')->title('Joined Date')->addClass('text-nowrap'),
+            Column::make('created_at')->title('Created At')->addClass('text-nowrap'),
             Column::computed('action')
                 ->addClass('text-end text-nowrap')
                 ->exportable(false)

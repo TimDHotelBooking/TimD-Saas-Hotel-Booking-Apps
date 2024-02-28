@@ -24,7 +24,7 @@ class CustomerDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->editColumn('created_at', function (Customers $customer) {
-                return $customer->created_at->format('d M Y, h:i a');
+                return $customer->created_at->format('d M Y, h:i a') ?? '-';
             })
             ->addColumn('action', function (Customers $customer) {
                 return view('customers.columns._actions', compact('customer'));

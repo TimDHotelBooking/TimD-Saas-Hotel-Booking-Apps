@@ -6,6 +6,7 @@ use App\Models\Property;
 use App\Models\Tariff;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -34,7 +35,7 @@ class TariffDataTable extends DataTable
                 return view('tariff.columns._room_property', compact('tariff'));
             })
             ->editColumn('created_at', function (Tariff $tariff) {
-                return $tariff->created_at->format('d M Y, h:i a');
+                return $tariff->created_at->format('d M Y, h:i a') ?? '-';
             })
             ->addColumn('action', function (Tariff $tariff) {
                 return view('tariff.columns._actions', compact('tariff'));
@@ -47,7 +48,11 @@ class TariffDataTable extends DataTable
      */
     public function query(Tariff $model): QueryBuilder
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+        if (Auth::user()->isPropertyAdmin()){
+            $query->where('created_by',Auth::user()->user_id);
+        }
+        return $query;
     }
 
     /**

@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\BookingDataTable;
 use App\Http\Requests\BookingsRequest;
-use App\Models\Agents;
 use App\Models\Bookings;
-use App\Models\Rooms;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class BookingsController extends Controller
@@ -14,10 +12,9 @@ class BookingsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(BookingDataTable $dataTable)
     {
-        $bookings = Bookings::all();
-        return view("bookings.index",compact("bookings"));
+        return $dataTable->render('bookings.index',compact('dataTable'));
     }
 
     /**
@@ -25,9 +22,7 @@ class BookingsController extends Controller
      */
     public function create()
     {
-        $rooms = Rooms::all();
-        $agents = Agents::all();
-        return view("bookings.create",compact('rooms','agents'));
+        //
     }
 
     /**
@@ -82,9 +77,7 @@ class BookingsController extends Controller
      */
     public function edit(Bookings $booking)
     {
-        $rooms = Rooms::all();
-        $agents = Agents::all();
-        return view("bookings.edit",compact("booking","rooms","agents"));
+        //
     }
 
     /**

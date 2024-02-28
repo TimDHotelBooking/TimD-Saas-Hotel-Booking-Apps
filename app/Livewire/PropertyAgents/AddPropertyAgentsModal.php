@@ -30,7 +30,7 @@ class AddPropertyAgentsModal extends Component
     public function render()
     {
         $properties = Property::where('status','1');
-        $agents = Users::role('Property Agent');
+        $agents = Users::where('status','1')->role('Property Agent');
         if (Auth::user()->isPropertyAdmin()){
             $properties = $properties->where('property_admin_id',Auth::user()->user_id);
             $agents = $agents->where('created_by',Auth::user()->user_id);

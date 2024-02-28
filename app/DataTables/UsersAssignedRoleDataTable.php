@@ -26,7 +26,7 @@ class UsersAssignedRoleDataTable extends DataTable
                 return view('pages/apps.roles.columns._user', compact('user'));
             })
             ->editColumn('created_at', function (Users $user) {
-                return $user->created_at->format('d M Y, h:i a');
+                return $user->created_at->format('d M Y, h:i a') ?? '-';
             })
             ->addColumn('action', function (Users $user) {
                 return view('pages/apps.roles.columns._actions', compact('user'));

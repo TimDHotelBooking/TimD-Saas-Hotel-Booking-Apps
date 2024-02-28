@@ -20,4 +20,8 @@ class Customers extends Model
         'updated_by',
         'status'
     ];
+
+    public function getFullNameAttribute(){
+        return (($this->first_name ?? '') .' '. ($this->last_name ?? ''));
+    }
 }

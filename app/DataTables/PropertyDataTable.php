@@ -29,7 +29,7 @@ class PropertyDataTable extends DataTable
                 return $property->status == '1' ? 'Active' : 'In Active';
             })
             ->editColumn('created_at', function (Property $property) {
-                return $property->created_at->format('d M Y, h:i a');
+                return $property->created_at->format('d M Y, h:i a') ?? '-';
             })
             ->addColumn('action', function (Property $property) {
                 return view('property.columns._actions', compact('property'));

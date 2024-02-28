@@ -68,3 +68,18 @@ Breadcrumbs::for('property_agents.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Property Agent List', route('property_agents.index'));
 });
+
+Breadcrumbs::for('bookings.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Booking List', route('bookings.index'));
+});
+
+Breadcrumbs::for('payments.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Payment List', route('payments.index'));
+});
+
+Breadcrumbs::for('notifications.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Notification List', route('notifications.index'));
+});

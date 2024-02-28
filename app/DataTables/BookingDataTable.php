@@ -2,7 +2,8 @@
 
 namespace App\DataTables;
 
-use App\Models\Rooms;
+use App\Models\Bookings;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class RoomsDataTable extends DataTable
+class BookingDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,14 +24,25 @@ class RoomsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('status', function (Rooms $room) {
-                return $room->availability_status == '1' ? 'Active' : 'In Active';
+            ->editColumn('customer_id', function (Bookings $booking) {
+                return !empty($booking->customer) ? $booking->customer->full_name ?? '-' : '-';
             })
-            ->editColumn('created_at', function (Rooms $room) {
-                return $room->created_at->format('d M Y, h:i a') ?? '-';
+            ->editColumn('room_id', function (Bookings $booking) {
+                return view('bookings.columns._room_property', compact('booking'));
             })
-            ->addColumn('action', function (Rooms $room) {
-                return view('rooms.columns._actions', compact('room'));
+            ->editColumn('check_in_date', function (Bookings $booking) {
+                $checkInDate = Carbon::parse($booking->check_in_date);
+                return !empty($checkInDate) ? $checkInDate->format('d M Y') ?? '-' : '-';
+            })
+            ->editColumn('check_out_date', function (Bookings $booking) {
+                $checkOutDate = Carbon::parse($booking->check_out_date);
+                return !empty($checkOutDate) ? $checkOutDate->format('d M Y') ?? '-' : '-';
+            })
+            ->editColumn('created_at', function (Bookings $booking) {
+                return $booking->created_at->format('d M Y, h:i a') ?? '-';
+            })
+            ->addColumn('action', function (Bookings $booking) {
+                return view('bookings.columns._actions', compact('booking'));
             })
             ->setRowId('id');
     }
@@ -38,10 +50,10 @@ class RoomsDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Rooms $model): QueryBuilder
+    public function query(Bookings $model): QueryBuilder
     {
         $query = $model->newQuery();
-        if (Auth::user()->isPropertyAdmin()){
+        if (!Auth::user()->isSuperAdmin()){
             $query = $model->where('created_by',Auth::user()->user_id);
         }
         return $query;
@@ -53,14 +65,14 @@ class RoomsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('rooms-table')
+                    ->setTableId('booking-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('rt' . "<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",)
                     ->addTableClass('table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer text-gray-600 fw-semibold')
                     ->setTableHeadClass('text-start text-muted fw-bold fs-7 text-uppercase gs-0')
                     ->orderBy(0)
-                    ->drawCallback("function() {" . file_get_contents(resource_path('views/rooms/columns/_draw-scripts.js')) . "}");
+                    ->drawCallback("function() {" . file_get_contents(resource_path('views/bookings/columns/_draw-scripts.js')) . "}");
     }
 
     /**
@@ -69,16 +81,18 @@ class RoomsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('booking_id'),
+            Column::make('customer_id'),
             Column::make('room_id'),
-            Column::make('room_type'),
-            Column::make('status','availability_status'),
-            Column::make('price'),
+            Column::make('check_in_date'),
+            Column::make('check_out_date'),
+            Column::make('total_amount'),
             Column::make('created_at'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
-                ->addClass('text-end text-nowrap'),
+                ->addClass('text-end text-nowrap')
         ];
     }
 
@@ -87,6 +101,6 @@ class RoomsDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Rooms_' . date('YmdHis');
+        return 'Booking_' . date('YmdHis');
     }
 }

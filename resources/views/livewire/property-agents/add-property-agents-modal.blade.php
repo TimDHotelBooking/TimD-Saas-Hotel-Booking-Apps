@@ -64,7 +64,7 @@
                             <!--begin::Input-->
                             <select class="form-control form-control-solid  mb-3 mb-lg-0" name="agent_id"
                                     wire:model="agent_id">
-                                <option aria-hidden="true" aria-disabled="true" value="">Select Property</option>
+                                <option aria-hidden="true" aria-disabled="true" value="">Select Agent</option>
                                 @if(!empty($agents) && count($agents) > 0)
                                     @foreach($agents as $agent)
                                         <option

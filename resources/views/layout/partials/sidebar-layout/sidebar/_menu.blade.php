@@ -91,6 +91,25 @@
                 </div>
             @endcanany
 
+            @canany('view property agent')
+                <div data-kt-menu-trigger="click"
+                     class="menu-item menu-accordion {{ request()->routeIs('property_agents') ? 'here show' : '' }}">
+                    <!--begin:Menu link-->
+                    @can('view property agent')
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ request()->routeIs('property_agents') ? 'active' : '' }}"
+                               href="{{ route('property_agents.index') }}">
+                                <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                                <span class="menu-title">Property Agents</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                    @endcan
+                    <!--end:Menu link-->
+                </div>
+            @endcanany
+
             @canany('view customer')
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('customers') ? 'here show' : '' }}">
@@ -110,17 +129,17 @@
                 </div>
             @endcanany
 
-            @canany('view property agent')
+            @canany('view booking')
                 <div data-kt-menu-trigger="click"
-                     class="menu-item menu-accordion {{ request()->routeIs('property_agents') ? 'here show' : '' }}">
+                     class="menu-item menu-accordion {{ request()->routeIs('bookings') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
-                    @can('view property agent')
+                    @can('view customer')
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link {{ request()->routeIs('property_agents') ? 'active' : '' }}"
-                               href="{{ route('property_agents.index') }}">
-                                <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
-                                <span class="menu-title">Property Agents</span>
+                            <a class="menu-link {{ request()->routeIs('bookings') ? 'active' : '' }}"
+                               href="{{ route('bookings.index') }}">
+                                <span class="menu-icon">{!! getIcon('element-2', 'fs-2') !!}</span>
+                                <span class="menu-title">Bookings</span>
                             </a>
                             <!--end:Menu link-->
                         </div>
@@ -128,6 +147,25 @@
                     <!--end:Menu link-->
                 </div>
             @endcanany
+
+            {{--@canany('view payment')
+                <div data-kt-menu-trigger="click"
+                     class="menu-item menu-accordion {{ request()->routeIs('payments') ? 'here show' : '' }}">
+                    <!--begin:Menu link-->
+                    @can('view payment')
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ request()->routeIs('payments') ? 'active' : '' }}"
+                               href="{{ route('payments.index') }}">
+                                <span class="menu-icon">{!! getIcon('paypal', 'fs-2') !!}</span>
+                                <span class="menu-title">Payments</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                    @endcan
+                    <!--end:Menu link-->
+                </div>
+            @endcanany--}}
 
             {{--<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('agents') ? 'here show' : '' }}">
                 <!--begin:Menu link-->
