@@ -6,6 +6,7 @@ use App\Models\Payments;
 use Carbon\Carbon;
 use Faker\Provider\Payment;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -56,7 +57,11 @@ class PaymentsDataTable extends DataTable
      */
     public function query(Payments $model): QueryBuilder
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+        if (Auth::user()->isPropertyAgent()){
+            $query->where('created_by',Auth::user()->user_id);
+        }
+        return $query;
     }
 
     /**
