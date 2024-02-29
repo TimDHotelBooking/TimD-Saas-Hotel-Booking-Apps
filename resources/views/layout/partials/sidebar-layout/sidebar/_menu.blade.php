@@ -148,7 +148,7 @@
                 </div>
             @endcanany
 
-            {{--@canany('view payment')
+            @canany('view payment')
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('payments') ? 'here show' : '' }}">
                     <!--begin:Menu link-->
@@ -165,7 +165,7 @@
                     @endcan
                     <!--end:Menu link-->
                 </div>
-            @endcanany--}}
+            @endcanany
 
             {{--<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('agents') ? 'here show' : '' }}">
                 <!--begin:Menu link-->

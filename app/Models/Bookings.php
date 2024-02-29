@@ -35,4 +35,16 @@ class Bookings extends Model
     public function agent(){
         return $this->belongsTo(Users::class,'agent_id');
     }
+
+    public function getFullDetailsAttribute(){
+        $name = $this->booking_id;
+        if (!empty($this->room) && !empty($this->room->property)){
+            $name .= " - ". ($this->room->property->property_name ?? '') .' - '. ($this->room->room_type ?? '');
+        }
+        if (!empty($this->customer)){
+            $name .= " - " .$this->customer->full_name;
+        }
+        $name .= " - ". $this->total_amount;
+        return $name;
+    }
 }

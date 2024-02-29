@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\PaymentsDataTable;
 use App\Http\Requests\PaymentsRequest;
 use App\Models\Bookings;
 use App\Models\Payments;
@@ -14,10 +15,9 @@ class PaymentsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(PaymentsDataTable $dataTable)
     {
-        $payments = Payments::all();
-        return view("payments.index",compact("payments"));
+        return $dataTable->render('payments.index',compact('dataTable'));
     }
 
     /**
@@ -25,8 +25,7 @@ class PaymentsController extends Controller
      */
     public function create()
     {
-        $bookings = Bookings::all();
-        return view("payments.create",compact("bookings"));
+        //
     }
 
     /**
@@ -80,8 +79,7 @@ class PaymentsController extends Controller
      */
     public function edit(Payments $payments)
     {
-        $bookings = Bookings::all();
-        return view("payments.edit",compact("payments","bookings"));
+        //
     }
 
     /**
