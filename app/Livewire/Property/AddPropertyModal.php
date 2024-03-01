@@ -27,6 +27,7 @@ class AddPropertyModal extends Component
         'property_name' => 'required|string',
         'location' => 'required|string',
         'contact_information' => 'required|string',
+        'status' => 'required',
     ];
 
     protected $listeners = [
@@ -59,6 +60,8 @@ class AddPropertyModal extends Component
                 'status' => $this->status,
                 'updated_by' => Auth::user()->user_id
             ];
+
+         
 
             if (!$this->edit_mode) {
                 $data['created_by'] = Auth::user()->user_id;

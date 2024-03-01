@@ -106,7 +106,7 @@
                                         <!--begin::Label-->
                                         <label class="form-check-label" for="kt_modal_update_role_option_1">
                                             <div class="fw-bold text-gray-800">
-                                                Active
+                                                Active 
                                             </div>
                                         </label>
                                         <!--end::Label-->
