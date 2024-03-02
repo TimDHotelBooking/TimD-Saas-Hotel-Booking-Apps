@@ -83,3 +83,8 @@ Breadcrumbs::for('notifications.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Notification List', route('notifications.index'));
 });
+
+Breadcrumbs::for('appinfo.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('App Info', route('appinfo.index'));
+});
