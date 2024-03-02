@@ -2,7 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bookings;
+use App\Models\Customers;
+use App\Models\Payments;
+use App\Models\Property;
+use App\Models\PropertyAgents;
+use App\Models\Tariff;
+use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -11,7 +19,63 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view("dashboard");
+        $total_properties = $total_users = $total_property_admin =
+        $total_property_agent = $no_of_bookings = $sum_of_bookings =
+        $no_of_payments = $sum_of_payments = $no_of_tariff =
+        $no_of_customers = null;
+        if (Auth::user()->isSuperAdmin()) {
+            $total_properties = Property::count();
+            $total_users = Users::count();
+            $total_property_admin = Users::role('Property Admin')->count();
+            $total_property_agent = Users::role('Property Agent')->count();
+            $no_of_bookings = Bookings::count();
+            $sum_of_bookings = Bookings::sum('total_amount');
+            $no_of_payments = Payments::count();
+            $sum_of_payments = Payments::sum('amount_paid');
+            $no_of_customers = Customers::count();
+        }
+        else if (Auth::user()->isPropertyAdmin()){
+            $property_admin_id = Auth::user()->user_id;
+            $total_property_agent = Users::where('created_by',$property_admin_id)->role('Property Agent')->count();
+            $no_of_bookings = Bookings::whereHas('room',function ($query) use ($property_admin_id){
+                $query->where('created_by',$property_admin_id);
+            })->count();
+            $sum_of_bookings = Bookings::whereHas('room',function ($query) use ($property_admin_id){
+                $query->where('created_by',$property_admin_id);
+            })->sum('total_amount');
+            $no_of_payments = Payments::whereHas('booking.room',function ($query) use ($property_admin_id){
+                $query->where('created_by',$property_admin_id);
+            })->count();
+            $sum_of_payments = Payments::whereHas('booking.room',function ($query) use ($property_admin_id){
+                $query->where('created_by',$property_admin_id);
+            })->sum('amount_paid');
+            $no_of_tariff = Tariff::where('created_by',$property_admin_id)->count();
+
+            $all_property_agents_id = PropertyAgents::whereHas('property',function ($query) use($property_admin_id){
+                $query->where('property_admin_id',$property_admin_id);
+            })->pluck('agent_id');
+            $no_of_customers = Customers::whereIn('created_by',$all_property_agents_id)->count();
+        }else if(Auth::user()->isPropertyAgent()){
+            $property_agent_id = Auth::user()->user_id;
+            $total_properties = Property::where('created_by',$property_agent_id)->count();
+            $no_of_bookings = Bookings::count();
+            $sum_of_bookings = Bookings::sum('total_amount');
+            $no_of_payments = Payments::count();
+            $sum_of_payments = Payments::sum('amount_paid');
+            $no_of_customers = Customers::where('created_by',$property_agent_id)->count();
+        }
+        return view("dashboard.index",compact(
+            'total_properties',
+            'total_users',
+            'total_property_admin',
+            'total_property_agent',
+            'no_of_bookings',
+            'sum_of_bookings',
+            'no_of_payments',
+            'sum_of_payments',
+            'no_of_tariff',
+            'no_of_customers'
+        ));
     }
 
     /**
