@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AppInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource("bookings", \App\Http\Controllers\BookingsController::class);
     Route::resource("payments", \App\Http\Controllers\PaymentsController::class);
     Route::resource("notifications", \App\Http\Controllers\NotificationController::class);
+
+    Route::get('appinfo-index', [AppInfoController::class, 'index'])->name('appinfo.index');
+    Route::post('appinfo-update', [AppInfoController::class, 'update'])->name('appinfo.update');
 
 });
 
