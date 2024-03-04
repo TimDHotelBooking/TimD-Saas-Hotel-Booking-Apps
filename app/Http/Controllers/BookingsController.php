@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\DataTables\BookingDataTable;
 use App\Http\Requests\BookingsRequest;
 use App\Models\Bookings;
+use App\Models\Property;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class BookingsController extends Controller
@@ -22,7 +24,10 @@ class BookingsController extends Controller
      */
     public function create()
     {
-        //
+        $properties = Property::with('rooms')->whereHas('agents',function ($query){
+            $query->where('agent_id',Auth::user()->user_id);
+        })->where('status',1)->get();
+        return view('bookings.customer_booking',compact('properties'));
     }
 
     /**
