@@ -24,7 +24,7 @@
                     <div class="d-flex flex-row-fluid justify-content-center p-10">
                         <!--begin::Nav-->
                         <div class="stepper-nav">
-                            <div class="stepper-item current" data-kt-stepper-element="nav"
+                            <div class="stepper-item current" data-tab-index="0" data-kt-stepper-element="nav"
                                  data-tab-head="property_selection">
                                 <!--begin::Wrapper-->
                                 <div class="stepper-wrapper">
@@ -47,7 +47,8 @@
                                 <!--end::Line-->
                             </div>
 
-                            <div class="stepper-item" data-kt-stepper-element="nav" data-tab-head="booking_details">
+                            <div class="stepper-item" data-tab-index="1" data-kt-stepper-element="nav"
+                                 data-tab-head="booking_details">
                                 <!--begin::Wrapper-->
                                 <div class="stepper-wrapper">
                                     <!--begin::Icon-->
@@ -70,7 +71,7 @@
                                 <!--end::Line-->
                             </div>
 
-                            <div class="stepper-item" data-kt-stepper-element="nav"
+                            <div class="stepper-item" data-tab-index="2" data-kt-stepper-element="nav"
                                  data-tab-head="customer_information">
                                 <!--begin::Wrapper-->
                                 <div class="stepper-wrapper">
@@ -95,7 +96,8 @@
                                 <!--end::Line-->
                             </div>
 
-                            <div class="stepper-item " data-kt-stepper-element="nav" data-tab-head="booking_confirmed">
+                            <div class="stepper-item " data-tab-index="3" data-kt-stepper-element="nav"
+                                 data-tab-head="booking_confirmed">
                                 <!--begin::Wrapper-->
                                 <div class="stepper-wrapper">
                                     <!--begin::Icon-->
@@ -162,18 +164,18 @@
                                         <div class="text-muted fw-semibold fs-6">If you need more info, please check out
                                             <a href="#" class="link-primary fw-bold">Help Page</a>.
                                         </div>
-                                        <div class="text-danger" id="error_property_id"></div>
+                                        <div class="text-danger" id="error_room_id"></div>
                                         <!--end::Notice-->
                                     </div>
                                     <!--end::Heading-->
                                     <!--begin::Input group-->
                                     <div class="fv-row">
                                         <!--begin::Row-->
-                                        <div class="row">
-                                            <input type="hidden" class="btn-check" name="property_id" value=""
-                                                   id="property_id"/>
-                                            @if(!empty($properties) && count($properties) > 0)
-                                                @foreach($properties as $property)
+                                        <input type="hidden" class="btn-check" name="room_id" value=""
+                                               id="room_id"/>
+                                        @if(!empty($properties) && count($properties) > 0)
+                                            @foreach($properties as $property)
+                                                @if(!empty($property->rooms) && count($property->rooms) > 0)
                                                     <div class="mb-5">
                                                         <span
                                                             class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
@@ -188,11 +190,11 @@
                                                         {{ $property->contact_information }}
                                                     </span>
                                                     </div>
-                                                    @if(!empty($property->rooms) && count($property->rooms) > 0)
+                                                    <div class="row">
                                                         @foreach($property->rooms as $room)
-                                                            <div class="col-lg-6">
-                                                                <input type="radio" class="btn-check property_list"
-                                                                       name="property" value="{{ $room->room_id }}"
+                                                            <div class="col-lg-4">
+                                                                <input type="radio" class="btn-check room_list"
+                                                                       name="room_id" value="{{ $room->room_id }}"
                                                                        id="room_{{ $room->room_id }}"/>
                                                                 <label
                                                                     class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10"
@@ -207,10 +209,10 @@
                                                                 </label>
                                                             </div>
                                                         @endforeach
-                                                    @endif
-                                                @endforeach
-                                            @endif
-                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                         <!--end::Row-->
                                     </div>
                                     <!--end::Input group-->
@@ -236,8 +238,9 @@
                                                 <!--begin::Input-->
                                                 <input type="number"
                                                        class="form-control form-control-lg form-control-solid" min="0"
-                                                       name="account_name" placeholder="" value=""/>
+                                                       name="no_of_guests" id="no_of_guests" placeholder="" value=""/>
                                                 <!--end::Input-->
+                                                <div class="text-danger" id="error_no_of_guests"></div>
                                             </div>
                                             <!--end::Input group-->
                                         </div>
@@ -250,7 +253,8 @@
                                                 <!--begin::Input-->
                                                 <input type="number"
                                                        class="form-control form-control-lg form-control-solid" min="0"
-                                                       name="account_name" placeholder="" value=""/>
+                                                       name="no_of_rooms" id="no_of_rooms" placeholder="" value=""/>
+                                                <div class="text-danger" id="error_no_of_rooms"></div>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -264,6 +268,7 @@
                                                 <input class="form-control form-control-solid" placeholder="Pick a date"
                                                        name="check_in_date" id="check_in_date"/>
                                                 <!--end::Input-->
+                                                <div class="text-danger" id="error_check_in_date"></div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -275,6 +280,7 @@
                                                 <input class="form-control form-control-solid" placeholder="Pick a date"
                                                        name="check_out_date" id="check_out_date"/>
                                                 <!--end::Input-->
+                                                <div class="text-danger" id="error_check_out_date"></div>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -283,7 +289,8 @@
                                                 <label class="form-label mb-3">Special Requests (if any)</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <textarea class="form-control"
+                                                <textarea class="form-control" id="special_requests"
+                                                          name="special_requests"
                                                           placeholder="Special Requests"></textarea>
                                                 <!--end::Input-->
                                             </div>
@@ -310,17 +317,32 @@
                                     </div>
                                     <!--end::Heading-->
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-6">
                                             <!--begin::Input group-->
                                             <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="form-label mb-3">Customer Name</label>
+                                                <label class="form-label mb-3">First Name</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text"
                                                        class="form-control form-control-lg form-control-solid"
-                                                       name="account_name" placeholder="" value=""/>
+                                                       name="first_name" id="first_name" placeholder="" value=""/>
                                                 <!--end::Input-->
+                                                <div class="text-danger" id="error_first_name"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="form-label mb-3">Last Name</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text"
+                                                       class="form-control form-control-lg form-control-solid"
+                                                       name="last_name" id="last_name" placeholder="" value=""/>
+                                                <!--end::Input-->
+                                                <div class="text-danger" id="error_last_name"></div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -332,8 +354,9 @@
                                                 <!--begin::Input-->
                                                 <input type="email"
                                                        class="form-control form-control-lg form-control-solid"
-                                                       name="account_name" placeholder="" value=""/>
+                                                       name="email" id="email" placeholder="" value=""/>
                                                 <!--end::Input-->
+                                                <div class="text-danger" id="error_email"></div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -345,8 +368,9 @@
                                                 <!--begin::Input-->
                                                 <input type="tel"
                                                        class="form-control form-control-lg form-control-solid"
-                                                       name="account_name" placeholder="" value=""/>
+                                                       name="phone_number" id="phone_number" placeholder="" value=""/>
                                                 <!--end::Input-->
+                                                <div class="text-danger" id="error_phone_number"></div>
                                             </div>
                                         </div>
                                         <!--end::Input group-->
@@ -371,29 +395,31 @@
                                                         <label class="d-flex flex-stack mb-5 cursor-pointer">
                                                             <!--begin:Label-->
                                                             <span class="d-flex align-items-center me-2">
-														<!--begin::Icon-->
-														<span class="symbol symbol-50px me-6">
-															<span class="symbol-label">
-																<i class="ki-duotone ki-bank fs-1 text-gray-600">
-																	<span class="path1"></span>
-																	<span class="path2"></span>
-																</i>
-															</span>
-														</span>
+                                                                <!--begin::Icon-->
+                                                                <span class="symbol symbol-50px me-6">
+                                                                    <span class="symbol-label">
+                                                                        <i class="ki-duotone ki-bank fs-1 text-gray-600">
+                                                                            <span class="path1"></span>
+                                                                            <span class="path2"></span>
+                                                                        </i>
+                                                                    </span>
+                                                                </span>
                                                                 <!--end::Icon-->
                                                                 <!--begin::Description-->
-														<span class="d-flex flex-column">
-															<span class="fw-bold text-gray-800 text-hover-primary fs-5">Bank Transfer</span>
-															<span class="fs-6 fw-semibold text-muted">Use images to enhance your post flow</span>
-														</span>
+                                                                    <span class="d-flex flex-column">
+                                                                        <span
+                                                                            class="fw-bold text-gray-800 text-hover-primary fs-5">Bank Transfer</span>
+                                                                        <span class="fs-6 fw-semibold text-muted">Use images to enhance your post flow</span>
+                                                                    </span>
                                                                 <!--end:Description-->
-													</span>
+													        </span>
                                                             <!--end:Label-->
                                                             <!--begin:Input-->
                                                             <span class="form-check form-check-custom form-check-solid">
-														<input class="form-check-input" type="radio" name="account_plan"
-                                                               value="1"/>
-													</span>
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="payment_method"
+                                                                       value="bank_transfer"/>
+													        </span>
                                                             <!--end:Input-->
                                                         </label>
                                                     </div>
@@ -424,7 +450,7 @@
                                                             <!--begin:Input-->
                                                             <span class="form-check form-check-custom form-check-solid">
 														<input class="form-check-input" type="radio" checked="checked"
-                                                               name="account_plan" value="2"/>
+                                                               name="payment_method" value="credit_card"/>
 													</span>
                                                             <!--end:Input-->
                                                         </label>
@@ -488,28 +514,28 @@
                                                     <div class="fw-semibold">
                                                         <div class="fs-6 text-gray-700">Name
                                                         </div>
-                                                        <h4 class="text-gray-900 fw-bold">ashhas nashusa</h4>
+                                                        <h4 class="text-gray-900 fw-bold" id="label_name"></h4>
                                                     </div>
                                                 </div>
                                                 <div class="col d-flex flex-stack flex-grow-1">
                                                     <div class="fw-semibold">
                                                         <div class="fs-6 text-gray-700">Email
                                                         </div>
-                                                        <h4 class="text-gray-900 fw-bold">xbfxd@cdf.com</h4>
+                                                        <h4 class="text-gray-900 fw-bold" id="label_email"></h4>
                                                     </div>
                                                 </div>
                                                 <div class="col d-flex flex-stack flex-grow-1">
                                                     <div class="fw-semibold">
                                                         <div class="fs-6 text-gray-700">Phone Number
                                                         </div>
-                                                        <h4 class="text-gray-900 fw-bold">54544 544454</h4>
+                                                        <h4 class="text-gray-900 fw-bold" id="label_phone"></h4>
                                                     </div>
                                                 </div>
                                                 <div class="col d-flex flex-stack flex-grow-1">
                                                     <div class="fw-semibold">
                                                         <div class="fs-6 text-gray-700">Rooms Booked
                                                         </div>
-                                                        <h4 class="text-gray-900 fw-bold">5</h4>
+                                                        <h4 class="text-gray-900 fw-bold"  id="label_booked_room"></h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -568,20 +594,50 @@
                     showPreviousTab();
                 });
 
+                var checkInDatepicker = $("#check_in_date").flatpickr({
+                    enableTime: true,
+                    dateFormat: "Y-m-d",
+                });
+
+                var checkOutDatepicker = $("#check_out_date").flatpickr({
+                    enableTime: true,
+                    dateFormat: "Y-m-d",
+                });
+
                 $("button.btn_continue").off('click');
                 $("button.btn_continue").on('click', function () {
-                    let current_tab_name = $("div.stepper-item.current").data('tab-head');
+                    let current_tab_name = $("div.stepper-item.current:not(.mark-completed)").data('tab-head');
                     if (current_tab_name == 'property_selection') {
-                        let property_id = $("input#property_id").val();
-                        if (property_id.length == 0) {
-                            $("#error_property_id").text("Please choose one property")
+                        let room_id = $("input#room_id").val();
+                        if (room_id.length == 0) {
+                            $("#error_room_id").text("Please choose one property room")
                         } else {
-                            $("#error_property_id").text("");
-                            /*$.ajax({
+                            $("#error_room_id").text("");
+                            $.ajax({
                                 type: "GET",
-                                url: '/bookings/get-property-rooms/' + property_id,
+                                url: '/rooms/get-room-tariffs/' + room_id,
                                 success: function (response, status, xhr) {
-                                    console.log(response);
+                                    let tariffs = response.data || undefined;
+                                    if (tariffs !== undefined && tariffs.length > 0) {
+                                        var enabledDates = [];
+                                        tariffs.forEach(function (tariff) {
+                                            let startDate = new Date(tariff.start_date);
+                                            startDate.setDate(startDate.getDate() - 1);
+                                            let endDate = new Date(tariff.end_date);
+                                            let currentDate = startDate;
+
+                                            // Push start date and end date to the array
+                                            enabledDates.push({from: startDate, to: endDate});
+
+                                            // Loop through each date range and push dates to the array
+                                            while (currentDate < endDate) {
+                                                currentDate.setDate(currentDate.getDate() + 1);
+                                                enabledDates.push(new Date(currentDate));
+                                            }
+                                        });
+                                        checkInDatepicker.set('enable', enabledDates);
+                                        checkOutDatepicker.set('enable', enabledDates);
+                                    }
                                 },
                                 error: function (response) {
                                     toastr.error(
@@ -590,8 +646,62 @@
                                         {timeOut: 0, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
                                     );
                                 },
-                            });*/
-                            showNexTab();
+                            });
+                            showNextTab();
+                        }
+                    }else if (current_tab_name == 'booking_details') {
+                        let no_of_guests = $("#no_of_guests").val();
+                        let no_of_rooms = $("#no_of_rooms").val();
+                        let check_in_date = $("#check_in_date").val();
+                        let check_out_date = $("#check_out_date").val();
+                        let special_request = $("#special_request").val();
+
+                        let is_error = false;
+                        if(no_of_guests == undefined || no_of_guests == null || no_of_guests == ""){
+                            is_error = true;
+                            $("#error_no_of_guests").text("This field is required")
+                        }
+                        if(no_of_rooms == undefined || no_of_rooms == null || no_of_rooms == ""){
+                            is_error = true;
+                            $("#error_no_of_rooms").text("This field is required")
+                        }
+                        if(check_in_date == undefined || check_in_date == null || check_in_date == ""){
+                            is_error = true;
+                            $("#error_check_in_date").text("This field is required")
+                        }
+                        if(check_out_date == undefined || check_out_date == null || check_out_date == ""){
+                            is_error = true;
+                            $("#error_check_out_date").text("This field is required")
+                        }
+                        if(!is_error){
+                            showNextTab();
+                        }
+                    }else if (current_tab_name == 'customer_information') {
+                        let first_name = $("#first_name").val();
+                        let last_name = $("#last_name").val();
+                        let email = $("#email").val();
+                        let phone_number = $("#phone_number").val();
+                        let payment_method = $("input[name=payment_method]").val();
+
+                        let is_error = false;
+                        if(first_name == undefined || first_name == null || first_name == ""){
+                            is_error = true;
+                            $("#error_first_name").text("This field is required")
+                        }
+                        if(last_name == undefined || last_name == null || last_name == ""){
+                            is_error = true;
+                            $("#error_last_name").text("This field is required")
+                        }
+                        if(email == undefined || email == null || email == ""){
+                            is_error = true;
+                            $("#error_email").text("This field is required")
+                        }
+                        if(phone_number == undefined || phone_number == null || phone_number == ""){
+                            is_error = true;
+                            $("#error_phone_number").text("This field is required");
+                        }
+                        if(!is_error){
+                            showNextTab();
                         }
                     }
                     //showNexTab(current_tab_name);
@@ -599,53 +709,105 @@
 
                 $("button.btn_submit").off('click');
                 $("button.btn_submit").on('click', function () {
-                    alert("hjere");
+                    let room_id = $("input#room_id").val();
+                    let no_of_guests = $("#no_of_guests").val();
+                    let no_of_rooms = $("#no_of_rooms").val();
+                    let check_in_date = $("#check_in_date").val();
+                    let check_out_date = $("#check_out_date").val();
+                    let special_request = $("#special_request").val();
+                    let first_name = $("#first_name").val();
+                    let last_name = $("#last_name").val();
+                    let email = $("#email").val();
+                    let phone_number = $("#phone_number").val();
+                    let payment_method = $("input[name=payment_method]").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route("bookings.store") }}",
+                        data: {
+                          'room_id' : room_id,
+                          'no_of_guests' : no_of_guests,
+                          'no_of_rooms' : no_of_rooms,
+                          'check_in_date' : check_in_date,
+                          'check_out_date' : check_out_date,
+                          'special_request' : special_request,
+                          'first_name' : first_name,
+                          'last_name' : last_name,
+                          'email' : email,
+                          'phone_number' : phone_number,
+                          'payment_method' : payment_method,
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token in the headers
+                        },
+                        success: function (response, status, xhr) {
+                            if(response.status == 'success'){
+                                toastr.success(
+                                    "Booking successfully register for customer",
+                                    {timeOut: 0, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
+                                );
+                                setTimeout(function (){
+                                    window.location.href = "{{ route("bookings.index") }}"
+                                },500);
+                            }
+                        },
+                        error: function (response) {
+                            toastr.error(
+                                "Please try it again later.",
+                                "Something went wrong!",
+                                {timeOut: 0, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
+                            );
+                        },
+                    });
                 });
 
-                $("#check_in_date").flatpickr({
-                    enableTime: true,
-                    dateFormat: "Y-m-d",
-                });
-                $("#check_out_date").flatpickr({
-                    enableTime: true,
-                    dateFormat: "Y-m-d",
-                });
-
-                $("input.property_list").off('click');
-                $("input.property_list").on('click', function () {
+                $("input.room_list").off('click');
+                $("input.room_list").on('click', function () {
                     let value = $(this).val();
                     if (value != undefined) {
-                        $("input[type=hidden]#property_id").val(value);
+                        $("input[type=hidden]#room_id").val(value);
                     }
                 });
             });
 
             function showPreviousTab() {
                 let current_tab_element = $('div.stepper-item.current:not(.mark-completed)');
-                let get_prev_element = $("div.stepper-item.current:not([class*=' '])");
+                let current_tab_index = current_tab_element.data("tab-index");
                 let current_tab_name = current_tab_element.data("tab-head");
-                current_tab_element.removeClass("current mark-completed").prev().addClass("current");
-                $("div[data-tab='" + current_tab_name + "']").removeClass("current").prev().addClass("current");
-                if (current_tab_name == 'booking_confirmed') {
-                    $("button.btn_continue").show();
-                    $("button.btn_submit").hide();
-                }
-                if ($("div.stepper-item:first").length == 1 && ) {
+                current_tab_element.removeClass("current mark-completed").prev();
+                $("div[data-tab='" + current_tab_name + "'].current").removeClass("current").prev().addClass("current");
+                $("button.btn_continue").show();
+                $("button.btn_submit").hide();
+                if (current_tab_index === "0") {
                     $("button.btn_previous").hide();
                 }
             }
 
-            function showNexTab() {
+            function showNextTab() {
                 let current_tab_element = $('div.stepper-item.current:not(.mark-completed)');
+                let current_tab_index = current_tab_element.data("tab-index");
                 let current_tab_name = current_tab_element.data("tab-head");
                 current_tab_element.addClass("mark-completed").next().addClass("current");
                 $("div[data-tab='" + current_tab_name + "'].current").removeClass("current").next().addClass("current");
+                $("button.btn_continue").show();
+                $("button.btn_submit").hide();
                 $("button.btn_previous").show();
-                if ($("div.stepper-item:last").length == 1 && $("div.stepper-item:last").hasClass("current")) {
+                let next_tab_head = $("div.stepper-item.current:not(.mark-completed)").data("tab-head");
+                if (next_tab_head === "booking_confirmed") {
                     $("button.btn_continue").hide();
                     $("button.btn_submit").show();
+                    let first_name = $("#first_name").val();
+                    let last_name = $("#last_name").val();
+                    let email = $("#email").val();
+                    let phone_number = $("#phone_number").val();
+                    let no_of_rooms = $("#no_of_rooms").val();
+                    $("#label_name").text(first_name +" "+ last_name);
+                    $("#label_email").text(email);
+                    $("#label_phone").text(phone_number);
+                    $("#label_booked_room").text(no_of_rooms);
                 }
             }
+
+
         </script>
     @endpush
 @endsection

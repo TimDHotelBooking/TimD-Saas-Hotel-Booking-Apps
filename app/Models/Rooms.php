@@ -22,7 +22,18 @@ class Rooms extends Model
         'status'
     ];
 
+    const AVAILABLE_STATUS = 'Available';
+    const BOOKED_STATUS = 'Booked';
+    const OCCUPIED_STATUS = 'Occupied';
+    const MAINTENANCE_STATUS = 'Maintenance';
+    const CLEANING_STATUS = 'Cleaning';
+
+
     public function property(){
         return $this->belongsTo(Property::class,'property_id');
+    }
+
+    public function tariffs(){
+        return $this->hasMany(Tariff::class,'room_id');
     }
 }

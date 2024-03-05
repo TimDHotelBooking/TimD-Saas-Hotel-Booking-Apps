@@ -33,7 +33,7 @@ class AddTariffModal extends Component
 
     public function render()
     {
-        $rooms = Rooms::where('status',1);
+        $rooms = (new Rooms());
         if (Auth::user()->isPropertyAdmin()){
             $rooms->where('created_by',Auth::user()->user_id);
         }

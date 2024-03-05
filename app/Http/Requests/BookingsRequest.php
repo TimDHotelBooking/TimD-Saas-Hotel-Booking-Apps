@@ -23,12 +23,15 @@ class BookingsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id' => ["required",Rule::exists("customers","customer_id")],
             'room_id' => ["required",Rule::exists("rooms","room_id")],
+            'no_of_guests' => "required",
+            'no_of_rooms' => "required",
             'check_in_date' => "required|date",
             'check_out_date' => "required|date|after_or_equal:check_in_date",
-            'total_amount' => "required",
-            'agent_id' => ["required",Rule::exists("agents","agent_id")],
+            'first_name' => "required|string",
+            'last_name' => "required|string",
+            'email' => "required|email",
+            'phone_number' => "required",
         ];
     }
 }

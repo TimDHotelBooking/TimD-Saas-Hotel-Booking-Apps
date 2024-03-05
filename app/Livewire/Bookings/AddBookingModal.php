@@ -41,7 +41,7 @@ class AddBookingModal extends Component
         $properties = Property::whereHas('agents',function ($query){
             $query->where('agent_id',Auth::user()->user_id);
         })->where('status',1)->pluck("property_id")->toArray();
-        $rooms = Rooms::where('status',1)->whereIn('property_id',$properties)->get();
+        $rooms = Rooms::where('status',Rooms::AVAILABLE_STATUS)->whereIn('property_id',$properties)->get();
         $customers = Customers::where('status','1')->where('created_by',Auth::user()->user_id)->get();
         $agents = null;
         if (Auth::user()->isPropertyAdmin()){

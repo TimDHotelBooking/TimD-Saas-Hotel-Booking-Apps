@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\DataTables\BookingDataTable;
 use App\Http\Requests\BookingsRequest;
 use App\Models\Bookings;
+use App\Models\Customers;
 use App\Models\Property;
+use App\Models\Rooms;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class BookingsController extends Controller
@@ -24,7 +27,9 @@ class BookingsController extends Controller
      */
     public function create()
     {
-        $properties = Property::with('rooms')->whereHas('agents',function ($query){
+        $properties = Property::with(['rooms' => function($query){
+            $query->has('tariffs')->where('status',Rooms::AVAILABLE_STATUS);
+        }])->whereHas('agents',function ($query){
             $query->where('agent_id',Auth::user()->user_id);
         })->where('status',1)->get();
         return view('bookings.customer_booking',compact('properties'));
@@ -36,32 +41,63 @@ class BookingsController extends Controller
     public function store(BookingsRequest $request)
     {
         try {
-            $customer_id = $request->input("customer_id");
-            $room_id = $request->input("room_id");
-            $check_in_date = $request->input("check_in_date");
-            $check_out_date = $request->input("check_out_date");
-            $total_amount = $request->input("total_amount");
-            $agent_id = $request->input("agent_id");
-            $booking = Bookings::create([
-                "customer_id" => $customer_id,
-                "room_id" => $room_id,
-                "check_in_date" => $check_in_date,
-                "check_out_date" => $check_out_date,
-                "total_amount" => $total_amount,
-                "agent_id" => $agent_id,
+            DB::beginTransaction();
+            $first_name = $request->input("first_name");
+            $last_name = $request->input("last_name");
+            $email = $request->input("email");
+            $phone_number = $request->input("phone_number");
+
+            $customer = Customers::create([
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => $email,
+                'phone_number' => $phone_number,
+                'created_by' => Auth::user()->user_id,
+                'updated_by' => Auth::user()->user_id,
+                'status' => 1,
             ]);
-            if ($booking){
-                return response()->json([
-                    "status" => 'success',
-                    "msg" => "Booking created successfully"
-                ],200);
+            if (!empty($customer)){
+                $customer_id = $customer->customer_id;
+                $room_id = $request->input("room_id");
+                $check_in_date = $request->input("check_in_date");
+                $check_out_date = $request->input("check_out_date");
+                $total_amount = $request->input("total_amount");
+                $no_of_guests = $request->input("no_of_guests");
+                $no_of_rooms = $request->input("no_of_rooms");
+                $payment_method = $request->input("payment_method");
+                $special_request = $request->input("special_request");
+                $agent_id = Auth::user()->user_id;
+                $booking = Bookings::create([
+                    "customer_id" => $customer_id,
+                    "room_id" => $room_id,
+                    "check_in_date" => $check_in_date,
+                    "check_out_date" => $check_out_date,
+                    "total_amount" => $total_amount,
+                    "no_of_guests" => $no_of_guests,
+                    "no_of_rooms" => $no_of_rooms,
+                    "payment_method" => $payment_method,
+                    "special_request" => $special_request,
+                    "agent_id" => $agent_id,
+                    'created_by' => Auth::user()->user_id,
+                    'updated_by' => Auth::user()->user_id,
+                    'status' => 1
+                ]);
+                if ($booking){
+                    DB::commit();
+                    return response()->json([
+                        "status" => 'success',
+                        "msg" => "Booking created successfully"
+                    ],200);
+                }
             }
+            DB::rollBack();
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something is wrong to create booking"
             ],500);
         }catch (\Exception $e){
             Log::info($e->getMessage());
+            DB::rollBack();
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something went wrong"
