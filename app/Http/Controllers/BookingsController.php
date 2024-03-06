@@ -65,7 +65,7 @@ class BookingsController extends Controller
                 $no_of_guests = $request->input("no_of_guests");
                 $no_of_rooms = $request->input("no_of_rooms");
                 $payment_method = $request->input("payment_method");
-                $special_request = $request->input("special_request");
+                $special_requests = $request->input("special_requests");
                 $agent_id = Auth::user()->user_id;
                 $booking = Bookings::create([
                     "customer_id" => $customer_id,
@@ -76,7 +76,7 @@ class BookingsController extends Controller
                     "no_of_guests" => $no_of_guests,
                     "no_of_rooms" => $no_of_rooms,
                     "payment_method" => $payment_method,
-                    "special_request" => $special_request,
+                    "special_requests" => $special_requests,
                     "agent_id" => $agent_id,
                     'created_by' => Auth::user()->user_id,
                     'updated_by' => Auth::user()->user_id,
@@ -108,9 +108,14 @@ class BookingsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Bookings $bookings)
+    public function show(Bookings $booking)
     {
-        //
+        $properties = Property::with(['rooms' => function($query){
+            $query->has('tariffs')->where('status',Rooms::AVAILABLE_STATUS);
+        }])->whereHas('agents',function ($query){
+            $query->where('agent_id',Auth::user()->user_id);
+        })->where('status',1)->get();
+        return view('bookings.edit_customer_booking',compact('booking','properties'));
     }
 
     /**
@@ -124,35 +129,66 @@ class BookingsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BookingsRequest $request, Bookings $bookings)
+    public function update(BookingsRequest $request, Bookings $booking)
     {
         try {
+            DB::beginTransaction();
             $customer_id = $request->input("customer_id");
-            $room_id = $request->input("room_id");
-            $check_in_date = $request->input("check_in_date");
-            $check_out_date = $request->input("check_out_date");
-            $total_amount = $request->input("total_amount");
-            $agent_id = $request->input("agent_id");
-            $booking = $bookings->update([
-                "customer_id" => $customer_id,
-                "room_id" => $room_id,
-                "check_in_date" => $check_in_date,
-                "check_out_date" => $check_out_date,
-                "total_amount" => $total_amount,
-                "agent_id" => $agent_id,
+            $first_name = $request->input("first_name");
+            $last_name = $request->input("last_name");
+            $email = $request->input("email");
+            $phone_number = $request->input("phone_number");
+
+            $customer = Customers::where('customer_id',$customer_id)->update([
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => $email,
+                'phone_number' => $phone_number,
+                'created_by' => Auth::user()->user_id,
+                'updated_by' => Auth::user()->user_id,
+                'status' => 1,
             ]);
-            if ($booking){
-                return response()->json([
-                    "status" => 'success',
-                    "msg" => "Booking updated successfully"
-                ],200);
+            if ($customer){
+                $room_id = $request->input("room_id");
+                $check_in_date = $request->input("check_in_date");
+                $check_out_date = $request->input("check_out_date");
+                $total_amount = $request->input("total_amount");
+                $no_of_guests = $request->input("no_of_guests");
+                $no_of_rooms = $request->input("no_of_rooms");
+                $payment_method = $request->input("payment_method");
+                $special_requests = $request->input("special_requests");
+                $agent_id = Auth::user()->user_id;
+                $booking = Bookings::where('booking_id',$booking->booking_id)->update([
+                    "customer_id" => $customer_id,
+                    "room_id" => $room_id,
+                    "check_in_date" => $check_in_date,
+                    "check_out_date" => $check_out_date,
+                    "total_amount" => $total_amount,
+                    "no_of_guests" => $no_of_guests,
+                    "no_of_rooms" => $no_of_rooms,
+                    "payment_method" => $payment_method,
+                    "special_requests" => $special_requests,
+                    "agent_id" => $agent_id,
+                    'created_by' => Auth::user()->user_id,
+                    'updated_by' => Auth::user()->user_id,
+                    'status' => 1
+                ]);
+                if ($booking){
+                    DB::commit();
+                    return response()->json([
+                        "status" => 'success',
+                        "msg" => "Booking updated successfully"
+                    ],200);
+                }
             }
+            DB::rollBack();
             return response()->json([
                 "status" => 'error',
-                "msg" => "Something is wrong to update booking"
+                "msg" => "Something is wrong to updated booking"
             ],500);
         }catch (\Exception $e){
             Log::info($e->getMessage());
+            DB::rollBack();
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something went wrong"

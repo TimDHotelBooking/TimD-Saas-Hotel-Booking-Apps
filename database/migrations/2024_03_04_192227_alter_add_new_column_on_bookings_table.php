@@ -15,8 +15,8 @@ return new class extends Migration
             $table->text('total_amount')->nullable()->change();
             $table->integer("no_of_guests")->after("total_amount");
             $table->integer("no_of_rooms")->after("no_of_guests");
-            $table->text("special_request")->after("no_of_rooms")->nullable();
-            $table->text("payment_method")->after("special_request")->nullable();
+            $table->text("special_requests")->after("no_of_rooms")->nullable();
+            $table->text("payment_method")->after("special_requests")->nullable();
         });
     }
 

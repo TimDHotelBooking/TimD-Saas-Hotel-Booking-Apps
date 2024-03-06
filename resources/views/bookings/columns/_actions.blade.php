@@ -18,8 +18,7 @@
     @can('edit booking')
         <!--begin::Menu item-->
         <div class="menu-item px-3">
-            <a href="#" class="menu-link px-3" data-kt-booking-id="{{ $booking->booking_id }}" data-bs-toggle="modal"
-               data-bs-target="#kt_modal_add_booking" data-kt-action="update_row">
+            <a href="{{ route("bookings.show",$booking->booking_id) }}" class="menu-link px-3" >
                 Edit
             </a>
         </div>

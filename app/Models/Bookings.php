@@ -21,7 +21,7 @@ class Bookings extends Model
         'no_of_guests',
         'no_of_rooms',
         'payment_method',
-        'special_request',
+        'special_requests',
         'agent_id',
         'created_by',
         'updated_by',
