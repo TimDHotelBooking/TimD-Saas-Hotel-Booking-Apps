@@ -26,11 +26,18 @@
                     <!--begin::Toolbar-->
                     <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                         <!--begin::Add booking-->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#kt_modal_add_booking">
-                            {!! getIcon('plus', 'fs-2', '', 'i') !!}
-                            Add Booking
-                        </button>
+                        @if(\Illuminate\Support\Facades\Auth::user()->isPropertyAgent())
+                            <a href="{{ route('bookings.create') }}" class="btn btn-primary" >
+                                {!! getIcon('plus', 'fs-2', '', 'i') !!}
+                                Add Booking
+                            </a>
+                        @else
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#kt_modal_add_booking">
+                                {!! getIcon('plus', 'fs-2', '', 'i') !!}
+                                Add Booking
+                            </button>
+                        @endif
                         <!--end::Add booking-->
                     </div>
                     <!--end::Toolbar-->
