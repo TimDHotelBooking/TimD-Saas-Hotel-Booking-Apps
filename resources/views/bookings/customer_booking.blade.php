@@ -307,7 +307,7 @@
                                     <!--begin::Heading-->
                                     <div class="pb-10 pb-lg-15">
                                         <!--begin::Title-->
-                                        <h2 class="fw-bold text-gray-900">Customer Details</h2>
+                                        <h2 class="fw-bold text-gray-900">Primary Customer Details</h2>
                                         <!--end::Title-->
                                         <!--begin::Notice-->
                                         <div class="text-muted fw-semibold fs-6">If you need more info, please check out

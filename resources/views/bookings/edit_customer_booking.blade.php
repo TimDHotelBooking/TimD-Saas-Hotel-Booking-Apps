@@ -315,7 +315,7 @@
                                     <!--begin::Heading-->
                                     <div class="pb-10 pb-lg-15">
                                         <!--begin::Title-->
-                                        <h2 class="fw-bold text-gray-900">Customer Details</h2>
+                                        <h2 class="fw-bold text-gray-900">Primary Customer Details</h2>
                                         <input type="hidden" name="customer_id" id="customer_id" value="{{ $booking->customer->customer_id ?? '' }}">
                                         <!--end::Title-->
                                         <!--begin::Notice-->
