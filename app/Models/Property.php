@@ -20,13 +20,6 @@ class Property extends Model
         'updated_by',
         'status'
     ];
-
-    const AVAILABLE_STATUS = 'Available';
-    const BOOKED_STATUS = 'Booked';
-    const OCCUPIED_STATUS = 'Occupied';
-    const MAINTENANCE_STATUS = 'Maintenance';
-    const CLEANING_STATUS = 'Cleaning';
-
     public function admin(){
         return $this->hasOne(Users::class,"user_id","property_admin_id");
     }

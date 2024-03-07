@@ -15,6 +15,7 @@ class AddRoomsModal extends Component
     public $property_id;
     public $room_type;
     public $availability_status;
+    public $status;
     public $price;
 
     public $edit_mode = false;
@@ -24,6 +25,7 @@ class AddRoomsModal extends Component
         "room_type" => "required|string",
         "availability_status" => "required",
         "price" => "required",
+        "status" => "required"
     ];
 
     protected $listeners = [
@@ -54,7 +56,7 @@ class AddRoomsModal extends Component
                 'room_type' => $this->room_type,
                 'availability_status' => $this->availability_status,
                 'price' => $this->price,
-                'status' => $this->availability_status,
+                'status' => $this->status,
                 'updated_by' => Auth::user()->user_id
             ];
 
@@ -106,6 +108,7 @@ class AddRoomsModal extends Component
         $this->room_type = $room->room_type;
         $this->availability_status = $room->availability_status;
         $this->price = $room->price;
+        $this->status = $room->status;
     }
 
     public function hydrate()

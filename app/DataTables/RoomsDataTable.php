@@ -23,9 +23,6 @@ class RoomsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('status', function (Rooms $room) {
-                return $room->availability_status == '1' ? 'Active' : 'In Active';
-            })
             ->editColumn('created_at', function (Rooms $room) {
                 return $room->created_at->format('d M Y, h:i a') ?? '-';
             })
@@ -71,7 +68,7 @@ class RoomsDataTable extends DataTable
         return [
             Column::make('room_id'),
             Column::make('room_type'),
-            Column::make('status','availability_status'),
+            Column::make('availability_status')->title('Status'),
             Column::make('price'),
             Column::make('created_at'),
             Column::computed('action')

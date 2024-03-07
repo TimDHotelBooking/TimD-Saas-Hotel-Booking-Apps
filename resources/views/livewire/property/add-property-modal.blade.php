@@ -101,12 +101,12 @@
 
                                     <div class="form-check form-check-custom form-check-solid mx-5">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" id="{{  \App\Models\Property::AVAILABLE_STATUS }}" wire:model="status" name="status" type="radio" value="{{ \App\Models\Property::AVAILABLE_STATUS }}" checked="checked"/>
+                                        <input class="form-check-input me-3" id="kt_modal_update_role_option_1" wire:model="status" name="status" type="radio" value="1" checked="checked"/>
                                         <!--end::Input-->
                                         <!--begin::Label-->
-                                        <label class="form-check-label" for="{{  \App\Models\Property::AVAILABLE_STATUS }}">
+                                        <label class="form-check-label" for="kt_modal_update_role_option_1">
                                             <div class="fw-bold text-gray-800">
-                                                {{  \App\Models\Property::AVAILABLE_STATUS }}
+                                                Active
                                             </div>
                                         </label>
                                         <!--end::Label-->
@@ -114,51 +114,12 @@
 
                                     <div class="form-check form-check-custom form-check-solid mx-5">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" id="{{  \App\Models\Property::BOOKED_STATUS }}" wire:model="status" name="status" type="radio" value="{{  \App\Models\Property::BOOKED_STATUS }}" />
+                                        <input class="form-check-input me-3" id="kt_modal_update_role_option_0" wire:model="status" name="status" type="radio" value="0" />
                                         <!--end::Input-->
                                         <!--begin::Label-->
-                                        <label class="form-check-label" for="{{  \App\Models\Property::BOOKED_STATUS }}">
+                                        <label class="form-check-label" for="kt_modal_update_role_option_0">
                                             <div class="fw-bold text-gray-800">
-                                                {{  \App\Models\Property::BOOKED_STATUS }}
-                                            </div>
-                                        </label>
-                                        <!--end::Label-->
-                                    </div>
-
-                                    <div class="form-check form-check-custom form-check-solid mx-5">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" id="{{  \App\Models\Property::OCCUPIED_STATUS }}" wire:model="status" name="status" type="radio" value="{{  \App\Models\Property::OCCUPIED_STATUS }}" />
-                                        <!--end::Input-->
-                                        <!--begin::Label-->
-                                        <label class="form-check-label" for="{{  \App\Models\Property::OCCUPIED_STATUS }}">
-                                            <div class="fw-bold text-gray-800">
-                                                {{  \App\Models\Property::OCCUPIED_STATUS }}
-                                            </div>
-                                        </label>
-                                        <!--end::Label-->
-                                    </div>
-
-                                    <div class="form-check form-check-custom form-check-solid mx-5">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" id="{{  \App\Models\Property::MAINTENANCE_STATUS }}" wire:model="status" name="status" type="radio" value="{{  \App\Models\Property::MAINTENANCE_STATUS }}" />
-                                        <!--end::Input-->
-                                        <!--begin::Label-->
-                                        <label class="form-check-label" for="{{  \App\Models\Property::MAINTENANCE_STATUS }}">
-                                            <div class="fw-bold text-gray-800">
-                                                {{  \App\Models\Property::MAINTENANCE_STATUS }}
-                                            </div>
-                                        </label>
-                                        <!--end::Label-->
-                                    </div>
-
-                                    <div class="form-check form-check-custom form-check-solid mx-5">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" id="{{  \App\Models\Property::CLEANING_STATUS }}" wire:model="status" name="status" type="radio" value="{{  \App\Models\Property::CLEANING_STATUS }}" />
-                                        <!--end::Input-->
-                                        <!--begin::Label-->
-                                        <label class="form-check-label" for="{{  \App\Models\Property::CLEANING_STATUS }}">
-                                            <div class="fw-bold text-gray-800">
-                                                {{  \App\Models\Property::CLEANING_STATUS }}
+                                                In Active
                                             </div>
                                         </label>
                                         <!--end::Label-->

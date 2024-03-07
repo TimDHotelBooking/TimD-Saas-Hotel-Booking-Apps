@@ -25,6 +25,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource("permissions", \App\Http\Controllers\PermissionController::class);
     Route::resource("users", \App\Http\Controllers\UsersController::class);
     Route::resource("property", \App\Http\Controllers\PropertyController::class);
+
+    Route::prefix('rooms')->name("rooms")->group(function () {
+        Route::get('get-room-tariffs/{room_id}', [\App\Http\Controllers\RoomsController::class,"get_room_tariffs"])->name('get_room_tariffs');
+    });
     Route::resource("rooms", \App\Http\Controllers\RoomsController::class);
     Route::resource("tariff", \App\Http\Controllers\TariffController::class);
     Route::resource("customers", \App\Http\Controllers\CustomersController::class);

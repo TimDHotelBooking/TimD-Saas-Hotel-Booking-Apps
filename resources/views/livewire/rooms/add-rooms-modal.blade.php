@@ -74,9 +74,88 @@
 
                         <div class="mb-7">
                             <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-5">Status</label>
+                            <label class="required fw-semibold fs-6 mb-5">Availability Status</label>
                             <!--end::Label-->
                             @error('availability_status')
+                            <span class="text-danger">{{ $message }}</span> @enderror
+                            <!--begin::Roles-->
+                            <!--begin::Input row-->
+                            <div class="d-flex flex-column fv-row">
+
+                                <div class="form-check form-check-custom form-check-solid mx-5 my-2">
+                                    <!--begin::Input-->
+                                    <input class="form-check-input me-3" id="{{  \App\Models\Rooms::AVAILABLE_STATUS }}" wire:model="availability_status" name="availability_status" type="radio" value="{{ \App\Models\Rooms::AVAILABLE_STATUS }}" checked="checked"/>
+                                    <!--end::Input-->
+                                    <!--begin::Label-->
+                                    <label class="form-check-label" for="{{  \App\Models\Rooms::AVAILABLE_STATUS }}">
+                                        <div class="fw-bold text-gray-800">
+                                            {{  \App\Models\Rooms::AVAILABLE_STATUS }}
+                                        </div>
+                                    </label>
+                                    <!--end::Label-->
+                                </div>
+
+                                <div class="form-check form-check-custom form-check-solid mx-5 my-2">
+                                    <!--begin::Input-->
+                                    <input class="form-check-input me-3" id="{{  \App\Models\Rooms::BOOKED_STATUS }}" wire:model="availability_status" name="availability_status" type="radio" value="{{  \App\Models\Rooms::BOOKED_STATUS }}" />
+                                    <!--end::Input-->
+                                    <!--begin::Label-->
+                                    <label class="form-check-label" for="{{  \App\Models\Rooms::BOOKED_STATUS }}">
+                                        <div class="fw-bold text-gray-800">
+                                            {{  \App\Models\Rooms::BOOKED_STATUS }}
+                                        </div>
+                                    </label>
+                                    <!--end::Label-->
+                                </div>
+
+                                <div class="form-check form-check-custom form-check-solid mx-5 my-2">
+                                    <!--begin::Input-->
+                                    <input class="form-check-input me-3" id="{{  \App\Models\Rooms::OCCUPIED_STATUS }}" wire:model="availability_status" name="availability_status" type="radio" value="{{  \App\Models\Rooms::OCCUPIED_STATUS }}" />
+                                    <!--end::Input-->
+                                    <!--begin::Label-->
+                                    <label class="form-check-label" for="{{  \App\Models\Rooms::OCCUPIED_STATUS }}">
+                                        <div class="fw-bold text-gray-800">
+                                            {{  \App\Models\Rooms::OCCUPIED_STATUS }}
+                                        </div>
+                                    </label>
+                                    <!--end::Label-->
+                                </div>
+
+                                <div class="form-check form-check-custom form-check-solid mx-5 my-2">
+                                    <!--begin::Input-->
+                                    <input class="form-check-input me-3" id="{{  \App\Models\Rooms::MAINTENANCE_STATUS }}" wire:model="availability_status" name="availability_status" type="radio" value="{{  \App\Models\Rooms::MAINTENANCE_STATUS }}" />
+                                    <!--end::Input-->
+                                    <!--begin::Label-->
+                                    <label class="form-check-label" for="{{  \App\Models\Rooms::MAINTENANCE_STATUS }}">
+                                        <div class="fw-bold text-gray-800">
+                                            {{  \App\Models\Rooms::MAINTENANCE_STATUS }}
+                                        </div>
+                                    </label>
+                                    <!--end::Label-->
+                                </div>
+
+                                <div class="form-check form-check-custom form-check-solid mx-5 my-2">
+                                    <!--begin::Input-->
+                                    <input class="form-check-input me-3" id="{{  \App\Models\Rooms::CLEANING_STATUS }}" wire:model="availability_status" name="availability_status" type="radio" value="{{  \App\Models\Rooms::CLEANING_STATUS }}" />
+                                    <!--end::Input-->
+                                    <!--begin::Label-->
+                                    <label class="form-check-label" for="{{  \App\Models\Rooms::CLEANING_STATUS }}">
+                                        <div class="fw-bold text-gray-800">
+                                            {{  \App\Models\Rooms::CLEANING_STATUS }}
+                                        </div>
+                                    </label>
+                                    <!--end::Label-->
+                                </div>
+                            </div>
+                            <!--end::Input row-->
+                            <!--end::Roles-->
+                        </div>
+
+                        <div class="mb-7">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-5">Status</label>
+                            <!--end::Label-->
+                            @error('status')
                             <span class="text-danger">{{ $message }}</span> @enderror
                             <!--begin::Roles-->
                             <!--begin::Input row-->
@@ -84,7 +163,7 @@
 
                                 <div class="form-check form-check-custom form-check-solid mx-5">
                                     <!--begin::Input-->
-                                    <input class="form-check-input me-3" id="kt_modal_update_rooms_option_1" wire:model="availability_status" name="availability_status" type="radio" value="1" checked="checked"/>
+                                    <input class="form-check-input me-3" id="kt_modal_update_rooms_option_1" wire:model="status" name="status" type="radio" value="1" checked="checked"/>
                                     <!--end::Input-->
                                     <!--begin::Label-->
                                     <label class="form-check-label" for="kt_modal_update_rooms_option_1">
@@ -97,7 +176,7 @@
 
                                 <div class="form-check form-check-custom form-check-solid mx-5">
                                     <!--begin::Input-->
-                                    <input class="form-check-input me-3" id="kt_modal_update_rooms_option_0" wire:model="availability_status" name="availability_status" type="radio" value="0" />
+                                    <input class="form-check-input me-3" id="kt_modal_update_rooms_option_0" wire:model="status" name="status" type="radio" value="0" />
                                     <!--end::Input-->
                                     <!--begin::Label-->
                                     <label class="form-check-label" for="kt_modal_update_rooms_option_0">

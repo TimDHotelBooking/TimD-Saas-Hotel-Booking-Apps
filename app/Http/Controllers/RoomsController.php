@@ -6,6 +6,7 @@ use App\DataTables\RoomsDataTable;
 use App\Http\Requests\RoomsRequest;
 use App\Models\Property;
 use App\Models\Rooms;
+use App\Models\Tariff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -140,6 +141,30 @@ class RoomsController extends Controller
                 "status" => 'error',
                 "msg" => "Something went wrong"
             ],500);
+        }
+    }
+
+
+    public function get_room_tariffs($room_id){
+        try {
+            if (!empty($room_id)){
+                $tariffs = Tariff::where('room_id',$room_id)->get()->toArray();
+                return response()->json([
+                    'status' => 'success',
+                    'msg' => 'Tariff data successfully fetched',
+                    'data' => $tariffs
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'error',
+                    'msg' => 'Incorrect data passed',
+                ]);
+            }
+        }catch (\Exception $e){
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'Something went wrong',
+            ]);
         }
     }
 }
