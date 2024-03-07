@@ -317,7 +317,7 @@
                                         <!--begin::Title-->
                                         <h2 class="fw-bold text-gray-900">Primary Customer Details</h2>
                                         <input type="hidden" name="customer_id" id="customer_id" value="{{ $booking->customer->customer_id ?? '' }}">
-                                        <!--end::Title-->
+                                         <!--end::Title-->
                                         <!--begin::Notice-->
                                         <div class="text-muted fw-semibold fs-6">If you need more info, please check out
                                             <a href="#" class="link-primary fw-bold">Help Page</a>.
