@@ -59,6 +59,11 @@ Breadcrumbs::for('tariff.index', function (BreadcrumbTrail $trail) {
     $trail->push('Tariff List', route('tariff.index'));
 });
 
+Breadcrumbs::for('type.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Type List', route('type.index'));
+});
+
 Breadcrumbs::for('customers.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Customer List', route('customers.index'));
