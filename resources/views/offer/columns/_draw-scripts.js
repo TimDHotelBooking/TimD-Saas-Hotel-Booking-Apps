@@ -17,7 +17,7 @@ document.querySelectorAll('[data-kt-action="delete_row"]').forEach(function (ele
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                Livewire.dispatch('delete_rooms', [this.getAttribute('data-kt-rooms-id')]);
+                Livewire.dispatch('delete_offer', [this.getAttribute('data-kt-rooms-id')]);
             }
         });
     });
@@ -26,7 +26,7 @@ document.querySelectorAll('[data-kt-action="delete_row"]').forEach(function (ele
 // Add click event listener to update buttons
 document.querySelectorAll('[data-kt-action="update_row"]').forEach(function (element) {
     element.addEventListener('click', function () {
-        Livewire.dispatch('update_rooms', [this.getAttribute('data-kt-rooms-id')]);
+        Livewire.dispatch('update_offer', [this.getAttribute('data-kt-rooms-id')]);
     });
 });
 
