@@ -25,6 +25,7 @@ class RolesPermissionsSeeder extends Seeder
             'property',
             'room',
             'tariff',
+            'type',
             'customer',
             'property agent',
             'user',

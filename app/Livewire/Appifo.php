@@ -48,6 +48,8 @@ class Appifo extends Component
         // Validate the form input data
         $this->validate();
 
+       // dd($this->validate());
+
         $appinfo = AppInfo::first();
          $appinfo->title = $this->title;
          $appinfo->description = $this->description;
@@ -57,15 +59,22 @@ class Appifo extends Component
          $appinfo->playstore_url = $this->playstore_url;
          $appinfo->appstore_url = $this->appstore_url;
 
-         $this->logo->store('photos');
+         
+
+        // $this->logo->store('photos');
+         $logo = $this->logo->store('settings', 'public');
+         $appinfo->logo=$logo;
+
+        // $image = $this->logo;
+        // $name_gen =time().$image->getClientOriginalName();
+
+        // $this->logo->move(public_path('setting'), $name_gen);
+
+        
+
         
        
-        //$this->beta_url = $appinfo->beta_url;
-        //$this->playstore_url = $appinfo->playstore_url;
-        //$this->appstore_url = $appinfo->appstore_url;
-        //$this->logo = $appinfo->logo;
-        //$this->dark_logo = $appinfo->dark_logo;
-       // $this->fav_icon = $appinfo->fav_icon;
+      
        $appinfo->save();
       // session()->flash('message', 'App Info successfully updated.');
        $this->dispatch('success', __('App Info successfully updated.'));
