@@ -57,9 +57,9 @@
                             <label class="required fw-semibold fs-6 mb-2">Offer Name</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" wire:model="property_name" name="property_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Offer Name"/>
+                            <input type="text" wire:model="offer_name" name="offer_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Offer Name"/>
                             <!--end::Input-->
-                            @error('property_name')
+                            @error('offer_name')
                             <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <!--end::Input group-->
@@ -69,9 +69,9 @@
                             <label class="required fw-semibold fs-6 mb-2">Discount</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" wire:model="location" name="location" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Discount"/>
+                            <input type="text" wire:model="discount" name="discount" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Discount"/>
                             <!--end::Input-->
-                            @error('location')
+                            @error('discount')
                             <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <!--end::Input group-->
@@ -82,9 +82,9 @@
                             <label class="required fw-semibold fs-6 mb-2">Max_amount</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" wire:model="contact_information" name="contact_information" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Max_amount"/>
+                            <input type="text" wire:model="max_amount" name="max_amount" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Max_amount"/>
                             <!--end::Input-->
-                            @error('contact_information')
+                            @error('max_amount')
                             <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <!--end::Input group-->
@@ -94,9 +94,9 @@
                             <label class="required fw-semibold fs-6 mb-2">Min_amount</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" wire:model="contact_information" name="contact_information" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Min_amount"/>
+                            <input type="text" wire:model="min_amount" name="min_amount" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Min_amount"/>
                             <!--end::Input-->
-                            @error('contact_information')
+                            @error('min_amount')
                             <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <!--end::Input group-->
@@ -107,9 +107,9 @@
                             <label class="required fw-semibold fs-6 mb-2">Coupon_code</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" wire:model="contact_information" name="contact_information" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Coupon_code"/>
+                            <input type="text" wire:model="coupon_code" name="coupon_code" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Coupon_code"/>
                             <!--end::Input-->
-                            @error('contact_information')
+                            @error('coupon_code')
                             <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <!--end::Input group-->
@@ -119,9 +119,9 @@
                             <label class="required fw-semibold fs-6 mb-2">Description</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="textra" wire:model="contact_information" name="contact_information" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Description"/>
+                            <input type="text" wire:model="description" name="description" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Description"/>
                             <!--end::Input-->
-                            @error('contact_information')
+                            @error('description')
                             <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <!--end::Input group-->

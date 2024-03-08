@@ -28,7 +28,7 @@ class OfferDataTable extends DataTable
             ->editColumn('created_at', function (Offer $offer) {
                 return $offer->created_at->format('d M Y, h:i a') ?? '-';
             })
-            ->addColumn('action', function (Offer $room) {
+            ->addColumn('action', function (Offer $offer) {
                 return view('offer.columns._actions', compact('offer'));
             })
             ->setRowId('id');

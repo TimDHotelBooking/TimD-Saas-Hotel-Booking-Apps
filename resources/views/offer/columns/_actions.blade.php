@@ -15,10 +15,10 @@
     {{--    </div>--}}
     <!--end::Menu item-->
 
-    @can('edit room')
+    @can('edit offer')
         <!--begin::Menu item-->
         <div class="menu-item px-3">
-            <a href="#" class="menu-link px-3" data-kt-rooms-id="{{ $room->room_id }}" data-bs-toggle="modal"
+            <a href="#" class="menu-link px-3" data-kt-rooms-id="{{ $offer->offer_id }}" data-bs-toggle="modal"
                data-bs-target="#kt_modal_add_offer" data-kt-action="update_row">
                 Edit
             </a>
@@ -26,10 +26,10 @@
     @endcan
     <!--end::Menu item-->
 
-    @can('delete room')
+    @can('delete offer')
         <!--begin::Menu item-->
         <div class="menu-item px-3">
-            <a href="#" class="menu-link px-3" data-kt-rooms-id="{{ $room->room_id  }}" data-kt-action="delete_row">
+            <a href="#" class="menu-link px-3" data-kt-rooms-id="{{ $offer->offer_id  }}" data-kt-action="delete_row">
                 Delete
             </a>
         </div>
