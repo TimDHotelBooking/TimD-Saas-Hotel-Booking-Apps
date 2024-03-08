@@ -91,6 +91,25 @@
                 </div>
             @endcanany
 
+            @canany('view offer')
+                <div data-kt-menu-trigger="click"
+                     class="menu-item menu-accordion {{ request()->routeIs('offers') ? 'here show' : '' }}">
+                    <!--begin:Menu link-->
+                    @can('view offer')
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ request()->routeIs('offers') ? 'active' : '' }}"
+                               href="{{ route('offers.index') }}">
+                                <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                                <span class="menu-title">Offers</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                    @endcan()
+                    <!--end:Menu link-->
+                </div>
+            @endcanany
+
             @canany('view property agent')
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('property_agents') ? 'here show' : '' }}">

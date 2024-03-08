@@ -88,3 +88,13 @@ Breadcrumbs::for('appinfo.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('App Info', route('appinfo.index'));
 });
+
+
+
+
+
+
+Breadcrumbs::for('offers.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Offers', route('offers.index'));
+});

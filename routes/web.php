@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('rooms')->name("rooms")->group(function () {
         Route::get('get-room-tariffs/{room_id}', [\App\Http\Controllers\RoomsController::class,"get_room_tariffs"])->name('get_room_tariffs');
     });
+    Route::resource('offers', \App\Http\Controllers\OfferController::class);
     Route::resource("rooms", \App\Http\Controllers\RoomsController::class);
     Route::resource("tariff", \App\Http\Controllers\TariffController::class);
     Route::resource("customers", \App\Http\Controllers\CustomersController::class);

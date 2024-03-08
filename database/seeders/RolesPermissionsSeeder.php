@@ -32,7 +32,8 @@ class RolesPermissionsSeeder extends Seeder
             'permission',
             'booking',
             'payment',
-            'notification'
+            'notification',
+            'offer',
         ];
 
         $permissions_by_role = [
@@ -47,6 +48,7 @@ class RolesPermissionsSeeder extends Seeder
                 'tariff',
                 'property agent',
                 'user',
+                'offer',
             ],
             'Property Agent' => [
                 'customer',
