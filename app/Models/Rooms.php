@@ -64,31 +64,34 @@ class Rooms extends Model
             $nonOverlappingDates = [];
 
             // Check if any booked date overlaps with the tariff date
-            foreach ($bookedDates as $booking) {
-                // If there's an overlap, split the tariff date range
-                if (
-                    ($tariff->start_date <= $booking->check_out_date && $tariff->end_date >= $booking->check_in_date) ||
-                    ($tariff->start_date >= $booking->check_in_date && $tariff->end_date <= $booking->check_out_date)
-                ) {
-                    // Split the tariff date range into two non-overlapping ranges
-                    if ($tariff->start_date < $booking->check_in_date) {
-                        $end_date = Carbon::parse($booking->check_in_date)->addDays(-1)->format("Y-m-d");
-                        $nonOverlappingDates[] = ['start_date' => $tariff->start_date, 'end_date' => $end_date];
+            if (!empty($bookedDates) && count($bookedDates) > 0){
+                foreach ($bookedDates as $booking) {
+                    // If there's an overlap, split the tariff date range
+                    if (
+                        ($tariff->start_date <= $booking->check_out_date && $tariff->end_date >= $booking->check_in_date) ||
+                        ($tariff->start_date >= $booking->check_in_date && $tariff->end_date <= $booking->check_out_date)
+                    ) {
+                        // Split the tariff date range into two non-overlapping ranges
+                        if ($tariff->start_date < $booking->check_in_date) {
+                            $end_date = Carbon::parse($booking->check_in_date)->addDays(-1)->format("Y-m-d");
+                            $nonOverlappingDates[] = ['start_date' => $tariff->start_date, 'end_date' => $end_date];
+                        }
+                        if ($tariff->end_date > $booking->check_out_date) {
+                            $start_date = Carbon::parse($booking->check_out_date)->addDays(1)->format("Y-m-d");
+                            $nonOverlappingDates[] = ['start_date' => $start_date, 'end_date' => $tariff->end_date];
+                        }
+                    } else {
+                        // If there's no overlap, keep the tariff date range as is
+                        $nonOverlappingDates[] = ['start_date' => $tariff->start_date, 'end_date' => $tariff->end_date];
                     }
-                    if ($tariff->end_date > $booking->check_out_date) {
-                        $start_date = Carbon::parse($booking->check_out_date)->addDays(1)->format("Y-m-d");
-                        $nonOverlappingDates[] = ['start_date' => $start_date, 'end_date' => $tariff->end_date];
-                    }
-                } else {
-                    // If there's no overlap, keep the tariff date range as is
-                    $nonOverlappingDates[] = ['start_date' => $tariff->start_date, 'end_date' => $tariff->end_date];
                 }
+            }else{
+                $nonOverlappingDates[] = ['start_date' => $tariff->start_date, 'end_date' => $tariff->end_date];
             }
 
             // Merge non-overlapping dates into the availableDates array
             $availableDates = array_merge($availableDates, $nonOverlappingDates);
         }
-
         return $availableDates;
     }
 }
