@@ -53,44 +53,100 @@
                 </div>
             @endcanany
 
-            @canany('view room')
-                <div data-kt-menu-trigger="click"
-                     class="menu-item menu-accordion {{ request()->routeIs('rooms') ? 'here show' : '' }}">
-                    <!--begin:Menu link-->
-                    @can('view room')
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link {{ request()->routeIs('rooms') ? 'active' : '' }}"
-                               href="{{ route('rooms.index') }}">
-                                <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
-                                <span class="menu-title">Rooms</span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
-                    @endcan
-                    <!--end:Menu link-->
-                </div>
-            @endcanany
 
-            @canany('view tariff')
+            @if(auth()->user()->isPropertyAdmin() || (auth()->user()->can('view room') || auth()->user()->can('view tariff')))
                 <div data-kt-menu-trigger="click"
-                     class="menu-item menu-accordion {{ request()->routeIs('tariff') ? 'here show' : '' }}">
+                     class="menu-item menu-accordion {{ request()->routeIs('rooms.*','tariff.*',) ? 'here show' : '' }}">
                     <!--begin:Menu link-->
-                    @can('view tariff')
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link {{ request()->routeIs('tariff') ? 'active' : '' }}"
-                               href="{{ route('tariff.index') }}">
-                                <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
-                                <span class="menu-title">Tariff</span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
-                    @endcan()
+                    <span class="menu-link">
+					<span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+					<span
+                        class="menu-title">{{ \Illuminate\Support\Facades\Auth::user()->isPropertyAdmin() ? 'Rooms Management' : 'Rooms'}}</span>
+					<span class="menu-arrow"></span>
+				</span>
                     <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        @if(auth()->user()->isPropertyAdmin() || (auth()->user()->can('view room')))
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ request()->routeIs('rooms.*') ? 'active' : '' }}"
+                                   href="{{ route('rooms.index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">Rooms</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endif
+                        <!--begin:Menu item-->
+                        @if(auth()->user()->isPropertyAdmin() || (auth()->user()->can('view tariff')))
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ request()->routeIs('tariff.*') ? 'active' : '' }}"
+                                   href="{{ route('tariff.index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">Tariff</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endif
+                        <!--end:Menu item-->
+                    </div>
+                    <!--end:Menu sub-->
                 </div>
-            @endcanany
+            @endif
 
+            @if(auth()->user()->isPropertyAdmin() || (auth()->user()->can('view property agent')))
+                <div data-kt-menu-trigger="click"
+                     class="menu-item menu-accordion {{ request()->routeIs('property_agents.*',) ? 'here show' : '' }}">
+                    <!--begin:Menu link-->
+                    <span class="menu-link">
+					<span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+					<span
+                        class="menu-title">{{ \Illuminate\Support\Facades\Auth::user()->isPropertyAdmin() ? 'Agents Management' : 'Agents'}}</span>
+					<span class="menu-arrow"></span>
+				</span>
+                    <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        @if(auth()->user()->isPropertyAdmin() || (auth()->user()->can('view property agent')))
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ request()->routeIs('property_agents.*') ? 'active' : '' }}"
+                                   href="{{ route('property_agents.index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">Agents</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endif
+                        <!--begin:Menu item-->
+                        @if(auth()->user()->isPropertyAdmin())
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ request()->routeIs('#') ? 'active' : '' }}"
+                                   href="#">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">Agent Performance</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endif
+                        <!--end:Menu item-->
+                    </div>
+                    <!--end:Menu sub-->
+                </div>
+            @endif
 
             @canany('view offer')
                 <div data-kt-menu-trigger="click"
