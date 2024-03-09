@@ -195,7 +195,7 @@
                                                                        name="room_id" value="{{ $room->room_id }}"
                                                                        id="room_{{ $room->room_id }}"
                                                                        data-best_price="{{ $room->price }}"
-                                                                       @if(count($room->availableDates()) == 0 && !empty($room->bookings)) disabled @endif/>
+                                                                       @if(count($room->availableDates()) == 0 && count($room->bookings) > 0) disabled @endif/>
                                                                 <label
                                                                     class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10"
                                                                     for="room_{{ $room->room_id }}">
@@ -205,7 +205,7 @@
                                                                          class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
                                                                      <span
                                                                          class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->type->type_name }}</span>
-                                                                        @if(count($room->availableDates()) == 0 && !empty($room->bookings))
+                                                                        @if(count($room->availableDates()) == 0 && count($room->bookings) > 0)
                                                                             <span class="text-danger fw-bold d-block fs-6 mb-2">No Dates Available</span>
                                                                         @endif
                                                                 </span>
