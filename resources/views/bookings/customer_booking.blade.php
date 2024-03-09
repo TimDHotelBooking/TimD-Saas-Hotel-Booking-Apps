@@ -204,7 +204,7 @@
                                                                      <span
                                                                          class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
                                                                      <span
-                                                                         class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->room_type }}</span>
+                                                                         class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->type->type_name }}</span>
                                                                 </span>
                                                                 </label>
                                                             </div>

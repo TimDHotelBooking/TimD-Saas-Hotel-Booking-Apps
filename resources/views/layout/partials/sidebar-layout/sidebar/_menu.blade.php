@@ -56,7 +56,7 @@
 
             @if(auth()->user()->isPropertyAdmin() || (auth()->user()->can('view room') || auth()->user()->can('view tariff')))
                 <div data-kt-menu-trigger="click"
-                     class="menu-item menu-accordion {{ request()->routeIs('rooms.*','tariff.*',) ? 'here show' : '' }}">
+                     class="menu-item menu-accordion {{ request()->routeIs('rooms.*','tariff.*','type.*',) ? 'here show' : '' }}">
                     <!--begin:Menu link-->
                     <span class="menu-link">
 					<span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
@@ -81,6 +81,22 @@
                                 <!--end:Menu link-->
                             </div>
                         @endif
+
+                            <!--begin:Menu item-->
+                        @if(auth()->user()->isPropertyAdmin() || (auth()->user()->can('view type')))
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ request()->routeIs('type.*') ? 'active' : '' }}"
+                               href="{{ route('type.index') }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Type</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                    @endif
+
                         <!--begin:Menu item-->
                         @if(auth()->user()->isPropertyAdmin() || (auth()->user()->can('view tariff')))
                             <div class="menu-item">
