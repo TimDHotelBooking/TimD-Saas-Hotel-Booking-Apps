@@ -993,7 +993,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: '/bookings/calculate-room-booking-amount/',
+                    url: {{ route("bookings.calculate_total_bill_amount") }},
                     data:{
                       "room_id" : $("#room_id").val(),
                       "check_in_date" : $("#check_in_date").val(),
