@@ -31,7 +31,7 @@ class DashboardController extends Controller
             $no_of_bookings = Bookings::count();
             $sum_of_bookings = Bookings::sum('total_amount');
             $no_of_payments = Payments::count();
-            $sum_of_payments = Payments::sum('amount_paid');
+            $sum_of_payments = Payments::whereIn('status',[Payments::STATUS_FULLY_PAID,Payments::STATUS_PARTIALLY_PAID])->sum('amount_paid');
             $no_of_customers = Customers::count();
         }
         else if (Auth::user()->isPropertyAdmin()){
@@ -48,7 +48,7 @@ class DashboardController extends Controller
             })->count();
             $sum_of_payments = Payments::whereHas('booking.room',function ($query) use ($property_admin_id){
                 $query->where('created_by',$property_admin_id);
-            })->sum('amount_paid');
+            })->whereIn('status',[Payments::STATUS_FULLY_PAID,Payments::STATUS_PARTIALLY_PAID])->sum('amount_paid');
             $no_of_tariff = Tariff::where('created_by',$property_admin_id)->count();
 
             $all_property_agents_id = PropertyAgents::whereHas('property',function ($query) use($property_admin_id){
@@ -61,7 +61,7 @@ class DashboardController extends Controller
             $no_of_bookings = Bookings::count();
             $sum_of_bookings = Bookings::sum('total_amount');
             $no_of_payments = Payments::count();
-            $sum_of_payments = Payments::sum('amount_paid');
+            $sum_of_payments = Payments::whereIn('status',[Payments::STATUS_FULLY_PAID,Payments::STATUS_PARTIALLY_PAID])->sum('amount_paid');
             $no_of_customers = Customers::where('created_by',$property_agent_id)->count();
         }
         return view("dashboard.index",compact(

@@ -31,10 +31,18 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::resource('offers', \App\Http\Controllers\OfferController::class);
     Route::resource("rooms", \App\Http\Controllers\RoomsController::class);
+
+    Route::prefix('tariff')->name("tariff")->group(function () {
+        Route::post('check-correct-tariff-date', [\App\Http\Controllers\TariffController::class,"checkCorrectTariffDate"])->name('check_correct_tariff_date');
+    });
     Route::resource("tariff", \App\Http\Controllers\TariffController::class);
     Route::resource("type", \App\Http\Controllers\TypeController::class);
     Route::resource("customers", \App\Http\Controllers\CustomersController::class);
     Route::resource("property_agents", \App\Http\Controllers\PropertyAgentsController::class);
+
+    Route::prefix('bookings')->name("bookings")->group(function () {
+        Route::post('calculate-room-booking-amount', [\App\Http\Controllers\BookingsController::class,"calculate_total_bill_amount"])->name('calculate_total_bill_amount');
+    });
     Route::resource("bookings", \App\Http\Controllers\BookingsController::class);
     Route::resource("payments", \App\Http\Controllers\PaymentsController::class);
     Route::resource("notifications", \App\Http\Controllers\NotificationController::class);

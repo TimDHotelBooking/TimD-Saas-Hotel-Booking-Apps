@@ -54,17 +54,19 @@
                             <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <!--begin::Input group-->
-                        <div class="fv-row mb-7">
-                            <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-2">Amount Paid</label>
-                            <!--end::Label-->
-                            <!--begin::Input-->
-                            <input type="text" wire:model="amount_paid" name="amount_paid"
-                                   class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Amount Paid"/>
-                            <!--end::Input-->
-                            @error('amount_paid')
-                            <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
+                        @if($edit_mode)
+                            <div class="fv-row mb-7">
+                                <!--begin::Label-->
+                                <label class="required fw-semibold fs-6 mb-2">Amount Paid</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" wire:model="amount_paid" name="amount_paid"
+                                       class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Amount Paid"/>
+                                <!--end::Input-->
+                                @error('amount_paid')
+                                <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        @endif
                         <!--end::Input group-->
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">

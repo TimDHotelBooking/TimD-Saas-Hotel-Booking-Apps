@@ -140,4 +140,34 @@ class TariffController extends Controller
             ],500);
         }
     }
+
+    public function checkCorrectTariffDate(Request $request){
+        $room_id = $request->input("room_id");
+        $checkInDate = $request->input("check_in_date");
+        $checkOutDate = $request->input("check_out_date");
+
+        if (!empty($room_id) && !empty($checkInDatee) && !empty($checkOutDate)){
+            $tariff = Tariff::where('room_id', $room_id)
+                ->where(function ($query) use ($checkInDate, $checkOutDate) {
+                    $query->whereDate('start_date', '<=', $checkOutDate)
+                        ->whereDate('end_date', '>=', $checkInDate);
+                })
+                ->orWhere(function ($query) use ($checkInDate, $checkOutDate) {
+                    $query->whereDate('start_date', '=', $checkInDate)
+                        ->whereDate('end_date', '=', $checkOutDate);
+                })
+                ->first();
+            if (empty($tariff)){
+                return response()->json([
+                    "status" => 'error',
+                    "msg" => "select correct check in date and check out date"
+                ]);
+            }
+        }else{
+            return response()->json([
+                "status" => 'error',
+                "msg" => "Something mismatch in check in date or check out date"
+            ]);
+        }
+    }
 }

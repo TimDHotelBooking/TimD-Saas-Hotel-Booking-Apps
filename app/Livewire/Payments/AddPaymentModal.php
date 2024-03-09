@@ -4,6 +4,7 @@ namespace App\Livewire\Payments;
 
 use App\Models\Bookings;
 use App\Models\Payments;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -22,7 +23,7 @@ class AddPaymentModal extends Component
 
     protected $rules = [
         'booking_id' => 'required',
-        'amount_paid' => 'required|numeric',
+        'payment_date' => 'required',
         'payment_method' => 'required|string',
         'transaction_reference' => 'required|string',
     ];
@@ -45,13 +46,19 @@ class AddPaymentModal extends Component
 
         DB::transaction(function () {
             // Prepare the data for creating a new payment
+
+            if (!empty($this->booking_id)){
+                $booking = Bookings::find($this->booking_id);
+                $old_payment = Payments::where('booking_id',$booking->booking_id)->sum('amount_paid') ?? 0;
+                $total_pending_paid_amount = $booking->total_amount - $old_payment;
+            }
             $data = [
                 'booking_id' => $this->booking_id,
-                'amount_paid' => $this->amount_paid,
+                'amount_paid' => (!$this->edit_mode) ? $total_pending_paid_amount ?? 0 : $this->amount_paid,
                 'payment_method' => $this->payment_method,
                 'payment_date' => $this->payment_date,
                 'transaction_reference' => $this->transaction_reference,
-                'status' => 1,
+                'status' => Payments::STATUS_NOT_PAID,
                 'updated_by' => Auth::user()->user_id
             ];
 

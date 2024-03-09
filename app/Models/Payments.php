@@ -23,6 +23,10 @@ class Payments extends Model
         'status'
     ];
 
+    const STATUS_FULLY_PAID = "Fully Paid";
+    const STATUS_NOT_PAID = "Not Paid";
+    const STATUS_PARTIALLY_PAID = "Partially Paid";
+
     public function booking(){
         return $this->belongsTo(Bookings::class,'booking_id');
     }

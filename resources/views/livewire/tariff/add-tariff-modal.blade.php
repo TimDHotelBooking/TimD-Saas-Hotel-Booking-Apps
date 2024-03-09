@@ -38,7 +38,7 @@
                                 <option aria-hidden="true" aria-disabled="true" value="">Select Room</option>
                                 @if(!empty($rooms) && count($rooms) > 0)
                                     @foreach($rooms as $room)
-                                        <option value="{{ $room->room_id }}" >{{ (!empty($room->property) ? $room->property->property_name.' - '. $room->room_type : $room->room_type) }}</option>
+                                        <option value="{{ $room->room_id }}" >{{ (!empty($room->property) ? $room->property->property_name.' - '. $room->type->type_name : $room->type->type_name) }}</option>
                                     @endforeach
                                 @endif
                             </select>
