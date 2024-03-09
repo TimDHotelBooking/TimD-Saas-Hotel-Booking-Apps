@@ -12,7 +12,6 @@ return [
     | finds components. It's also referenced by the file creation commands.
     |
     */
-    'asset_url' => '/',
 
     'class_namespace' => 'App\\Livewire',
 
