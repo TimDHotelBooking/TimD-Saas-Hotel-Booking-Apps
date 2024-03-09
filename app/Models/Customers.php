@@ -16,6 +16,9 @@ class Customers extends Model
         'last_name',
         'email',
         'phone_number',
+        'company_name',
+        'gst',
+        'address',
         'created_by',
         'updated_by',
         'status'

@@ -2,7 +2,7 @@
 @if(!empty($booking) && !empty($booking->room))
     <div class="d-flex flex-column">
         <span class="mb-1">
-            {{ $booking->room->room_type ?? '-' }}
+            {{ $booking->room->type->type_name ?? '-' }}
         </span>
         @if(!empty($booking->room->property))
             <span class="mb-1">

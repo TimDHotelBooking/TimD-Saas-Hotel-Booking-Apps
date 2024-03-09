@@ -148,11 +148,15 @@ class RoomsController extends Controller
     public function get_room_tariffs($room_id){
         try {
             if (!empty($room_id)){
-                $tariffs = Tariff::where('room_id',$room_id)->get()->toArray();
+                $room = Rooms::find($room_id);
+                $availableDates = $room->availableDates();
                 return response()->json([
                     'status' => 'success',
                     'msg' => 'Tariff data successfully fetched',
-                    'data' => $tariffs
+                    'data' => [
+                        "availableDates" => $availableDates,
+                        "room" => $room,
+                    ],
                 ]);
             }else{
                 return response()->json([
@@ -161,6 +165,7 @@ class RoomsController extends Controller
                 ]);
             }
         }catch (\Exception $e){
+            Log::info($e->getMessage());
             return response()->json([
                 'status' => 'error',
                 'msg' => 'Something went wrong',

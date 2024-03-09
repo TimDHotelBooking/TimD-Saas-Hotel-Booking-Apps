@@ -144,7 +144,8 @@
                         <!--begin::Form-->
                         <form class="my-auto pb-5" novalidate="novalidate" id="kt_create_account_form">
 
-                            <div class="tab_content current" data-kt-stepper-element="content" data-tab="property_selection">
+                            <div class="tab_content current" data-kt-stepper-element="content"
+                                 data-tab="property_selection">
                                 <!--begin::Wrapper-->
                                 <div class="w-100">
                                     <!--begin::Heading-->
@@ -161,9 +162,6 @@
 											</span></h2>
                                         <!--end::Title-->
                                         <!--begin::Notice-->
-                                        <div class="text-muted fw-semibold fs-6">If you need more info, please check out
-                                            <a href="#" class="link-primary fw-bold">Help Page</a>.
-                                        </div>
                                         <div class="text-danger" id="error_room_id"></div>
                                         <!--end::Notice-->
                                     </div>
@@ -195,7 +193,9 @@
                                                             <div class="col-lg-4">
                                                                 <input type="radio" class="btn-check room_list"
                                                                        name="room_id" value="{{ $room->room_id }}"
-                                                                       id="room_{{ $room->room_id }}"/>
+                                                                       id="room_{{ $room->room_id }}"
+                                                                       data-best_price="{{ $room->price }}"
+                                                                       @if(count($room->availableDates()) == 0) disabled @endif/>
                                                                 <label
                                                                     class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10"
                                                                     for="room_{{ $room->room_id }}">
@@ -205,6 +205,9 @@
                                                                          class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
                                                                      <span
                                                                          class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->type->type_name }}</span>
+                                                                        @if(count($room->availableDates()) == 0)
+                                                                            <span class="text-danger fw-bold d-block fs-6 mb-2">No Dates Available</span>
+                                                                        @endif
                                                                 </span>
                                                                 </label>
                                                             </div>
@@ -228,9 +231,6 @@
                                 <div class="w-100">
                                     <div class="pb-10 pb-lg-15">
                                         <h2 class="fw-bold text-gray-900">Guest Details</h2>
-                                        <div class="text-muted fw-semibold fs-6">If you need more info, please check out
-                                            <a href="#" class="link-primary fw-bold">Help Page</a>.
-                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -240,9 +240,13 @@
                                                 <label class="form-label mb-3">Number of Guests</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="number"
+                                                {{--<input type="number"
                                                        class="form-control form-control-lg form-control-solid" min="0"
-                                                       name="no_of_guests" id="no_of_guests" placeholder="" value=""/>
+                                                       name="no_of_guests" id="no_of_guests" placeholder="" value=""/>--}}
+                                                <select class="form-control form-control-lg form-control-solid"
+                                                        name="no_of_guests" id="no_of_guests">
+                                                </select>
+
                                                 <!--end::Input-->
                                                 <div class="text-danger" id="error_no_of_guests"></div>
                                             </div>
@@ -255,9 +259,12 @@
                                                 <label class="form-label mb-3">Number of Rooms</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="number"
+                                                {{--<input type="number"
                                                        class="form-control form-control-lg form-control-solid" min="0"
-                                                       name="no_of_rooms" id="no_of_rooms" placeholder="" value=""/>
+                                                       name="no_of_rooms" id="no_of_rooms" placeholder="" value=""/>--}}
+                                                <select class="form-control form-control-lg form-control-solid"
+                                                        name="no_of_rooms" id="no_of_rooms">
+                                                </select>
                                                 <div class="text-danger" id="error_no_of_rooms"></div>
                                                 <!--end::Input-->
                                             </div>
@@ -314,9 +321,6 @@
                                         <h2 class="fw-bold text-gray-900">Primary Customer Details</h2>
                                         <!--end::Title-->
                                         <!--begin::Notice-->
-                                        <div class="text-muted fw-semibold fs-6">If you need more info, please check out
-                                            <a href="#" class="link-primary fw-bold">Help Page</a>.
-                                        </div>
                                         <!--end::Notice-->
                                     </div>
                                     <!--end::Heading-->
@@ -330,7 +334,7 @@
                                                 <!--begin::Input-->
                                                 <input type="text"
                                                        class="form-control form-control-lg form-control-solid"
-                                                       name="first_name" id="first_name" placeholder="" value=""/>
+                                                       name="first_name" id="first_name" placeholder="First Name" value=""/>
                                                 <!--end::Input-->
                                                 <div class="text-danger" id="error_first_name"></div>
                                             </div>
@@ -344,7 +348,7 @@
                                                 <!--begin::Input-->
                                                 <input type="text"
                                                        class="form-control form-control-lg form-control-solid"
-                                                       name="last_name" id="last_name" placeholder="" value=""/>
+                                                       name="last_name" id="last_name" placeholder="Last Name" value=""/>
                                                 <!--end::Input-->
                                                 <div class="text-danger" id="error_last_name"></div>
                                             </div>
@@ -358,7 +362,7 @@
                                                 <!--begin::Input-->
                                                 <input type="email"
                                                        class="form-control form-control-lg form-control-solid"
-                                                       name="email" id="email" placeholder="" value=""/>
+                                                       name="email" id="email" placeholder="Email" value=""/>
                                                 <!--end::Input-->
                                                 <div class="text-danger" id="error_email"></div>
                                             </div>
@@ -372,9 +376,54 @@
                                                 <!--begin::Input-->
                                                 <input type="tel"
                                                        class="form-control form-control-lg form-control-solid"
-                                                       name="phone_number" id="phone_number" placeholder="" value=""/>
+                                                       name="phone_number" id="phone_number" placeholder="Phone Number" value=""/>
                                                 <!--end::Input-->
                                                 <div class="text-danger" id="error_phone_number"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="form-label mb-3">Company Name</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text"
+                                                       class="form-control form-control-lg form-control-solid"
+                                                       name="company_name" id="company_name" placeholder="Company Name" value=""/>
+                                                <!--end::Input-->
+                                                <div class="text-danger" id="error_company_name"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="form-label mb-3">GST</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text"
+                                                       class="form-control form-control-lg form-control-solid"
+                                                       name="gst" id="gst" placeholder="GST" value=""/>
+                                                <!--end::Input-->
+                                                <div class="text-danger" id="error_gst"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="form-label mb-3">Address</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <textarea type="tel"
+                                                       class="form-control form-control-lg form-control-solid"
+                                                          name="address" id="address" placeholder="Address"></textarea>
+                                                <!--end::Input-->
+                                                <div class="text-danger" id="error_address"></div>
                                             </div>
                                         </div>
                                         <!--end::Input group-->
@@ -483,36 +532,47 @@
                                         <!--begin::Title-->
                                         <h2 class="fw-bold text-gray-900">Your booking confirmed!</h2>
                                         <!--end::Title-->
-                                        <!--begin::Notice-->
-                                        <div class="text-muted fw-semibold fs-6">If you need more info, please
-                                            <a href="authentication/layouts/corporate/sign-in.html"
-                                               class="link-primary fw-bold">Sign In</a>.
-                                        </div>
                                         <!--end::Notice-->
                                     </div>
                                     <!--end::Heading-->
                                     <!--begin::Body-->
                                     <div class="mb-0">
-                                        <!--begin::Text-->
-                                        <div class="fs-6 text-gray-600 mb-5">Writing headlines for blog posts is as much
-                                            an art as it is a science and probably warrants its own post, but for all
-                                            advise is with what works for your great & amazing audience.
-                                        </div>
-                                        <!--end::Text-->
-                                        <!--begin::Alert-->
-                                        <!--begin::Notice-->
                                         <div
                                             class="notice bg-light-warning rounded border-warning border border-dashed p-6">
-                                            <!--begin::Icon-->
-                                            <!--
-                                                                                            <i class="ki-duotone ki-information fs-2tx text-warning me-4">
-                                                                                                <span class="path1"></span>
-                                                                                                <span class="path2"></span>
-                                                                                                <span class="path3"></span>
-                                                                                            </i>
-                                            -->
-                                            <!--end::Icon-->
-                                            <!--begin::Wrapper-->
+                                            <h2 class="fw-bold text-gray-900">Guest Details</h2>
+                                            <div class="row row-cols-md-2">
+                                                <div class="col d-flex flex-stack flex-grow-1">
+                                                    <div class="fw-semibold">
+                                                        <div class="fs-6 text-gray-700">No of Guests
+                                                        </div>
+                                                        <h4 class="text-gray-900 fw-bold" id="label_no_of_guests"></h4>
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex flex-stack flex-grow-1">
+                                                    <div class="fw-semibold">
+                                                        <div class="fs-6 text-gray-700">No of Rooms
+                                                        </div>
+                                                        <h4 class="text-gray-900 fw-bold" id="label_no_of_rooms"></h4>
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex flex-stack flex-grow-1">
+                                                    <div class="fw-semibold">
+                                                        <div class="fs-6 text-gray-700">Check In Date
+                                                        </div>
+                                                        <h4 class="text-gray-900 fw-bold" id="label_check_in_date"></h4>
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex flex-stack flex-grow-1">
+                                                    <div class="fw-semibold">
+                                                        <div class="fs-6 text-gray-700">Check Out Date
+                                                        </div>
+                                                        <h4 class="text-gray-900 fw-bold" id="label_check_out_date"></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <hr/>
+                                            <h2 class="fw-bold text-gray-900 my-3">Primary Customer Details</h2>
                                             <div class="row row-cols-md-2">
                                                 <div class="col d-flex flex-stack flex-grow-1">
                                                     <div class="fw-semibold">
@@ -535,11 +595,49 @@
                                                         <h4 class="text-gray-900 fw-bold" id="label_phone"></h4>
                                                     </div>
                                                 </div>
+                                            </div>
+
+                                            <hr/>
+                                            <h2 class="fw-bold text-gray-900 my-3">Total Bill</h2>
+                                            <div class="row row-cols-md-2">
                                                 <div class="col d-flex flex-stack flex-grow-1">
                                                     <div class="fw-semibold">
-                                                        <div class="fs-6 text-gray-700">Rooms Booked
+                                                        <div class="fs-6 text-gray-700">Room Price
                                                         </div>
-                                                        <h4 class="text-gray-900 fw-bold"  id="label_booked_room"></h4>
+                                                        <h4 class="text-gray-900 fw-bold">
+                                                            <span id="label_price"></span>
+                                                            <span id="label_strike_price"></span>
+                                                            <span id="label_holiday_price"></span>
+                                                            <span id="label_promotional_price"></span>
+                                                            <input type="hidden" name="price" class="text-gray-900 fw-bold" id="price">
+                                                            <input type="hidden" name="holiday_price" class="text-gray-900 fw-bold" id="holiday_price">
+                                                            <input type="hidden" name="promotional_price" class="text-gray-900 fw-bold" id="promotional_price">
+                                                            <input type="hidden" name="is_holiday_price" class="text-gray-900 fw-bold" id="is_holiday_price">
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex flex-stack flex-grow-1">
+                                                    <div class="fw-semibold">
+                                                        <div class="fs-6 text-gray-700">Total Room
+                                                        </div>
+                                                        <h4 class="text-gray-900 fw-bold" id="label_total_room"></h4>
+                                                        <input type="hidden" name="total_room" class="text-gray-900 fw-bold" id="total_room">
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex flex-stack flex-grow-1">
+                                                    <div class="fw-semibold">
+                                                        <div class="fs-6 text-gray-700">Total Nights
+                                                        </div>
+                                                        <h4 class="text-gray-900 fw-bold" id="label_total_nights"></h4>
+                                                        <input type="hidden" name="total_nights" class="text-gray-900 fw-bold" id="total_nights">
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex flex-stack flex-grow-1">
+                                                    <div class="fw-semibold">
+                                                        <div class="fs-6 text-gray-700">Final Amount
+                                                        </div>
+                                                        <h4 class="text-gray-900 fw-bold" id="label_final_amount"></h4>
+                                                        <input type="hidden" name="final_amount" class="text-gray-900 fw-bold" id="final_amount">
                                                     </div>
                                                 </div>
                                             </div>
@@ -608,12 +706,20 @@
                     dateFormat: "Y-m-d",
                 });
 
+                $("select#no_of_guests").off("change");
+                $("select#no_of_guests").on("change", function () {
+                    let value = $(this).val();
+                    value = parseInt(value);
+                    var roomsNeeded = Math.ceil(value / 2);
+                    $('select#no_of_rooms').val(roomsNeeded);
+                });
+
                 $("button.btn_continue").off('click');
                 $("button.btn_continue").on('click', function () {
                     let current_tab_name = $("div.tab_content.current").data('tab');
-                    let current_tab_index = $("div[data-tab-head="+current_tab_name+"]").data('tab-index');
-                    if (current_tab_index == 0 ) {
-                        if($(".room_list").length > 0){
+                    let current_tab_index = $("div[data-tab-head=" + current_tab_name + "]").data('tab-index');
+                    if (current_tab_index == 0) {
+                        if ($(".room_list").length > 0) {
                             let room_id = $("input#room_id").val();
                             if (room_id.length == 0) {
                                 $("#error_room_id").text("Please choose one property room")
@@ -623,26 +729,47 @@
                                     type: "GET",
                                     url: '/rooms/get-room-tariffs/' + room_id,
                                     success: function (response, status, xhr) {
-                                        let tariffs = response.data || undefined;
-                                        if (tariffs !== undefined && tariffs.length > 0) {
+                                        let availableDates = response.data.availableDates || undefined;
+                                        let room = response.data.room || undefined;
+                                        if (availableDates !== undefined && availableDates.length > 0) {
                                             var enabledDates = [];
-                                            tariffs.forEach(function (tariff) {
-                                                let startDate = new Date(tariff.start_date);
-                                                startDate.setDate(startDate.getDate() - 1);
-                                                let endDate = new Date(tariff.end_date);
-                                                let currentDate = startDate;
+                                            availableDates.forEach(function (availableDate) {
+                                                let startDate = new Date(availableDate.start_date);
+                                                startDate.setDate(startDate.getDate()); // Adjusting start date to make it inclusive
+
+                                                let endDate = new Date(availableDate.end_date);
 
                                                 // Push start date and end date to the array
                                                 enabledDates.push({from: startDate, to: endDate});
 
                                                 // Loop through each date range and push dates to the array
+                                                let currentDate = new Date(startDate);
                                                 while (currentDate < endDate) {
-                                                    currentDate.setDate(currentDate.getDate() + 1);
                                                     enabledDates.push(new Date(currentDate));
+                                                    currentDate.setDate(currentDate.getDate() + 1);
                                                 }
                                             });
                                             checkInDatepicker.set('enable', enabledDates);
                                             checkOutDatepicker.set('enable', enabledDates);
+                                        }
+
+
+                                        let no_of_rooms = room.no_of_rooms;
+                                        if (no_of_rooms != undefined) {
+                                            no_of_rooms = parseInt(no_of_rooms);
+                                            for (var i = 1; i <= no_of_rooms; i++) {
+                                                $('select#no_of_rooms').append($('<option>', {
+                                                    value: i,
+                                                    text: i
+                                                }));
+                                            }
+                                            let no_of_guests = no_of_rooms * 2;
+                                            for (var i = 1; i <= no_of_guests; i++) {
+                                                $('select#no_of_guests').append($('<option>', {
+                                                    value: i,
+                                                    text: i
+                                                }));
+                                            }
                                         }
                                     },
                                     error: function (response) {
@@ -653,10 +780,10 @@
                                         );
                                     },
                                 });
-                                showNextTab(current_tab_name,current_tab_index);
+                                showNextTab(current_tab_name, current_tab_index);
                             }
                         }
-                    }else if (current_tab_index == 1) {
+                    } else if (current_tab_index == 1) {
                         let no_of_guests = $("#no_of_guests").val();
                         let no_of_rooms = $("#no_of_rooms").val();
                         let check_in_date = $("#check_in_date").val();
@@ -664,51 +791,56 @@
                         let special_requests = $("#special_requests").val();
 
                         let is_error = false;
-                        if(no_of_guests == undefined || no_of_guests == null || no_of_guests == ""){
+                        if (no_of_guests == undefined || no_of_guests == null || no_of_guests == "") {
                             is_error = true;
                             $("#error_no_of_guests").text("This field is required")
                         }
-                        if(no_of_rooms == undefined || no_of_rooms == null || no_of_rooms == ""){
+                        if (no_of_rooms == undefined || no_of_rooms == null || no_of_rooms == "") {
                             is_error = true;
                             $("#error_no_of_rooms").text("This field is required")
                         }
-                        if(check_in_date == undefined || check_in_date == null || check_in_date == ""){
+                        if (check_in_date == undefined || check_in_date == null || check_in_date == "") {
                             is_error = true;
                             $("#error_check_in_date").text("This field is required")
                         }
-                        if(check_out_date == undefined || check_out_date == null || check_out_date == ""){
+                        if (check_out_date == undefined || check_out_date == null || check_out_date == "") {
                             is_error = true;
                             $("#error_check_out_date").text("This field is required")
                         }
-                        if(!is_error){
-                            showNextTab(current_tab_name,current_tab_index);
+                        if (!is_error) {
+                            showNextTab(current_tab_name, current_tab_index);
                         }
-                    }else if (current_tab_index == 2) {
+                    } else if (current_tab_index == 2) {
                         let first_name = $("#first_name").val();
                         let last_name = $("#last_name").val();
                         let email = $("#email").val();
                         let phone_number = $("#phone_number").val();
+                        let address = $("#address").val();
                         let payment_method = $("input[name=payment_method]").val();
 
                         let is_error = false;
-                        if(first_name == undefined || first_name == null || first_name == ""){
+                        if (first_name == undefined || first_name == null || first_name == "") {
                             is_error = true;
                             $("#error_first_name").text("This field is required")
                         }
-                        if(last_name == undefined || last_name == null || last_name == ""){
+                        if (last_name == undefined || last_name == null || last_name == "") {
                             is_error = true;
                             $("#error_last_name").text("This field is required")
                         }
-                        if(email == undefined || email == null || email == ""){
+                        if (email == undefined || email == null || email == "") {
                             is_error = true;
                             $("#error_email").text("This field is required")
                         }
-                        if(phone_number == undefined || phone_number == null || phone_number == ""){
+                        if (phone_number == undefined || phone_number == null || phone_number == "") {
                             is_error = true;
                             $("#error_phone_number").text("This field is required");
                         }
-                        if(!is_error){
-                            showNextTab(current_tab_name,current_tab_index);
+                        if (address == undefined || address == null || address == "") {
+                            is_error = true;
+                            $("#error_address").text("This field is required");
+                        }
+                        if (!is_error) {
+                            showNextTab(current_tab_name, current_tab_index);
                         }
                     }
                 });
@@ -725,35 +857,59 @@
                     let last_name = $("#last_name").val();
                     let email = $("#email").val();
                     let phone_number = $("#phone_number").val();
+                    let company_name = $("#company_name").val();
+                    let gst = $("#gst").val();
+                    let address = $("#address").val();
                     let payment_method = $("input[name=payment_method]").val();
+                    let holiday_price = $("input[type=hidden]#price").val();
+                    let is_holiday_price = $("input[type=hidden]#is_holiday_price").val();
+                    let total_nights = $("input[type=hidden]#total_nights").val();
+                    let total_room = $("input[type=hidden]#total_room").val();
+                    let final_amount = $("input[type=hidden]#final_amount").val();
                     $.ajax({
                         type: "POST",
                         url: "{{ route("bookings.store") }}",
                         data: {
-                          'room_id' : room_id,
-                          'no_of_guests' : no_of_guests,
-                          'no_of_rooms' : no_of_rooms,
-                          'check_in_date' : check_in_date,
-                          'check_out_date' : check_out_date,
-                          'special_requests' : special_requests,
-                          'first_name' : first_name,
-                          'last_name' : last_name,
-                          'email' : email,
-                          'phone_number' : phone_number,
-                          'payment_method' : payment_method,
+                            'room_id': room_id,
+                            'no_of_guests': no_of_guests,
+                            'no_of_rooms': no_of_rooms,
+                            'check_in_date': check_in_date,
+                            'check_out_date': check_out_date,
+                            'special_requests': special_requests,
+                            'first_name': first_name,
+                            'last_name': last_name,
+                            'email': email,
+                            'phone_number': phone_number,
+                            'payment_method': payment_method,
+                            'company_name': company_name,
+                            'gst': gst,
+                            'address': address,
+                            'price': price,
+                            'holiday_price': holiday_price,
+                            'is_holiday_price': is_holiday_price,
+                            'total_nights': total_nights,
+                            'total_room': total_room,
+                            'final_amount': final_amount,
                         },
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token in the headers
                         },
                         success: function (response, status, xhr) {
-                            if(response.status == 'success'){
+                            if (response.status == 'success') {
                                 toastr.success(
                                     "Booking successfully register for customer",
                                     {timeOut: 0, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
                                 );
-                                setTimeout(function (){
+                                setTimeout(function () {
                                     window.location.href = "{{ route("bookings.index") }}"
-                                },500);
+                                }, 500);
+                            }else if(response.status == "bill_generate"){
+                                console.log("bill")
+                            }else{
+                                toastr.error(
+                                    response.msg,
+                                    {timeOut: 0, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
+                                );
                             }
                         },
                         error: function (response) {
@@ -777,13 +933,13 @@
 
             function showPreviousTab() {
                 let current_tab_name = $("div.tab_content.current").data('tab');
-                let current_tab_element = $("div[data-tab-head="+current_tab_name+"]");
+                let current_tab_element = $("div[data-tab-head=" + current_tab_name + "]");
                 let current_tab_index = current_tab_element.data('tab-index');
-                let current_tab_content_element = $("div[data-tab="+current_tab_name+"].tab_content");
+                let current_tab_content_element = $("div[data-tab=" + current_tab_name + "].tab_content");
                 let prev_tab_index = parseInt(current_tab_index) - 1;
-                let prev_tab_element = $("div[data-tab-index="+prev_tab_index+"]");
+                let prev_tab_element = $("div[data-tab-index=" + prev_tab_index + "]");
                 let prev_tab_head = prev_tab_element.data('tab-head');
-                let prev_tab_content_element = $("div[data-tab="+prev_tab_head+"].tab_content");
+                let prev_tab_content_element = $("div[data-tab=" + prev_tab_head + "].tab_content");
                 current_tab_element.removeClass("current mark-completed");
                 current_tab_content_element.removeClass("current");
                 // prev_tab_element.addClass("current");
@@ -797,13 +953,13 @@
                 }
             }
 
-            function showNextTab(current_tab_name,current_tab_index) {
-                let current_tab_element = $("div[data-tab-head="+current_tab_name+"]");
-                let current_tab_content_element = $("div[data-tab="+current_tab_name+"].tab_content");
+            function showNextTab(current_tab_name, current_tab_index) {
+                let current_tab_element = $("div[data-tab-head=" + current_tab_name + "]");
+                let current_tab_content_element = $("div[data-tab=" + current_tab_name + "].tab_content");
                 let next_tab_index = parseInt(current_tab_index) + 1;
-                let next_tab_element = $("div[data-tab-index="+next_tab_index+"]");
+                let next_tab_element = $("div[data-tab-index=" + next_tab_index + "]");
                 let next_tab_head = next_tab_element.data('tab-head');
-                let next_tab_content_element = $("div[data-tab="+next_tab_head+"].tab_content");
+                let next_tab_content_element = $("div[data-tab=" + next_tab_head + "].tab_content");
                 current_tab_element.addClass("current mark-completed");
                 current_tab_content_element.removeClass("current");
                 next_tab_element.addClass("current");
@@ -812,18 +968,85 @@
                 if (next_tab_index == 3) {
                     $("button.btn_continue").hide();
                     $("button.btn_submit").show();
-                    let first_name = $("#first_name").val();
-                    let last_name = $("#last_name").val();
-                    let email = $("#email").val();
-                    let phone_number = $("#phone_number").val();
-                    let no_of_rooms = $("#no_of_rooms").val();
-                    $("#label_name").text(first_name +" "+ last_name);
-                    $("#label_email").text(email);
-                    $("#label_phone").text(phone_number);
-                    $("#label_booked_room").text(no_of_rooms);
+                    showBookingConfirmed();
                 }
             }
 
+            function showBookingConfirmed(){
+                let first_name = $("#first_name").val();
+                let last_name = $("#last_name").val();
+                let email = $("#email").val();
+                let phone_number = $("#phone_number").val();
+                $("#label_name").text(first_name + " " + last_name);
+                $("#label_email").text(email);
+                $("#label_phone").text(phone_number);
+
+                let no_of_rooms = $("#no_of_rooms").val();
+                let no_of_guests = $("#no_of_guests").val();
+                let check_in_date = $("#check_in_date").val();
+                let check_out_date = $("#check_out_date").val();
+                $("#label_no_of_rooms").text(no_of_rooms);
+                $("#label_no_of_guests").text(no_of_guests);
+                $("#label_check_in_date").text(check_in_date);
+                $("#label_check_out_date").text(check_out_date);
+
+
+                $.ajax({
+                    type: "POST",
+                    url: '/bookings/calculate-room-booking-amount/',
+                    data:{
+                      "room_id" : $("#room_id").val(),
+                      "check_in_date" : $("#check_in_date").val(),
+                      "check_out_date" : $("#check_out_date").val(),
+                      "no_of_guests" : $("#no_of_guests").val(),
+                      "no_of_rooms" : $("#no_of_rooms").val(),
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token in the headers
+                    },
+                    success: function (response, status, xhr) {
+                        let data = response.data || undefined;
+                        if(response.status == "success"){
+                            if(data != undefined){
+                                if(data.is_holiday_price){
+                                    $("#label_strike_price").text(data.rate_per_night);
+                                    $("#label_holiday_price").text(data.holiday_rate_per_night);
+                                    $("input[type=hidden]#price").val(data.holiday_rate_per_night);
+                                    $("input[type=hidden]#holiday_price").val(data.holiday_rate_per_night);
+                                }else{
+                                    $("#label_price").text(data.rate_per_night);
+                                    $("input[type=hidden]#price").text(data.rate_per_night);
+                                }
+                                $("input[type=hidden]#is_holiday_price").val(data.is_holiday_price);
+
+                                $("#label_total_nights").text(data.total_night);
+                                $("input[type=hidden]#total_nights").val(data.total_night);
+
+
+                                $("#label_total_room").text(data.total_rooms);
+                                $("input[type=hidden]#total_room").val(data.total_rooms);
+
+
+                                $("#label_final_amount").text(data.total_amount);
+                                $("input[type=hidden]#final_amount").val(data.total_amount);
+                            }
+                        }else{
+                            toastr.error(
+                                response.msg,
+                                {timeOut: 0, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
+                            );
+                        }
+                    },
+                    error: function (response) {
+                        toastr.error(
+                            "Please try it again later.",
+                            "Something went wrong!",
+                            {timeOut: 0, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
+                        );
+                    },
+                });
+
+            }
 
         </script>
     @endpush
