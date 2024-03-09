@@ -4,6 +4,7 @@ namespace App\Livewire\Rooms;
 
 use App\Models\Property;
 use App\Models\Rooms;
+use App\Models\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -13,16 +14,17 @@ class AddRoomsModal extends Component
 {
     public $room_id;
     public $property_id;
-    public $room_type;
+    public $room_type_id;
     public $availability_status;
     public $status;
     public $price;
+    public $no_of_rooms;
 
     public $edit_mode = false;
 
     protected $rules = [
         'property_id' => "required",
-        "room_type" => "required|string",
+        "room_type_id" => "required",
         "availability_status" => "required",
         "price" => "required",
         "status" => "required"
@@ -39,10 +41,9 @@ class AddRoomsModal extends Component
         if (!Auth::user()->isSuperAdmin()){
             $properties->where('property_admin_id',Auth::user()->user_id);
         }
-
-
         $properties = $properties->get();
-        return view('livewire.rooms.add-rooms-modal',compact('properties'));
+        $room_types = Type::where('status',1)->get();
+        return view('livewire.rooms.add-rooms-modal',compact('properties','room_types'));
     }
 
     public function submit()
@@ -51,11 +52,18 @@ class AddRoomsModal extends Component
         $this->validate();
         DB::transaction(function () {
             // Prepare the data for creating a new property
+            $is_exists = Rooms::where("property_id",$this->property_id)
+                ->where("room_type_id",$this->room_type_id)->first();
+            if (($this->edit_mode && $is_exists->room_id != $this->room_id) || empty(!$this->edit_mode) && !empty($is_exists)){
+                $this->dispatch('error', __('Rooms already exists with selected property'));
+                return;
+            }
             $data = [
                 'property_id' => $this->property_id,
-                'room_type' => $this->room_type,
+                'room_type_id' => $this->room_type_id,
                 'availability_status' => $this->availability_status,
                 'price' => $this->price,
+                'no_of_rooms' => $this->no_of_rooms,
                 'status' => $this->status,
                 'updated_by' => Auth::user()->user_id
             ];
@@ -105,9 +113,10 @@ class AddRoomsModal extends Component
         $room = Rooms::find($id);
         $this->room_id = $room->room_id;
         $this->property_id = $room->property_id;
-        $this->room_type = $room->room_type;
+        $this->room_type_id = $room->room_type_id;
         $this->availability_status = $room->availability_status;
         $this->price = $room->price;
+        $this->no_of_rooms = $room->no_of_rooms;
         $this->status = $room->status;
     }
 

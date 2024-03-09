@@ -53,6 +53,25 @@
                 </div>
             @endcanany
 
+            @canany('view type')
+                <div data-kt-menu-trigger="click"
+                     class="menu-item menu-accordion {{ request()->routeIs('type') ? 'here show' : '' }}">
+                    <!--begin:Menu link-->
+                    @can('view type')
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ request()->routeIs('type') ? 'active' : '' }}"
+                               href="{{ route('type.index') }}">
+                                <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                                <span class="menu-title">Room Type</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                    @endcan
+                    <!--end:Menu link-->
+                </div>
+            @endcanany
+
             @canany('view room')
                 <div data-kt-menu-trigger="click"
                      class="menu-item menu-accordion {{ request()->routeIs('rooms') ? 'here show' : '' }}">
@@ -110,25 +129,6 @@
                     <!--end:Menu link-->
                 </div>
             @endcanany
-
-            @canany('view type')
-            <div data-kt-menu-trigger="click"
-                 class="menu-item menu-accordion {{ request()->routeIs('type') ? 'here show' : '' }}">
-                <!--begin:Menu link-->
-                @can('view type')
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link {{ request()->routeIs('type') ? 'active' : '' }}"
-                           href="{{ route('type.index') }}">
-                            <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
-                            <span class="menu-title">Room Type</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                @endcan()
-                <!--end:Menu link-->
-            </div>
-        @endcanany
 
 
             @canany('view property agent')

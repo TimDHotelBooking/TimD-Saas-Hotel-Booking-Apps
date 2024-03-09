@@ -50,6 +50,7 @@ class RolesPermissionsSeeder extends Seeder
                 'property agent',
                 'user',
                 'offer',
+                'customer'
             ],
             'Property Agent' => [
                 'customer',

@@ -82,6 +82,8 @@ class TariffDataTable extends DataTable
             Column::make('start_date'),
             Column::make('end_date'),
             Column::make('price'),
+            Column::make('holiday_price'),
+            Column::make('promotional_price'),
             Column::make('created_at'),
             Column::computed('action')
                 ->addClass('text-end text-nowrap')

@@ -212,6 +212,10 @@
                                                     </div>
                                                 @endif
                                             @endforeach
+                                        @else
+                                            <div class="mb-5">
+                                                <span class="text-danger error">No Properties Available</span>
+                                            </div>
                                         @endif
                                         <!--end::Row-->
                                     </div>
@@ -608,47 +612,49 @@
                 $("button.btn_continue").on('click', function () {
                     let current_tab_name = $("div.tab_content.current").data('tab');
                     let current_tab_index = $("div[data-tab-head="+current_tab_name+"]").data('tab-index');
-                    if (current_tab_index == 0) {
-                        let room_id = $("input#room_id").val();
-                        if (room_id.length == 0) {
-                            $("#error_room_id").text("Please choose one property room")
-                        } else {
-                            $("#error_room_id").text("");
-                            $.ajax({
-                                type: "GET",
-                                url: '/rooms/get-room-tariffs/' + room_id,
-                                success: function (response, status, xhr) {
-                                    let tariffs = response.data || undefined;
-                                    if (tariffs !== undefined && tariffs.length > 0) {
-                                        var enabledDates = [];
-                                        tariffs.forEach(function (tariff) {
-                                            let startDate = new Date(tariff.start_date);
-                                            startDate.setDate(startDate.getDate() - 1);
-                                            let endDate = new Date(tariff.end_date);
-                                            let currentDate = startDate;
+                    if (current_tab_index == 0 ) {
+                        if($(".room_list").length > 0){
+                            let room_id = $("input#room_id").val();
+                            if (room_id.length == 0) {
+                                $("#error_room_id").text("Please choose one property room")
+                            } else {
+                                $("#error_room_id").text("");
+                                $.ajax({
+                                    type: "GET",
+                                    url: '/rooms/get-room-tariffs/' + room_id,
+                                    success: function (response, status, xhr) {
+                                        let tariffs = response.data || undefined;
+                                        if (tariffs !== undefined && tariffs.length > 0) {
+                                            var enabledDates = [];
+                                            tariffs.forEach(function (tariff) {
+                                                let startDate = new Date(tariff.start_date);
+                                                startDate.setDate(startDate.getDate() - 1);
+                                                let endDate = new Date(tariff.end_date);
+                                                let currentDate = startDate;
 
-                                            // Push start date and end date to the array
-                                            enabledDates.push({from: startDate, to: endDate});
+                                                // Push start date and end date to the array
+                                                enabledDates.push({from: startDate, to: endDate});
 
-                                            // Loop through each date range and push dates to the array
-                                            while (currentDate < endDate) {
-                                                currentDate.setDate(currentDate.getDate() + 1);
-                                                enabledDates.push(new Date(currentDate));
-                                            }
-                                        });
-                                        checkInDatepicker.set('enable', enabledDates);
-                                        checkOutDatepicker.set('enable', enabledDates);
-                                    }
-                                },
-                                error: function (response) {
-                                    toastr.error(
-                                        "Please try it again later.",
-                                        "Something went wrong!",
-                                        {timeOut: 0, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
-                                    );
-                                },
-                            });
-                            showNextTab(current_tab_name,current_tab_index);
+                                                // Loop through each date range and push dates to the array
+                                                while (currentDate < endDate) {
+                                                    currentDate.setDate(currentDate.getDate() + 1);
+                                                    enabledDates.push(new Date(currentDate));
+                                                }
+                                            });
+                                            checkInDatepicker.set('enable', enabledDates);
+                                            checkOutDatepicker.set('enable', enabledDates);
+                                        }
+                                    },
+                                    error: function (response) {
+                                        toastr.error(
+                                            "Please try it again later.",
+                                            "Something went wrong!",
+                                            {timeOut: 0, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
+                                        );
+                                    },
+                                });
+                                showNextTab(current_tab_name,current_tab_index);
+                            }
                         }
                     }else if (current_tab_index == 1) {
                         let no_of_guests = $("#no_of_guests").val();

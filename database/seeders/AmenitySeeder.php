@@ -15,63 +15,38 @@ class AmenitySeeder extends Seeder
      */
     public function run()
     {
-        Amenity::create([
-            'amenity_name' => 'Pet Friendly'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Sleep'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Swimming pool'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Hot Tub'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Continual Breakfast'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Toiletries'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Bar'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Parking'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Restaurant'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Room Service'           
-        ]);
-        Amenity::create([
-            'amenity_name' => '4-Hour Desk Service'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Fitness Center'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Non-Smoking Room'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Airport Shuttle'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Family Room'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Spa'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Free Wi-Fi'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Electric Vehicle Charge Center'           
-        ]);
-        Amenity::create([
-            'amenity_name' => 'Coffee and Tea Kit'           
-        ]);
 
+        $amenities = [
+            'Pet Friendly',
+            'Sleep',
+            'Swimming pool',
+            'Hot Tub',
+            'Continual Breakfast',
+            'Toiletries',
+            'Bar',
+            'Parking',
+            'Restaurant',
+            'Room Service',
+            '4-Hour Desk Service',
+            'Fitness Center',
+            'Non-Smoking Room',
+            'Airport Shuttle',
+            'Family Room',
+            'Spa',
+            'Free Wi-Fi',
+            'Electric Vehicle Charge Center',
+            'Coffee and Tea Kit'
+        ];
+
+        if(!empty($amenities)){
+            foreach ($amenities as $amenity){
+                $is_exists = Amenity::where('amenity_name',$amenity)->count();
+                if ($is_exists == 0){
+                    Amenity::create([
+                        "amenity_name" => $amenity
+                    ]);
+                }
+            }
+        }
     }
 }
