@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource("customers", \App\Http\Controllers\CustomersController::class);
     Route::resource("property_agents", \App\Http\Controllers\PropertyAgentsController::class);
 
-    Route::prefix('bookings')->name("bookings")->group(function () {
+    Route::prefix('bookings')->name("bookings.")->group(function () {
         Route::post('calculate-room-booking-amount', [\App\Http\Controllers\BookingsController::class,"calculate_total_bill_amount"])->name('calculate_total_bill_amount');
     });
     Route::resource("bookings", \App\Http\Controllers\BookingsController::class);
