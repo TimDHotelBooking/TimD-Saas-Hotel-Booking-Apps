@@ -217,16 +217,16 @@ class BookingsController extends Controller
                     $holiday_price = $request->input("holiday_price");
                     $is_holiday_price = $request->input("is_holiday_price");
 
-                    $old_payment = Payments::where('booking_id',$updated_booking->booking_id)->sum('amount_paid') ?? 0;
+                    $old_payment = Payments::where('booking_id',$booking->booking_id)->sum('amount_paid') ?? 0;
                     $total_pending_paid_amount = $final_amount - $old_payment;
-                    Payments::create([
-                        'booking_id' => $updated_booking->booking_id,
+                   /* Payments::create([
+                        'booking_id' => $booking->booking_id,
                         'amount_paid' => $total_pending_paid_amount,
                         'payment_date' => Carbon::now(),
-                        'payment_method' => $updated_booking->payment_method ?? 'cash',
+                        'payment_method' => $booking->payment_method ?? 'cash',
                         'transaction_reference' => uniqid(),
                         'status' => Payments::STATUS_NOT_PAID
-                    ]);
+                    ]);*/
                     DB::commit();
                     return response()->json([
                         "status" => 'success',
