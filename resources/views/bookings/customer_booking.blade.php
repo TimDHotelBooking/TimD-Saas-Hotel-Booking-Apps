@@ -861,6 +861,7 @@
                     let gst = $("#gst").val();
                     let address = $("#address").val();
                     let payment_method = $("input[name=payment_method]").val();
+                    let price = $("input[type=hidden]#price").val();
                     let holiday_price = $("input[type=hidden]#price").val();
                     let is_holiday_price = $("input[type=hidden]#is_holiday_price").val();
                     let total_nights = $("input[type=hidden]#total_nights").val();
