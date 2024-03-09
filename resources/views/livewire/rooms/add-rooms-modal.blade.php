@@ -53,9 +53,16 @@
                             <label class="required fw-semibold fs-6 mb-2">Room Type</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" wire:model="room_type" name="room_type" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Room Type"/>
+                            <select class="form-control form-control-solid  mb-3 mb-lg-0" name="room_type_id" wire:model="room_type_id">
+                                <option aria-hidden="true" aria-disabled="true" value="">Select Room Type</option>
+                                @if(!empty($room_types) && count($room_types) > 0)
+                                    @foreach($room_types as $room_type)
+                                        <option value="{{ $room_type->type_id }}" >{{ $room_type->type_name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
                             <!--end::Input-->
-                            @error('room_type')
+                            @error('room_type_id')
                             <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <!--end::Input group-->
@@ -68,6 +75,19 @@
                             <input type="text" wire:model="price" name="price" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Price"/>
                             <!--end::Input-->
                             @error('price')
+                            <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">No of Rooms</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" wire:model="no_of_rooms" name="no_of_rooms" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="No of Rooms"/>
+                            <!--end::Input-->
+                            @error('no_of_rooms')
                             <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <!--end::Input group-->

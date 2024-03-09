@@ -14,9 +14,10 @@ class Rooms extends Model
     protected $fillable = [
         'room_id',
         'property_id',
-        'room_type',
+        'room_type_id',
         'availability_status',
         'price',
+        'no_of_rooms',
         'created_by',
         'updated_by',
         'status'
@@ -35,5 +36,9 @@ class Rooms extends Model
 
     public function tariffs(){
         return $this->hasMany(Tariff::class,'room_id');
+    }
+
+    public function type(){
+        return $this->belongsTo(Type::class,'room_type_id');
     }
 }

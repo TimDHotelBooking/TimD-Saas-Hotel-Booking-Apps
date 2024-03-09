@@ -17,6 +17,8 @@ class Tariff extends Model
         'start_date',
         'end_date',
         'price',
+        'holiday_price',
+        'promotional_price',
         'created_by',
         'updated_by',
         'status'

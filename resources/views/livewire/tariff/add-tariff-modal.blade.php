@@ -84,6 +84,28 @@
                         </div>
                         <!--end::Input group-->
 
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Holiday Price</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" wire:model="holiday_price" name="holiday_price" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Holiday Price"/>
+                            <!--end::Input-->
+                            @error('holiday_price')
+                            <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Promotional Price</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" wire:model="promotional_price" name="promotional_price" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Promotional Price"/>
+                            <!--end::Input-->
+                            @error('promotional_price')
+                            <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+
                         <div class="mb-7">
                             <!--begin::Label-->
                             <label class="required fw-semibold fs-6 mb-5">Status</label>

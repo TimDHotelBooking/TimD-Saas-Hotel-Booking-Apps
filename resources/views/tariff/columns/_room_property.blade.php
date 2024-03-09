@@ -2,7 +2,7 @@
 @if(!empty($tariff) && !empty($tariff->room))
     <div class="d-flex flex-column">
         <a href="{{ route('rooms.index') }}" target="_blank" class="text-gray-800 text-hover-primary mb-1">
-            {{ $tariff->room->room_type ?? '-' }}
+            {{ $tariff->room->type->type_name ?? '-' }}
         </a>
         @if(!empty($tariff->room->property))
             <a href="{{ route('property.index') }}" target="_blank" class="text-gray-800 text-hover-primary mb-1">

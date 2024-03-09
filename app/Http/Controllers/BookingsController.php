@@ -11,6 +11,7 @@ use App\Models\Rooms;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class BookingsController extends Controller
 {
@@ -27,11 +28,8 @@ class BookingsController extends Controller
      */
     public function create()
     {
-        $properties = Property::with(['rooms' => function($query){
-            $query->has('tariffs')->where('status',Rooms::AVAILABLE_STATUS);
-        }])->whereHas('agents',function ($query){
-            $query->where('agent_id',Auth::user()->user_id);
-        })->where('status',1)->get();
+        $properties = Property::where('status', 1)
+        ->get();
         return view('bookings.customer_booking',compact('properties'));
     }
 

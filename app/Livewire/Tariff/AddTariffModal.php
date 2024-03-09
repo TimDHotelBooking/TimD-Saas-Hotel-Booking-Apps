@@ -15,6 +15,8 @@ class AddTariffModal extends Component
     public $start_date;
     public $end_date;
     public $price;
+    public $holiday_price;
+    public $promotional_price;
     public $status;
 
     public $edit_mode = false;
@@ -52,6 +54,8 @@ class AddTariffModal extends Component
                 'start_date' => $this->start_date,
                 'end_date' => $this->end_date,
                 'price' => $this->price,
+                'holiday_price' => $this->holiday_price,
+                'promotional_price' => $this->promotional_price,
                 'status' => $this->status,
                 'updated_by' => Auth::user()->user_id
             ];
@@ -104,6 +108,8 @@ class AddTariffModal extends Component
         $this->start_date = $tariff->start_date;
         $this->end_date = $tariff->end_date;
         $this->price = $tariff->price;
+        $this->holiday_price = $tariff->holiday_price;
+        $this->promotional_price = $tariff->promotional_price;
         $this->status = $tariff->status;
     }
 
