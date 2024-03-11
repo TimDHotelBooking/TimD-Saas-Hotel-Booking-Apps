@@ -22,7 +22,8 @@ class UsersDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->rawColumns(['user', 'last_login_at'])
             ->editColumn('user', function (Users $user) {
-                return view('pages/apps.users.columns._user', compact('user'));
+                $profilePhotoUrl = $user->profile_photo_path ? url($user->profile_photo_path) : null;
+                return view('pages/apps.users.columns._user', compact('user', 'profilePhotoUrl'));
             })
             ->editColumn('role', function (Users $user) {
                 return ucwords($user->roles->first()?->name);
