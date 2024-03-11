@@ -121,7 +121,7 @@
                             </div>
 
                             <div class="stepper-item " data-tab-index="4" data-kt-stepper-element="nav"
-                                 data-tab-head="booking_payment">
+                                 data-tab-head="select_payment_meth">
                                 <!--begin::Wrapper-->
                                 <div class="stepper-wrapper">
                                     <!--begin::Icon-->
