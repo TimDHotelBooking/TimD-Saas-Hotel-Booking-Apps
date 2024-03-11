@@ -35,7 +35,7 @@ class AddUserModal extends Component
         'name' => 'required|string',
         'email' => 'required|email|unique:users,email',
         'role' => 'required|string',
-        'phone_number' => 'required|digits:10|unique:users,email',
+        'phone_number' => 'required|digits:10|unique:users,phone_number',
         'status' => 'required',
         'avatar' => 'nullable|sometimes|image|max:5120',
     ];
