@@ -27,14 +27,15 @@ class AddUserModal extends Component
     public $role;
     public $avatar;
     public $saved_avatar;
+    public $profile_photo_path;
 
     public $edit_mode = false;
 
     protected $rules = [
         'name' => 'required|string',
-        'email' => 'required|email',
+        'email' => 'required|email|unique:users,email',
         'role' => 'required|string',
-        'phone_number' => 'required',
+        'phone_number' => 'required|digits:10|unique:users,email',
         'status' => 'required',
         'avatar' => 'nullable|sometimes|image|max:5120',
     ];
@@ -75,7 +76,7 @@ class AddUserModal extends Component
                 if ($this->avatar) {
                     $filename = uniqid() . '.' . $this->avatar->getClientOriginalExtension();
                     Storage::disk('public_avatars')->put('avatars/' . $filename, file_get_contents($this->avatar->getPathname()));
-                    $data['profile_photo_path'] = $filename;
+                    $data['profile_photo_path'] = 'avatars/' . $filename;
                 } else {
                     $data['profile_photo_path'] = null;
                 }
