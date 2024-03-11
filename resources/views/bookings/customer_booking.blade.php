@@ -195,7 +195,7 @@
                                                                        name="room_id" value="{{ $room->room_id }}"
                                                                        id="room_{{ $room->room_id }}"
                                                                        data-best_price="{{ $room->price }}"
-                                                                       @if(count($room->availableDates()) == 0) disabled @endif/>
+                                                                       @if(count($room->availableDates()) == 0 && count($room->bookings) > 0) disabled @endif/>
                                                                 <label
                                                                     class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10"
                                                                     for="room_{{ $room->room_id }}">
@@ -205,7 +205,7 @@
                                                                          class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
                                                                      <span
                                                                          class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->type->type_name }}</span>
-                                                                        @if(count($room->availableDates()) == 0)
+                                                                        @if(count($room->availableDates()) == 0 && count($room->bookings) > 0)
                                                                             <span class="text-danger fw-bold d-block fs-6 mb-2">No Dates Available</span>
                                                                         @endif
                                                                 </span>
@@ -861,6 +861,7 @@
                     let gst = $("#gst").val();
                     let address = $("#address").val();
                     let payment_method = $("input[name=payment_method]").val();
+                    let price = $("input[type=hidden]#price").val();
                     let holiday_price = $("input[type=hidden]#price").val();
                     let is_holiday_price = $("input[type=hidden]#is_holiday_price").val();
                     let total_nights = $("input[type=hidden]#total_nights").val();
@@ -993,7 +994,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: '/bookings/calculate-room-booking-amount/',
+                    url: "{{ route("bookings.calculate_total_bill_amount") }}",
                     data:{
                       "room_id" : $("#room_id").val(),
                       "check_in_date" : $("#check_in_date").val(),
