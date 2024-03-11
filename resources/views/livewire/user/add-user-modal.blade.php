@@ -123,7 +123,7 @@
                             <label class="required fw-semibold fs-6 mb-2">Phone Number</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" wire:model="phone_number" name="phone_number" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Phone Number"/>
+                            <input type="number" wire:model="phone_number" name="phone_number" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Phone Number" oninput="this.value = this.value.slice(0, 10)"/>
                             <!--end::Input-->
                             @error('phone_number')
                             <span class="text-danger">{{ $message }}</span> @enderror
