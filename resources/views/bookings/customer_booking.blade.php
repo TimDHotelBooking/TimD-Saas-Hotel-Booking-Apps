@@ -15,7 +15,7 @@
                     <div class="d-flex flex-center py-10 py-lg-20">
                         <!--begin::Logo-->
                         <a href="{{ route("dashboard") }}">
-                            <img alt="Logo" src="{{ asset('assets/media/logos/custom-1.png') }}" class="h-70px"/>
+                            <img alt="Logo" src="{{ asset('assets/media/logos/TIMD logo_RGB.png') }}" class="h-70px"/>
                         </a>
                         <!--end::Logo-->
                     </div>
@@ -110,6 +110,30 @@
                                     <div class="stepper-label">
                                         <h3 class="stepper-title">Booking Confirmation</h3>
                                         <div class="stepper-desc fw-normal">Your booking completed</div>
+                                    </div>
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Wrapper-->
+
+                                <!--begin::Line-->
+                                <div class="stepper-line h-40px"></div>
+                                <!--end::Line-->
+                            </div>
+
+                            <div class="stepper-item " data-tab-index="4" data-kt-stepper-element="nav"
+                                 data-tab-head="booking_payment">
+                                <!--begin::Wrapper-->
+                                <div class="stepper-wrapper">
+                                    <!--begin::Icon-->
+                                    <div class="stepper-icon">
+                                        <i class="ki-duotone ki-check fs-2 stepper-check"></i>
+                                        <span class="stepper-number">5</span>
+                                    </div>
+                                    <!--end::Icon-->
+                                    <!--begin::Label-->
+                                    <div class="stepper-label">
+                                        <h3 class="stepper-title">Select Payment Mode</h3>
+                                        <div class="stepper-desc fw-normal">Complete your payment</div>
                                     </div>
                                     <!--end::Label-->
                                 </div>
@@ -427,98 +451,8 @@
                                             </div>
                                         </div>
                                         <!--end::Input group-->
-                                        <div class="col-md-12">
-                                            <!--begin::Input group-->
-                                            <div class="mb-0 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="d-flex align-items-center form-label mb-5">Payment Method
-                                                    <span class="ms-1" data-bs-toggle="tooltip"
-                                                          title="Monthly billing will be based on your account plan">
-												<i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-													<span class="path1"></span>
-													<span class="path2"></span>
-													<span class="path3"></span>
-												</i>
-											</span></label>
-                                                <!--end::Label-->
-                                                <!--begin::Options-->
-                                                <div class="row mb-0">
-                                                    <div class="col-md-6">
-                                                        <!--begin:Option-->
-                                                        <label class="d-flex flex-stack mb-5 cursor-pointer">
-                                                            <!--begin:Label-->
-                                                            <span class="d-flex align-items-center me-2">
-                                                                <!--begin::Icon-->
-                                                                <span class="symbol symbol-50px me-6">
-                                                                    <span class="symbol-label">
-                                                                        <i class="ki-duotone ki-bank fs-1 text-gray-600">
-                                                                            <span class="path1"></span>
-                                                                            <span class="path2"></span>
-                                                                        </i>
-                                                                    </span>
-                                                                </span>
-                                                                <!--end::Icon-->
-                                                                <!--begin::Description-->
-                                                                    <span class="d-flex flex-column">
-                                                                        <span
-                                                                            class="fw-bold text-gray-800 text-hover-primary fs-5">Bank Transfer</span>
-                                                                        <span class="fs-6 fw-semibold text-muted">Use images to enhance your post flow</span>
-                                                                    </span>
-                                                                <!--end:Description-->
-													        </span>
-                                                            <!--end:Label-->
-                                                            <!--begin:Input-->
-                                                            <span class="form-check form-check-custom form-check-solid">
-                                                                <input class="form-check-input" type="radio"
-                                                                       name="payment_method"
-                                                                       value="bank_transfer"/>
-													        </span>
-                                                            <!--end:Input-->
-                                                        </label>
-                                                    </div>
-                                                    <!--end::Option-->
-                                                    <div class="col-md-6">
-                                                        <!--begin:Option-->
-                                                        <label class="d-flex flex-stack mb-5 cursor-pointer">
-                                                            <!--begin:Label-->
-                                                            <span class="d-flex align-items-center me-2">
-														<!--begin::Icon-->
-														<span class="symbol symbol-50px me-6">
-															<span class="symbol-label">
-																<i class="ki-duotone ki-chart fs-1 text-gray-600">
-																	<span class="path1"></span>
-																	<span class="path2"></span>
-																</i>
-															</span>
-														</span>
-                                                                <!--end::Icon-->
-                                                                <!--begin::Description-->
-														<span class="d-flex flex-column">
-															<span class="fw-bold text-gray-800 text-hover-primary fs-5">Credit Card</span>
-															<span class="fs-6 fw-semibold text-muted">Use images to your post time</span>
-														</span>
-                                                                <!--end:Description-->
-													</span>
-                                                            <!--end:Label-->
-                                                            <!--begin:Input-->
-                                                            <span class="form-check form-check-custom form-check-solid">
-														<input class="form-check-input" type="radio" checked="checked"
-                                                               name="payment_method" value="credit_card"/>
-													</span>
-                                                            <!--end:Input-->
-                                                        </label>
-                                                        <!--end::Option-->
-                                                    </div>
-                                                </div>
-                                                <!--end::Options-->
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                        <div class="mt-5 text-end">
-                                            <button type="button" class="btn btn-success">Update Payment Info
-
-                                            </button>
-                                        </div>
+                                        
+                                       
                                     </div>
                                 </div>
                                 <!--end::Wrapper-->
@@ -530,7 +464,7 @@
                                     <!--begin::Heading-->
                                     <div class="pb-8 pb-lg-10">
                                         <!--begin::Title-->
-                                        <h2 class="fw-bold text-gray-900">Your booking confirmed!</h2>
+                                        <h2 class="fw-bold text-gray-900">Your booking details</h2>
                                         <!--end::Title-->
                                         <!--end::Notice-->
                                     </div>
@@ -646,6 +580,101 @@
                                 </div>
                             </div>
 
+                            <div class="tab_content " data-kt-stepper-element="content" data-tab="select_payment_meth">
+                                <div class="col-md-12">
+                                <!--begin::Input group-->
+                                <div class="mb-0 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="d-flex align-items-center form-label mb-5">Payment Method
+                                        <span class="ms-1" data-bs-toggle="tooltip"
+                                              title="Monthly billing will be based on your account plan">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span></label>
+                                    <!--end::Label-->
+                                    <!--begin::Options-->
+                                    <div class="row mb-0">
+                                        <div class="col-md-6">
+                                            <!--begin:Option-->
+                                            <label class="d-flex flex-stack mb-5 cursor-pointer">
+                                                <!--begin:Label-->
+                                                <span class="d-flex align-items-center me-2">
+                                                    <!--begin::Icon-->
+                                                    <span class="symbol symbol-50px me-6">
+                                                        <span class="symbol-label">
+                                                            <i class="ki-duotone ki-bank fs-1 text-gray-600">
+                                                                <span class="path1"></span>
+                                                                <span class="path2"></span>
+                                                            </i>
+                                                        </span>
+                                                    </span>
+                                                    <!--end::Icon-->
+                                                    <!--begin::Description-->
+                                                        <span class="d-flex flex-column">
+                                                            <span
+                                                                class="fw-bold text-gray-800 text-hover-primary fs-5">Bank Transfer</span>
+                                                            <span class="fs-6 fw-semibold text-muted">Use images to enhance your post flow</span>
+                                                        </span>
+                                                    <!--end:Description-->
+                                                </span>
+                                                <!--end:Label-->
+                                                <!--begin:Input-->
+                                                <span class="form-check form-check-custom form-check-solid">
+                                                    <input class="form-check-input" type="radio"
+                                                           name="payment_method"
+                                                           value="bank_transfer"/>
+                                                </span>
+                                                <!--end:Input-->
+                                            </label>
+                                        </div>
+                                        <!--end::Option-->
+                                        <div class="col-md-6">
+                                            <!--begin:Option-->
+                                            <label class="d-flex flex-stack mb-5 cursor-pointer">
+                                                <!--begin:Label-->
+                                                <span class="d-flex align-items-center me-2">
+                                            <!--begin::Icon-->
+                                            <span class="symbol symbol-50px me-6">
+                                                <span class="symbol-label">
+                                                    <i class="ki-duotone ki-chart fs-1 text-gray-600">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
+                                                </span>
+                                            </span>
+                                                    <!--end::Icon-->
+                                                    <!--begin::Description-->
+                                            <span class="d-flex flex-column">
+                                                <span class="fw-bold text-gray-800 text-hover-primary fs-5">Credit Card</span>
+                                                <span class="fs-6 fw-semibold text-muted">Use images to your post time</span>
+                                            </span>
+                                                    <!--end:Description-->
+                                        </span>
+                                                <!--end:Label-->
+                                                <!--begin:Input-->
+                                                <span class="form-check form-check-custom form-check-solid">
+                                            <input class="form-check-input" type="radio" checked="checked"
+                                                   name="payment_method" value="credit_card"/>
+                                        </span>
+                                                <!--end:Input-->
+                                            </label>
+                                            <!--end::Option-->
+                                        </div>
+                                        <div class="col-12 mt-5 text-end">
+                                            <button type="button" class="btn btn-success">Update Payment Info
+
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--end::Options-->
+                                </div>
+                                <!--end::Input group-->
+                                    </div>
+                            </div>
+
                             <div class="d-flex flex-stack pt-15">
                                 <div class="mr-2">
                                     <button type="button" class="btn btn-lg btn-light-primary me-3 btn_previous"
@@ -659,7 +688,7 @@
                                 <div>
                                     <button type="button" class="btn btn-lg btn-primary btn_submit"
                                             data-kt-stepper-action="submit">
-											<span class="indicator-label">Submit
+											<span class="indicator-label">Confirm
 											<i class="ki-duotone ki-arrow-right fs-4 ms-2">
 												<span class="path1"></span>
 												<span class="path2"></span>
@@ -948,7 +977,7 @@
                 if (prev_tab_index == 0) {
                     $("button.btn_previous").hide();
                 }
-                if (prev_tab_index < 3) {
+                if (prev_tab_index < 4) {
                     $("button.btn_submit").hide();
                     $("button.btn_continue").show();
                 }
@@ -966,7 +995,7 @@
                 next_tab_element.addClass("current");
                 next_tab_content_element.addClass("current");
                 $("button.btn_previous").show();
-                if (next_tab_index == 3) {
+                if (next_tab_index == 4) {
                     $("button.btn_continue").hide();
                     $("button.btn_submit").show();
                     showBookingConfirmed();
