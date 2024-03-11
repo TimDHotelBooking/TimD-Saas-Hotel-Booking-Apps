@@ -144,7 +144,7 @@ class AddUserModal extends Component
         $user = Users::find($id);
 
         $this->user_id = $user->user_id;
-        $this->saved_avatar = $user->profile_photo_url;
+        $this->saved_avatar = $user->profile_photo_path;
         $this->name = $user->name;
         $this->email = $user->email;
         $this->password = '';
