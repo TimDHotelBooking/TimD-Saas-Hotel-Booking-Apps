@@ -9,15 +9,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Spatie\Permission\Models\Role;
 
 class AddPropertyModal extends Component
 {
+    use WithFileUploads;
+
     public $admin_id;
     public $property_id;
     public $property_name;
     public $location;
     public $contact_information;
+    public $photo;
+    public $save_photo;
     public $status;
 
     public $edit_mode = false;
@@ -28,6 +34,7 @@ class AddPropertyModal extends Component
         'location' => 'required|string',
         'contact_information' => 'required|string',
         'status' => 'required',
+        'photo' => 'nullable|sometimes|image|max:5120',
     ];
 
     protected $listeners = [
@@ -38,11 +45,11 @@ class AddPropertyModal extends Component
     public function render()
     {
 
-        if (Auth::user()->isPropertyAdmin()){
+        if (Auth::user()->isPropertyAdmin()) {
             $this->admin_id = Auth::user()->user_id;
         }
         $property_admins = Users::role('Property Admin')->get();
-        return view('livewire.property.add-property-modal',compact('property_admins'));
+        return view('livewire.property.add-property-modal', compact('property_admins'));
     }
 
     public function submit()
@@ -58,10 +65,23 @@ class AddPropertyModal extends Component
                 'location' => $this->location,
                 'contact_information' => $this->contact_information,
                 'status' => $this->status,
-                'updated_by' => Auth::user()->user_id
+                'updated_by' => Auth::user()->user_id,
             ];
 
-         
+            if ($this->photo) {
+
+                $directory = 'public/properties';
+                if (!Storage::exists($directory)) {
+                    Storage::makeDirectory($directory);
+                }
+
+                $filename = uniqid() . '.' . $this->photo->getClientOriginalExtension();
+                $path = $this->photo->storeAs('public/properties', $filename);
+                $data['photo'] = 'properties/' . $filename;
+            } else {
+                $data['photo'] = null;
+            }
+
 
             if (!$this->edit_mode) {
                 $data['created_by'] = Auth::user()->user_id;
@@ -120,7 +140,8 @@ class AddPropertyModal extends Component
         $this->resetValidation();
     }
 
-    public function dismiss(){
+    public function dismiss()
+    {
         $this->reset();
         $this->edit_mode = false;
     }
