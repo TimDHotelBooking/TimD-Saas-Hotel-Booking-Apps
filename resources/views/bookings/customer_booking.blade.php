@@ -190,10 +190,9 @@
                     <div class="d-flex flex-center flex-wrap px-5 py-10">
                         <!--begin::Links-->
                         <div class="d-flex fw-normal">
-                            <a href="https://keenthemes.com" class="text-success px-5" target="_blank">Terms</a>
-                            <a href="https://devs.keenthemes.com" class="text-success px-5" target="_blank">Plans</a>
-                            <a href="https://1.envato.market/EA4JP" class="text-success px-5" target="_blank">Contact
-                                Us</a>
+                            <a href="#" class="text-success px-5">Terms</a>
+                            <a href="#" class="text-success px-5">Plans</a>
+                            <a href="#" class="text-success px-5">Contact Us</a>
                         </div>
                         <!--end::Links-->
                     </div>
@@ -242,7 +241,8 @@
                                         @if (!empty($properties) && count($properties) > 0)
                                             @foreach ($properties as $property)
                                                 @if (!empty($property->rooms) && count($property->rooms) > 0)
-                                                    <div class="mb-5">
+                                                    <div class="mb-5"
+                                                        onclick="toggle_outer_div({{ $property->property_id }})">
                                                         <span
                                                             class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
                                                         <span class="text-muted fw-semibold fs-6 d-flex align-items-start">
@@ -254,7 +254,8 @@
                                                             {{ $property->contact_information }}
                                                         </span>
                                                     </div>
-                                                    <div class="row">
+                                                    <div class="row" style="display: none;"
+                                                        id="outer_div_{{ $property->property_id }}">
                                                         @foreach ($property->rooms as $room)
                                                             <div class="col-lg-4">
                                                                 <input type="radio" class="btn-check room_list"
@@ -509,7 +510,7 @@
                                     <!--begin::Heading-->
                                     <div class="pb-10 pb-lg-15">
                                         <!--begin::Title-->
-                                        <h2 class="fw-bold text-gray-900">Payment Information</h2>
+                                        <h2 class="fw-bold text-gray-900">Update Payment Info</h2>
                                         <!--end::Title-->
                                         <!--begin::Notice-->
                                         <!--end::Notice-->
@@ -613,7 +614,8 @@
                                                             <!--begin:Input-->
                                                             <span class="form-check form-check-custom form-check-solid">
                                                                 <input class="form-check-input" type="radio"
-                                                                    name="payment_method" value="bank_transfer" />
+                                                                    name="payment_method" value="bank_transfer"
+                                                                    id="payment_method_bank_transfer" />
                                                             </span>
                                                             <!--end:Input-->
                                                         </label>
@@ -647,7 +649,7 @@
                                                             <span class="form-check form-check-custom form-check-solid">
                                                                 <input class="form-check-input" type="radio"
                                                                     checked="checked" name="payment_method"
-                                                                    value="cash" />
+                                                                    id="payment_method_cash" value="cash" />
                                                             </span>
                                                             <!--end:Input-->
                                                         </label>
@@ -684,6 +686,7 @@
                                                             <!--end:Label-->
                                                             <!--begin:Input-->
                                                             <input type="file" name="ss" id="ss"
+                                                                onchange="readURL(this,'blah_2');"
                                                                 class="form-control form-control-lg form-control-solid" />
                                                             <!--end:Input-->
                                                         </label>
@@ -702,15 +705,19 @@
                                 <!--end::Wrapper-->
                             </div>
 
-                            <div class="tab_content " data-kt-stepper-element="content" data-tab="booking_confirmed">
+                            <div class="tab_content " data-kt-stepper-element="content" id="booking_confirmed" data-tab="booking_confirmed">
                                 <!--begin::Wrapper-->
                                 <div class="w-100">
                                     <!--begin::Heading-->
                                     <div class="pb-8 pb-lg-10">
                                         <!--begin::Title-->
+<<<<<<< HEAD
+                                        <h2 class="fw-bold text-gray-900">Please Confirm your Booking</h2>
+=======
 
                                         <h2 class="fw-bold text-gray-900">Your Booking Preview</h2>
 
+>>>>>>> 515cf267ddf70a83cbd865a4c2b4f6cc4915b59e
                                         <!--end::Title-->
                                         <!--end::Notice-->
                                     </div>
@@ -840,8 +847,6 @@
 
                                                         </h4>
                                                     </div>
-                                                </div>
-                                                <div class="col d-flex flex-stack flex-grow-1">
                                                     <div class="fw-semibold">
                                                         <div class="fs-6 text-gray-700">Transaction Reference
                                                         </div>
@@ -849,15 +854,21 @@
                                                             id="label_transaction_reference"></h4>
 
                                                     </div>
-                                                </div>
-                                                <div class="col d-flex flex-stack flex-grow-1">
                                                     <div class="fw-semibold">
                                                         <div class="fs-6 text-gray-700">Payment Method
                                                         </div>
                                                         <h4 class="text-gray-900 fw-bold" id="label_payment_method"></h4>
 
                                                     </div>
+
+
                                                 </div>
+                                                <div class="col d-flex flex-stack flex-grow-1">
+                                                    <img src="" width="200" id="blah_2" />
+
+                                                </div>
+
+
 
                                             </div>
 
@@ -866,15 +877,31 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab_content " data-kt-stepper-element="content" data-tab="confirmation">
+                            <div class="tab_content " data-kt-stepper-element="content" id="confirmation" data-tab="confirmation">
                                 <!--begin::Wrapper-->
                                 <div class="w-100">
                                     <!--begin::Heading-->
                                     <div class="pb-8 pb-lg-10">
                                         <!--begin::Title-->
-                                        <h2 class="fw-bold text-gray-900">Congratulation</h2>
+                                        <h2 class="fw-bold text-gray-900">Success</h2>
                                         <!--end::Title-->
                                         <!--end::Notice-->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 fv-row">
+                                               
+                                                <div id="success_message_after_confirm"></div>
+                                             
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        
+                                      
+                                      
+                                       
+
                                     </div>
 
                                 </div>
@@ -989,7 +1016,7 @@
                                     <button type="button" class="btn btn-lg btn-primary btn_submit"
 
                                         data-kt-stepper-action="submit">
-                                        <span class="indicator-label">Submit
+                                        <span class="indicator-label">Confirm Booking
                                             <i class="ki-duotone ki-arrow-right fs-4 ms-2">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
@@ -1049,6 +1076,7 @@
                     let current_tab_name = $("div.tab_content.current").data('tab');
                     let current_tab_index = $("div[data-tab-head=" + current_tab_name + "]").data('tab-index');
                     //alert(current_tab_index);
+                    //alert(current_tab_name);
                     if (current_tab_index == 0) {
                         if ($(".room_list").length > 0) {
                             let room_id = $("input#room_id").val();
@@ -1162,7 +1190,6 @@
                         let email = $("#email").val();
                         let phone_number = $("#phone_number").val();
                         let address = $("#address").val();
-                        let payment_method = $("input[name=payment_method]").val();
 
                         let is_error = false;
                         if (first_name == undefined || first_name == null || first_name == "") {
@@ -1195,11 +1222,16 @@
 
 
                         let transaction_reference = $("#transaction_reference").val();
-                        let payment_method = $("input[name=payment_method]").val();
+                        let payment_method = '';
 
+                        if ($("#payment_method_bank_transfer").is(":checked")) {
+                            payment_method = 'Bank Transfer'
+                        }
+                        if ($("#payment_method_cash").is(":checked")) {
+                            payment_method = 'Cash'
+                        }
 
-
-
+                        // alert(payment_method);
 
 
 
@@ -1238,7 +1270,14 @@
                     let company_name = $("#company_name").val();
                     let gst = $("#gst").val();
                     let address = $("#address").val();
-                    let payment_method = $("input[name=payment_method]").val();
+                    let payment_method = '';
+
+                    if ($("#payment_method_bank_transfer").is(":checked")) {
+                        payment_method = 'Bank Transfer'
+                    }
+                    if ($("#payment_method_cash").is(":checked")) {
+                        payment_method = 'Cash'
+                    }
                     let price = $("input[type=hidden]#price").val();
                     let holiday_price = $("input[type=hidden]#price").val();
                     let is_holiday_price = $("input[type=hidden]#is_holiday_price").val();
@@ -1249,38 +1288,74 @@
                     let amount_paid = $("#amount_paid").val();
                     let transaction_reference = $("#transaction_reference").val();
 
+                    var fd = new FormData();
+                    var files = $('#ss')[0].files[0];
+                    fd.append('ss', files);
+                    fd.append('room_id', room_id);
+                    fd.append('no_of_guests', no_of_guests);
+                    fd.append('no_of_rooms', no_of_rooms);
+                    fd.append('check_in_date', check_in_date);
+                    fd.append('check_out_date', check_out_date);
+                    fd.append('special_requests', special_requests);
+                    fd.append('first_name', first_name);
+                    fd.append('last_name', last_name);
+                    fd.append('email', email);
+                    fd.append('phone_number', phone_number);
+                    fd.append('payment_method', payment_method);
+                    fd.append('company_name', company_name);
+                    fd.append('gst', gst);
+                    fd.append('address', address);
+                    fd.append('price', price);
+                    fd.append('holiday_price', holiday_price);
+                    fd.append('is_holiday_price', is_holiday_price);
+                    fd.append('total_nights', total_nights);
+                    fd.append('total_room', total_room);
+                    fd.append('final_amount', final_amount);
+                    fd.append('amount_paid', amount_paid);
+                    fd.append('transaction_reference', transaction_reference);
+
+
+                    //alert(fd);
+                    //alert(JSON.stringify(fd));
+
                     $.ajax({
                         type: "POST",
                         url: "{{ route('bookings.store') }}",
-                        data: {
-                            'room_id': room_id,
-                            'no_of_guests': no_of_guests,
-                            'no_of_rooms': no_of_rooms,
-                            'check_in_date': check_in_date,
-                            'check_out_date': check_out_date,
-                            'special_requests': special_requests,
-                            'first_name': first_name,
-                            'last_name': last_name,
-                            'email': email,
-                            'phone_number': phone_number,
-                            'payment_method': payment_method,
-                            'company_name': company_name,
-                            'gst': gst,
-                            'address': address,
-                            'price': price,
-                            'holiday_price': holiday_price,
-                            'is_holiday_price': is_holiday_price,
-                            'total_nights': total_nights,
-                            'total_room': total_room,
-                            'final_amount': final_amount,
-                            'amount_paid': amount_paid,
-                            'transaction_reference': transaction_reference
-                        },
+                        contentType: false,
+                        processData: false,
+                        data: fd
+                            /*{
+                                                        'room_id': room_id,
+                                                        'no_of_guests': no_of_guests,
+                                                        'no_of_rooms': no_of_rooms,
+                                                        'check_in_date': check_in_date,
+                                                        'check_out_date': check_out_date,
+                                                        'special_requests': special_requests,
+                                                        'first_name': first_name,
+                                                        'last_name': last_name,
+                                                        'email': email,
+                                                        'phone_number': phone_number,
+                                                        'payment_method': payment_method,
+                                                        'company_name': company_name,
+                                                        'gst': gst,
+                                                        'address': address,
+                                                        'price': price,
+                                                        'holiday_price': holiday_price,
+                                                        'is_holiday_price': is_holiday_price,
+                                                        'total_nights': total_nights,
+                                                        'total_room': total_room,
+                                                        'final_amount': final_amount,
+                                                        'amount_paid': amount_paid,
+                                                        'transaction_reference': transaction_reference
+                                                    }*/
+                            ,
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
                                 'content') // Include CSRF token in the headers
                         },
                         success: function(response, status, xhr) {
+                            //alert('success');
+                            // alert(JSON.stringify(response));
                             if (response.status == 'success') {
                                 toastr.success(
                                     "Booking successfully register for customer", {
@@ -1290,9 +1365,25 @@
                                         closeDuration: 0
                                     }
                                 );
+                                /*
                                 setTimeout(function() {
                                     window.location.href = "{{ route('bookings.index') }}"
                                 }, 500);
+                                */
+                                $("button.btn_submit").hide();
+                                $("button.btn_continue").hide();
+                                $("button.btn_previous").hide();
+
+                               // showNextTab('confirmation', 5);
+
+                               $('#booking_confirmed').hide();
+                               $('#confirmation').show();
+
+                               var mesg = `<h5>Your Booking ID is ${response.booking_id} </h5>`;
+                               $('#success_message_after_confirm').html(mesg);
+
+                                
+
                             } else if (response.status == "bill_generate") {
                                 console.log("bill")
                             } else {
@@ -1307,6 +1398,8 @@
                             }
                         },
                         error: function(response) {
+                            //alert('error');
+                            //alert(JSON.stringify(response));
                             toastr.error(
                                 "Please try it again later.",
                                 "Something went wrong!", {
@@ -1351,6 +1444,7 @@
                     $("button.btn_submit").hide();
                     $("button.btn_continue").show();
                 }
+
             }
 
             function showNextTab(current_tab_name, current_tab_index) {
@@ -1373,6 +1467,22 @@
                 if (next_tab_index == 3) {
 
                     showBookingConfirmed();
+                }
+            }
+
+            function toggle_outer_div(id) {
+                $('#outer_div_' + id).toggle();
+            }
+
+            function readURL(input, id) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        $('#' + id).attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
                 }
             }
 

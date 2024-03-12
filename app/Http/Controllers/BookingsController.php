@@ -15,6 +15,8 @@ use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class BookingsController extends Controller
 {
@@ -23,7 +25,7 @@ class BookingsController extends Controller
      */
     public function index(BookingDataTable $dataTable)
     {
-        return $dataTable->render('bookings.index',compact('dataTable'));
+        return $dataTable->render('bookings.index', compact('dataTable'));
     }
 
     /**
@@ -31,12 +33,12 @@ class BookingsController extends Controller
      */
     public function create()
     {
-        $properties = Property::with(['rooms' => function($query){
-            $query->has('tariffs')->where('availability_status',Rooms::AVAILABLE_STATUS);
-        }])->whereHas('agents',function ($query){
-            $query->where('agent_id',Auth::user()->user_id);
-        })->where('status',1)->get();
-        return view('bookings.customer_booking',compact('properties'));
+        $properties = Property::with(['rooms' => function ($query) {
+            $query->has('tariffs')->where('availability_status', Rooms::AVAILABLE_STATUS);
+        }])->whereHas('agents', function ($query) {
+            $query->where('agent_id', Auth::user()->user_id);
+        })->where('status', 1)->get();
+        return view('bookings.customer_booking', compact('properties'));
     }
 
     /**
@@ -66,7 +68,7 @@ class BookingsController extends Controller
                 'updated_by' => Auth::user()->user_id,
                 'status' => 1,
             ]);
-            if (!empty($customer)){
+            if (!empty($customer)) {
                 $customer_id = $customer->customer_id;
                 $room_id = $request->input("room_id");
                 $check_in_date = $request->input("check_in_date");
@@ -96,7 +98,7 @@ class BookingsController extends Controller
                     'updated_by' => Auth::user()->user_id,
                     'status' => 1
                 ]);
-                if ($booking){
+                if ($booking) {
 
                     $total_nights = $request->input("total_nights");
                     $total_room = $request->input("total_room");
@@ -104,35 +106,79 @@ class BookingsController extends Controller
                     $holiday_price = $request->input("holiday_price");
                     $is_holiday_price = $request->input("is_holiday_price");
 
-                    $old_payment = Payments::where('booking_id',$booking->booking_id)->sum('amount_paid') ?? 0;
+                    $old_payment = Payments::where('booking_id', $booking->booking_id)->sum('amount_paid') ?? 0;
                     $total_pending_paid_amount = $final_amount - $old_payment;
+
+                    $photo = '';
+
+
+                    if ($request->file('ss')) {
+
+
+                        $image = $request->file('ss');
+
+
+                        $originName = $image->getClientOriginalName();
+                        $fileName = pathinfo($originName, PATHINFO_FILENAME);
+                        $fileName = preg_replace("/[^a-zA-Z0-9]+/", "", $fileName);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $fileName = $fileName . '_' . time() . '.' . $extension;
+
+
+
+                        if (in_array($extension, ['png', 'jpg', 'jpeg', 'PNG', 'JPG', 'JPEG'])) {
+                            if ($image->move(public_path() . '/image/booking/screen-shot/', $fileName)) {
+                                $attachment_1 =  'image/booking/screen-shot/' . $fileName;
+
+                                $photo = $attachment_1;
+                            } else {
+                                Session::flash('error', 'file  couldn\'t save, please try again later!');
+                                return response()->json([
+                                    'type' => 'error',
+                                    'message' => 'file  couldn\'t save, please try again later!'
+                                ]);
+                            }
+                        } else {
+                            Session::flash('error', 'Only allow JPG,JPEG,PNG files');
+                            return response()->json([
+                                'type' => 'error',
+                                'message' => 'Only allow JPG,JPEG,PNG files'
+                            ]);
+                        }
+                    } else {
+                    }
+
+
                     Payments::create([
-                       'booking_id' => $booking->booking_id,
-                       'amount_paid' => $amount_paid,
-                       'payment_date' => Carbon::now(),
-                       'payment_method' => $booking->payment_method ?? 'cash',
-                       'transaction_reference' => $transaction_reference,
-                       'status' => Payments::STATUS_NOT_PAID
+                        'booking_id' => $booking->booking_id,
+                        'amount_paid' => $amount_paid,
+                        'photo' => $photo,
+                        'payment_date' => Carbon::now(),
+                        'payment_method' => $booking->payment_method ?? 'cash',
+                        'transaction_reference' => $transaction_reference,
+                        'status' => Payments::STATUS_NOT_PAID
                     ]);
                     DB::commit();
                     return response()->json([
                         "status" => 'success',
+                        "booking_id" =>$booking->booking_id,
                         "msg" => "Booking created successfully"
-                    ],200);
+                    ], 200);
                 }
             }
             DB::rollBack();
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something is wrong to create booking"
-            ],500);
-        }catch (\Exception $e){
+            ], 500);
+        } catch (\Exception $e) {
             Log::info($e->getMessage());
             DB::rollBack();
             return response()->json([
                 "status" => 'error',
-                "msg" => "Something went wrong"
-            ],500);
+                "msg" => "Something went wrong "
+            ], 500);
         }
     }
 
@@ -141,12 +187,12 @@ class BookingsController extends Controller
      */
     public function show(Bookings $booking)
     {
-        $properties = Property::with(['rooms' => function($query){
-            $query->has('tariffs')->where('availability_status',Rooms::AVAILABLE_STATUS);
-        }])->whereHas('agents',function ($query){
-            $query->where('agent_id',Auth::user()->user_id);
-        })->where('status',1)->get();
-        return view('bookings.edit_customer_booking',compact('booking','properties'));
+        $properties = Property::with(['rooms' => function ($query) {
+            $query->has('tariffs')->where('availability_status', Rooms::AVAILABLE_STATUS);
+        }])->whereHas('agents', function ($query) {
+            $query->where('agent_id', Auth::user()->user_id);
+        })->where('status', 1)->get();
+        return view('bookings.edit_customer_booking', compact('booking', 'properties'));
     }
 
     /**
@@ -173,7 +219,7 @@ class BookingsController extends Controller
             $gst = $request->input("gst");
             $address = $request->input("address");
 
-            $customer = Customers::where('customer_id',$customer_id)->update([
+            $customer = Customers::where('customer_id', $customer_id)->update([
                 'first_name' => $first_name,
                 'last_name' => $last_name,
                 'email' => $email,
@@ -185,7 +231,7 @@ class BookingsController extends Controller
                 'updated_by' => Auth::user()->user_id,
                 'status' => 1,
             ]);
-            if ($customer){
+            if ($customer) {
                 $room_id = $request->input("room_id");
                 $check_in_date = $request->input("check_in_date");
                 $check_out_date = $request->input("check_out_date");
@@ -197,7 +243,7 @@ class BookingsController extends Controller
 
                 $final_amount = $request->input("final_amount");
                 $agent_id = Auth::user()->user_id;
-                $updated_booking = Bookings::where('booking_id',$booking->booking_id)->update([
+                $updated_booking = Bookings::where('booking_id', $booking->booking_id)->update([
                     "customer_id" => $customer_id,
                     "room_id" => $room_id,
                     "check_in_date" => $check_in_date,
@@ -212,7 +258,7 @@ class BookingsController extends Controller
                     'updated_by' => Auth::user()->user_id,
                     'status' => 1
                 ]);
-                if ($updated_booking){
+                if ($updated_booking) {
 
                     $total_nights = $request->input("total_nights");
                     $total_room = $request->input("total_room");
@@ -220,9 +266,9 @@ class BookingsController extends Controller
                     $holiday_price = $request->input("holiday_price");
                     $is_holiday_price = $request->input("is_holiday_price");
 
-                    $old_payment = Payments::where('booking_id',$booking->booking_id)->sum('amount_paid') ?? 0;
+                    $old_payment = Payments::where('booking_id', $booking->booking_id)->sum('amount_paid') ?? 0;
                     $total_pending_paid_amount = $final_amount - $old_payment;
-                   /* Payments::create([
+                    /* Payments::create([
                         'booking_id' => $booking->booking_id,
                         'amount_paid' => $total_pending_paid_amount,
                         'payment_date' => Carbon::now(),
@@ -234,21 +280,21 @@ class BookingsController extends Controller
                     return response()->json([
                         "status" => 'success',
                         "msg" => "Booking updated successfully"
-                    ],200);
+                    ], 200);
                 }
             }
             DB::rollBack();
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something is wrong to updated booking"
-            ],500);
-        }catch (\Exception $e){
+            ], 500);
+        } catch (\Exception $e) {
             Log::info($e->getMessage());
             DB::rollBack();
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something went wrong"
-            ],500);
+            ], 500);
         }
     }
 
@@ -258,26 +304,27 @@ class BookingsController extends Controller
     public function destroy(Bookings $bookings)
     {
         try {
-            if ($bookings->delete()){
+            if ($bookings->delete()) {
                 return response()->json([
                     "status" => 'success',
                     "msg" => "Bookings deleted successfully"
-                ],200);
+                ], 200);
             }
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something is wrong to delete booking"
-            ],500);
-        }catch (\Exception $e){
+            ], 500);
+        } catch (\Exception $e) {
             Log::info($e->getMessage());
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something went wrong"
-            ],500);
+            ], 500);
         }
     }
 
-    public function calculate_total_bill_amount(\Illuminate\Http\Request $request){
+    public function calculate_total_bill_amount(\Illuminate\Http\Request $request)
+    {
 
         try {
             $room_id = $request->input("room_id");
@@ -285,21 +332,21 @@ class BookingsController extends Controller
             $check_out_date = $request->input("check_out_date");
             $no_of_rooms = $request->input("no_of_rooms");
 
-            if (!empty($room_id) && !empty($check_in_date) && !empty($check_out_date)){
+            if (!empty($room_id) && !empty($check_in_date) && !empty($check_out_date)) {
                 $checkInDate = Carbon::parse($check_in_date);
                 $checkOutDate = Carbon::parse($check_out_date);
 
                 $tariff = Tariff::where('room_id', $room_id)
                     ->where(function ($query) use ($checkInDate, $checkOutDate) {
                         $query->whereDate('start_date', '<=', $checkOutDate)
-                        ->whereDate('end_date', '>=', $checkInDate);
+                            ->whereDate('end_date', '>=', $checkInDate);
                     })
                     ->orWhere(function ($query) use ($checkInDate, $checkOutDate) {
                         $query->whereDate('start_date', '=', $checkInDate)
-                        ->whereDate('end_date', '=', $checkOutDate);
+                            ->whereDate('end_date', '=', $checkOutDate);
                     })
                     ->first();
-                if (!empty($tariff)){
+                if (!empty($tariff)) {
 
                     $checkInDay = Carbon::parse($checkInDate)->dayOfWeek;
                     $checkOutDay = Carbon::parse($checkOutDate)->dayOfWeek;
@@ -309,15 +356,15 @@ class BookingsController extends Controller
                     $room_rate = $tariff->price;
                     $holiday_rate_per_night = $tariff->holiday_price;
                     $promotional_rate_per_night = $tariff->promotional_price;
-                    if ($isSaturdaySunday){
+                    if ($isSaturdaySunday) {
                         $room_rate = $tariff->holiday_price;
                     }
 
                     $totalNights = $checkInDate->diffInDays($checkOutDate);
                     $ratePerNight = $room_rate;
-                    if ($totalNights > 0){
+                    if ($totalNights > 0) {
                         $totalAmount = ($totalNights * $ratePerNight) * $no_of_rooms;
-                    }else{
+                    } else {
                         $totalAmount = $ratePerNight * $no_of_rooms;
                     }
                     return response()->json([
@@ -332,19 +379,19 @@ class BookingsController extends Controller
                             'total_amount' => $totalAmount
                         ]
                     ]);
-                }else{
+                } else {
                     return response()->json([
                         'status' => 'error',
                         'msg' => 'Something is wrong'
                     ]);
                 }
-            }else{
+            } else {
                 return response()->json([
                     'status' => 'error',
                     'msg' => 'Something is wrong'
                 ]);
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             Log::info($e->getMessage());
             return response()->json([
                 'status' => 'error',
