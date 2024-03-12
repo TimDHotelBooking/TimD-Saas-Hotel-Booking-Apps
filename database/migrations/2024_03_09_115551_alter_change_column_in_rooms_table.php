@@ -15,7 +15,7 @@ return new class extends Migration
             $table->dropColumn(["room_type"]);
             $table->unsignedBigInteger("room_type_id")->after("property_id");
             $table->foreign("room_type_id")->on("types")->references("type_id");
-            $table->text("no_of_rooms")->after("room_type_id")->default(0);
+            $table->integer("no_of_rooms")->after("room_type_id")->default(0);
         });
     }
 

@@ -76,6 +76,9 @@ class BookingsController extends Controller
                 $payment_method = $request->input("payment_method");
                 $special_requests = $request->input("special_requests");
 
+                $amount_paid = $request->input("amount_paid");
+                $transaction_reference = $request->input("transaction_reference");
+
                 $final_amount = $request->input("final_amount");
                 $agent_id = Auth::user()->user_id;
                 $booking = Bookings::create([
@@ -105,10 +108,10 @@ class BookingsController extends Controller
                     $total_pending_paid_amount = $final_amount - $old_payment;
                     Payments::create([
                        'booking_id' => $booking->booking_id,
-                       'amount_paid' => $total_pending_paid_amount,
+                       'amount_paid' => $amount_paid,
                        'payment_date' => Carbon::now(),
                        'payment_method' => $booking->payment_method ?? 'cash',
-                       'transaction_reference' => uniqid(),
+                       'transaction_reference' => $transaction_reference,
                        'status' => Payments::STATUS_NOT_PAID
                     ]);
                     DB::commit();
