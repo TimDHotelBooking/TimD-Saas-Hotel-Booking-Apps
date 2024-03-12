@@ -18,6 +18,7 @@ class AddTariffModal extends Component
     public $holiday_price;
     public $promotional_price;
     public $status;
+    public $room_type_ids;
 
     public $edit_mode = false;
 
@@ -26,6 +27,7 @@ class AddTariffModal extends Component
         "start_date" => "required|date",
         "end_date" => "required|date",
         "price" => "required",
+        "status" => "required",
     ];
 
     protected $listeners = [
@@ -36,10 +38,20 @@ class AddTariffModal extends Component
     public function render()
     {
         $room_types = (new Type());
-        if (Auth::user()->isPropertyAdmin()){
-            $room_types->where('created_by',Auth::user()->user_id);
+        if (Auth::user()->isPropertyAdmin()) {
+            $room_types->where('created_by', Auth::user()->user_id);
         }
+        
+
         $room_types = $room_types->get();
+       
+       
+        if ($this->edit_mode == false) {
+            $this->room_type_ids = $room_type_ids = Tariff::where('created_by', Auth::user()->user_id)->pluck('room_type_id')->toArray();
+            //dd($room_type_ids);
+           
+        }
+
         return view('livewire.tariff.add-tariff-modal',compact('room_types'));
     }
 
@@ -102,6 +114,9 @@ class AddTariffModal extends Component
     {
         $this->edit_mode = true;
 
+
+       
+
         $tariff = Tariff::find($id);
         $this->tariff_id = $tariff->tariff_id;
         $this->room_type_id = $tariff->room_type_id;
@@ -111,6 +126,12 @@ class AddTariffModal extends Component
         $this->holiday_price = $tariff->holiday_price;
         $this->promotional_price = $tariff->promotional_price;
         $this->status = $tariff->status;
+
+        $this->room_type_ids = Tariff::where('created_by', Auth::user()->user_id)->where('room_type_id', '!=', $tariff->room_type_id)->pluck('room_type_id')->toArray();
+        //dd($this->room_type_ids);
+      
+
+    
     }
 
     public function hydrate()
@@ -119,7 +140,8 @@ class AddTariffModal extends Component
         $this->resetValidation();
     }
 
-    public function dismiss(){
+    public function dismiss()
+    {
         $this->reset();
         $this->edit_mode = false;
     }
