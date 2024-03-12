@@ -14,6 +14,9 @@ class Users extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
     protected $primaryKey = 'user_id';
+    protected $casts = [
+        'last_login_at' => 'datetime',
+    ];
     protected $fillable = [
         'user_id',
         'name',
