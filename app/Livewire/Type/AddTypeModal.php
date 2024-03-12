@@ -5,6 +5,7 @@ namespace App\Livewire\Type;
 use App\Models\Rooms;
 use App\Models\Amenity;
 use App\Models\TypeAmenity;
+use App\Models\TypeFacility;
 use App\Models\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ class AddTypeModal extends Component
     public $description;  
     public $maximum_occupancy;
     public $amenity_id;
+    public $facility_id;
     public $status;
 
     public $edit_mode = false;
@@ -26,6 +28,7 @@ class AddTypeModal extends Component
         "description" => "required",
         "status"=>"required",
         "amenity_id"=>"required",
+        "facility_id"=>"required",
         "maximum_occupancy"=>"required"
     ];
 
@@ -68,6 +71,7 @@ class AddTypeModal extends Component
             $type = Type::find($this->type_id) ?? Type::create($data);
 
             $type_id = $type->type_id;
+           
             TypeAmenity::where('type_id',$type_id)->delete();
             $all_amenity_id = $this->amenity_id;
             if(count($all_amenity_id) > 0)
@@ -75,6 +79,16 @@ class AddTypeModal extends Component
                 foreach($all_amenity_id as $amenity_id)
                 {
                     TypeAmenity::create(['type_id'=>$type_id,'amenity_id'=>$amenity_id]);
+                }
+            } 
+
+            TypeFacility::where('type_id',$type_id)->delete();
+            $all_facility_id = $this->facility_id;
+            if(count($all_facility_id) > 0)
+            {
+                foreach($all_facility_id as $amenity_id)
+                {
+                    TypeFacility::create(['type_id'=>$type_id,'amenity_id'=>$amenity_id]);
                 }
             }
 
@@ -104,6 +118,7 @@ class AddTypeModal extends Component
     {
       
         TypeAmenity::where('type_id',$id)->delete();
+        TypeFacility::where('type_id',$id)->delete();
         // Delete the property record with the specified ID
         Type::destroy($id);
 
@@ -132,6 +147,17 @@ class AddTypeModal extends Component
             }
         }
         $this->amenity_id = $existing_ids;
+
+        $all_facility_id = TypeFacility::where('type_id',$type->type_id)->get();
+        $existing_ids_2 = [];
+        if($all_facility_id->count() > 0)
+        {
+            foreach($all_facility_id as $all_amenity_id_value)
+            {
+                $existing_ids_2[]=$all_amenity_id_value->amenity_id;
+            }
+        }
+        $this->facility_id = $existing_ids_2;
     }
 
     public function hydrate()

@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Property;
 use App\Models\Tariff;
+use App\Models\Type;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,7 @@ class TariffDataTable extends DataTable
             ->editColumn('end_date', function (Tariff $tariff) {
                 return Carbon::parse($tariff->end_date)->format('d M Y');
             })
-            ->editColumn('room', function (Tariff $tariff) {
+            ->editColumn('room_type', function (Tariff $tariff) {
                 return view('tariff.columns._room_property', compact('tariff'));
             })
             ->editColumn('created_at', function (Tariff $tariff) {
@@ -78,7 +79,7 @@ class TariffDataTable extends DataTable
     {
         return [
             Column::make('tariff_id'),
-            Column::make('room','room_id'),
+            Column::make('room_type','room_type_id'),
             Column::make('start_date'),
             Column::make('end_date'),
             Column::make('price'),

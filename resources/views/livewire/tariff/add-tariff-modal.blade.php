@@ -31,14 +31,14 @@
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-2">Room</label>
+                            <label class="required fw-semibold fs-6 mb-2">Room Type</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <select class="form-control form-control-solid  mb-3 mb-lg-0" name="room_id" wire:model="room_id">
+                            <select class="form-control form-control-solid  mb-3 mb-lg-0" name="room_type_id" wire:model="room_type_id">
                                 <option aria-hidden="true" aria-disabled="true" value="">Select Room</option>
-                                @if(!empty($rooms) && count($rooms) > 0)
-                                    @foreach($rooms as $room)
-                                        <option value="{{ $room->room_id }}" >{{ (!empty($room->property) ? $room->property->property_name.' - '. $room->type->type_name : $room->type->type_name) }}</option>
+                                @if(!empty($room_types) && count($room_types) > 0)
+                                    @foreach($room_types as $room)
+                                        <option value="{{ $room->type_id }}" >{{  $room->type_name }}</option>
                                     @endforeach
                                 @endif
                             </select>

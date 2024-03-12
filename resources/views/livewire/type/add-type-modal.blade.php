@@ -94,6 +94,30 @@
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Facility</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+
+                            <select class="form-control form-control-solid  mb-3 mb-lg-0" name="facility_id[]"
+                                wire:model="facility_id" multiple="multiple">
+                                <option aria-hidden="true" aria-disabled="true" value="">Select Facility</option>
+                                @if (!empty($amenities) && count($amenities) > 0)
+                                    @foreach ($amenities as $amenity)
+                                        <option value="{{ $amenity->amenity_id }}">{{ $amenity->amenity_name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+
+                            <!--end::Input-->
+                            @error('facility_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
                             <label class="required fw-semibold fs-6 mb-2">Maximum Occupancy</label>
                             <!--end::Label-->
                             <!--begin::Input-->
