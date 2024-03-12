@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Spatie\Permission\Models\Role;
@@ -70,13 +71,14 @@ class AddPropertyModal extends Component
 
             if ($this->photo) {
 
-                $directory = 'public/properties';
+                $directory = 'properties';
+
                 if (!Storage::exists($directory)) {
                     Storage::makeDirectory($directory);
                 }
 
                 $filename = uniqid() . '.' . $this->photo->getClientOriginalExtension();
-                $path = $this->photo->storeAs('public/properties', $filename);
+                $path = $this->photo->storeAs($directory, $filename, 'public_properties');
                 $data['photo'] = 'properties/' . $filename;
             } else {
                 $data['photo'] = null;
