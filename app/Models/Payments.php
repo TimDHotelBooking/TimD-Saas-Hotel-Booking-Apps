@@ -20,6 +20,7 @@ class Payments extends Model
         'transaction_reference',
         'created_by',
         'updated_by',
+        'photo',
         'status'
     ];
 
