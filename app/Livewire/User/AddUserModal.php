@@ -35,7 +35,7 @@ class AddUserModal extends Component
         'name' => 'required|string',
         'email' => 'required|email|unique:users,email',
         'role' => 'required|string',
-        'phone_number' => 'required|digits:10|unique:users,email',
+        'phone_number' => 'required|digits:10|unique:users,phone_number',
         'status' => 'required',
         'avatar' => 'nullable|sometimes|image|max:5120',
     ];
@@ -144,7 +144,7 @@ class AddUserModal extends Component
         $user = Users::find($id);
 
         $this->user_id = $user->user_id;
-        $this->saved_avatar = $user->profile_photo_url;
+        $this->saved_avatar = $user->profile_photo_path;
         $this->name = $user->name;
         $this->email = $user->email;
         $this->password = '';
