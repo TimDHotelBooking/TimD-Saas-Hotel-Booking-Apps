@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('property', function (Blueprint $table) {
-            $table->string('photo')->nullable()->after('contact_information');
+        Schema::table('types', function (Blueprint $table) {
+            $table->unsignedBigInteger("property_id");
+            $table->foreign("property_id")->references("property_id")->on("property");
         });
     }
 
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('property', function (Blueprint $table) {
+        Schema::table('types', function (Blueprint $table) {
             //
         });
     }
