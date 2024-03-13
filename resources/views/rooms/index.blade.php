@@ -36,7 +36,7 @@
                     <!--end::Toolbar-->
 
                     <!--begin::Modal-->
-                    <livewire:rooms.add-rooms-modal></livewire:rooms.add-rooms-modal>
+                    <livewire:rooms.add-rooms-modal ></livewire:rooms.add-rooms-modal>
                     <!--end::Modal-->
                 </div>
             @endcan
