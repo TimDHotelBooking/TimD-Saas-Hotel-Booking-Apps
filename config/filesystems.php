@@ -42,6 +42,12 @@ return [
             'throw' => false,
         ],
 
+        'public_properties' => [
+            'driver' => 'local',
+            'root' => public_path('properties'),
+            'url' => env('APP_URL').'/public',
+            'throw' => false,
+        ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

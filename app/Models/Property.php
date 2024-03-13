@@ -18,7 +18,8 @@ class Property extends Model
         "contact_information",
         'created_by',
         'updated_by',
-        'status'
+        'status',
+        'photo',
     ];
     public function admin(){
         return $this->hasOne(Users::class,"user_id","property_admin_id");
