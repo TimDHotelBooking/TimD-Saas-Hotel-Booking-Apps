@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tariff', function (Blueprint $table) {
-            $table->unsignedBigInteger("room_type_id")->after("price");
-            $table->foreign("room_type_id")->on("types")->references("type_id");
+            $table->unsignedBigInteger("room_type_id")->nullable()->after("price");
+            $table->foreign("room_type_id")->references("type_id")->on("types");
         });
     }
 
