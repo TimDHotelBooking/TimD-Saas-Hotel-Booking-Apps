@@ -26,6 +26,9 @@ class TariffDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+        ->editColumn('property_id', function (Tariff $tariff) {
+            return !empty($tariff->property) ? $tariff->property->property_name ?? '-' : '-';
+        })
             ->editColumn('start_date', function (Tariff $tariff) {
                 return Carbon::parse($tariff->start_date)->format('d M Y');
             })
@@ -51,7 +54,7 @@ class TariffDataTable extends DataTable
     {
         $query = $model->newQuery();
         if (Auth::user()->isPropertyAdmin()){
-            $query->where('created_by',Auth::user()->user_id);
+            $query->where('created_by',Auth::user()->user_id)->where('property_id',Auth::user()->property_id);
         }
         return $query;
     }
@@ -79,6 +82,7 @@ class TariffDataTable extends DataTable
     {
         return [
             Column::make('tariff_id'),
+            Column::make('property_id')->title("Property"),
             Column::make('room_type','room_type_id'),
             Column::make('start_date'),
             Column::make('end_date'),

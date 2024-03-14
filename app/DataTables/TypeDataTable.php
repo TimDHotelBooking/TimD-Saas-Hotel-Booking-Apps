@@ -49,7 +49,7 @@ class TypeDataTable extends DataTable
     {
         $query = $model->newQuery();
         if (Auth::user()->isPropertyAdmin()){
-            $query->where('created_by',Auth::user()->user_id);
+            $query->where('created_by',Auth::user()->user_id)->where('property_id',Auth::user()->property_id);
         }
         return $query;
     }

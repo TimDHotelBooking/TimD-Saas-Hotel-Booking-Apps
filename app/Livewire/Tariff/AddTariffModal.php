@@ -38,13 +38,17 @@ class AddTariffModal extends Component
     public function render()
     {
         $room_types = (new Type());
+      
         if (Auth::user()->isPropertyAdmin()) {
-            $room_types->where('created_by', Auth::user()->user_id);
+            
+            $room_types = $room_types->where(['created_by'=> Auth::user()->user_id,'property_id'=> Auth::user()->property_id]);
+            
         }
         
 
         $room_types = $room_types->get();
-       
+
+              
        
         if ($this->edit_mode == false) {
             $this->room_type_ids = $room_type_ids = Tariff::where('created_by', Auth::user()->user_id)->pluck('room_type_id')->toArray();
@@ -62,6 +66,7 @@ class AddTariffModal extends Component
         DB::transaction(function () {
             // Prepare the data for creating a new property
             $data = [
+                'property_id' =>  Auth::user()->property_id,
                 'room_type_id' => $this->room_type_id,
                 'start_date' => $this->start_date,
                 'end_date' => $this->end_date,
