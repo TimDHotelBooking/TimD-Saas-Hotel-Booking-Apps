@@ -34,29 +34,7 @@
                         data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto"
                         data-kt-scroll-dependencies="#kt_modal_add_rooms_header"
                         data-kt-scroll-wrappers="#kt_modal_add_rooms_scroll" data-kt-scroll-offset="300px">
-                        <!--begin::Input group-->
-                        <div class="fv-row mb-7">
-                            <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-2">Property</label>
-                            <!--end::Label-->
-                            <!--begin::Input-->
-                            <select class="form-control form-control-solid  mb-3 mb-lg-0" name="property_id"
-                                wire:model="selectedProperty" wire:change="updateData">
-                                <option aria-hidden="true" aria-disabled="true" value="">Select Property</option>
-                                @if (!empty($properties) && count($properties) > 0)
-                                    @foreach ($properties as $property)
-                                        <option value="{{ $property->property_id }}">{{ $property->property_name }}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
-                         
-                            <!--end::Input-->
-                            @error('selectedProperty')
-                                <span  class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <!--end::Input group-->
+                      
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <!--begin::Label-->

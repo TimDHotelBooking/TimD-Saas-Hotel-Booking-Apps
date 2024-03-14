@@ -7,6 +7,7 @@ use App\Models\Amenity;
 use App\Models\TypeAmenity;
 use App\Models\TypeFacility;
 use App\Models\Property;
+use App\Models\RoomList;
 use App\Models\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,12 +22,12 @@ class AddTypeModal extends Component
     public $amenity_id;
     public $facility_id;
     public $status;
-    public $property_id;
+   
 
     public $edit_mode = false;
 
     protected $rules = [     
-        'property_id' => "required",   
+        
         "type_name" => "required",
         "description" => "required",
         "status"=>"required",
@@ -42,18 +43,14 @@ class AddTypeModal extends Component
 
     public function render()
     {
-        $properties = Property::where('status', 1);
-        if (!Auth::user()->isSuperAdmin()) {
-            $properties->where('property_admin_id', Auth::user()->user_id);
-        }
-        $properties = $properties->get();
+       
 
         $amenities = (new Amenity());
         if (Auth::user()->isPropertyAdmin()){
             $amenities->where('status',1);
         }
         $amenities = $amenities->get();
-        return view('livewire.type.add-type-modal',compact('amenities','properties'));
+        return view('livewire.type.add-type-modal',compact('amenities'));
     }
 
     public function submit()
@@ -63,9 +60,19 @@ class AddTypeModal extends Component
 
         $this->validate();
         DB::transaction(function () {
+
+            $is_exists = Type::where("property_id", Auth::user()->property_id)
+            ->where("type_name", $this->type_name)->get()->count();
+            if($is_exists > 0)
+            {
+                $this->dispatch('error', __('Rooms Type already exists with selected property'));
+                return;
+            }
+
+
             // Prepare the data for creating a new property
             $data = [
-                'property_id' => $this->property_id,
+                'property_id' =>  Auth::user()->property_id,
                 'type_name' => $this->type_name, 
                 'description' => $this->description,                    
                 'status' => $this->status,
@@ -126,7 +133,8 @@ class AddTypeModal extends Component
 
     public function deleteType($id)
     {
-      
+        RoomList::where('room_type_id',$id)->delete();
+        Rooms::where('room_type_id',$id)->delete();
         TypeAmenity::where('type_id',$id)->delete();
         TypeFacility::where('type_id',$id)->delete();
         // Delete the property record with the specified ID

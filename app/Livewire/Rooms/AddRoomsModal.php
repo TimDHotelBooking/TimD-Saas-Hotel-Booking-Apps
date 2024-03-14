@@ -14,7 +14,7 @@ use Livewire\Component;
 class AddRoomsModal extends Component
 {
     public $room_id;
-    public $property_id;
+ 
     public $room_type_id;
     public $availability_status;
     public $status;
@@ -23,11 +23,8 @@ class AddRoomsModal extends Component
     public $selected_number;
 
     public $edit_mode = false;
-    public $selectedProperty = null;
-    public  $room_types = [];
-
-
-    public $formData;
+ 
+   public $formData;
 
 
 
@@ -54,23 +51,25 @@ class AddRoomsModal extends Component
     */
 
   
-    public function updatedSelectedProperty($propertyId)
-    {
-        $this->room_types =Type::where('property_id', $propertyId)->where('status', 1)->get();
-    }
-
+   
     public function render()
     {
 
-
-        $properties = Property::where('status', 1);
-        if (!Auth::user()->isSuperAdmin()) {
-            $properties->where('property_admin_id', Auth::user()->user_id);
-        }
-        $properties = $properties->get();
+        $room_types = (new Type());
       
+        if (Auth::user()->isPropertyAdmin()) {
+            
+            $room_types = $room_types->where(['created_by'=> Auth::user()->user_id,'property_id'=> Auth::user()->property_id]);
+            
+        }
+        
 
-        return view('livewire.rooms.add-rooms-modal', compact('properties'));
+        $room_types = $room_types->get();
+
+       
+     
+
+        return view('livewire.rooms.add-rooms-modal',compact('room_types'));
     }
 
     public function submit()
@@ -81,7 +80,7 @@ class AddRoomsModal extends Component
       
 
         $this->validate([
-            'selectedProperty' => "required",
+           
             "room_type_id" => "required",
             "formData.*.floor" => "required",
             "formData.*.room_number" =>  "required",
@@ -92,10 +91,10 @@ class AddRoomsModal extends Component
       
         DB::transaction(function () {
             // Prepare the data for creating a new property
-            $is_exists = Rooms::where("property_id", $this->selectedProperty)
+            $is_exists = Rooms::where("property_id", Auth::user()->property_id)
                 ->where("room_type_id", $this->room_type_id)->first();
                 if (!$this->edit_mode) {
-                    if(Rooms::where("property_id", $this->selectedProperty)
+                    if(Rooms::where("property_id", Auth::user()->property_id)
                     ->where("room_type_id", $this->room_type_id)->count() > 0)
                     {
                         $this->dispatch('error', __('Rooms already exists with selected property'));
@@ -107,7 +106,7 @@ class AddRoomsModal extends Component
                 return;
             }
             $data = [
-                'property_id' => $this->selectedProperty,
+                'property_id' =>Auth::user()->property_id,
                 'room_type_id' => $this->room_type_id,
                 'availability_status' => Rooms::AVAILABLE_STATUS,
                 'price' => 0,
@@ -133,7 +132,7 @@ class AddRoomsModal extends Component
                     {
                         $room_list_data =[
                             'room_id'=>$room_id,
-                            'property_id' => $this->selectedProperty,
+                            'property_id' => Auth::user()->property_id,
                             'room_type_id' => $this->room_type_id,
                             'floor'=>$fd['floor'],
                             'room_number'=>$fd['room_number'],
@@ -199,8 +198,7 @@ class AddRoomsModal extends Component
         $this->edit_mode = true;
 
         $room = Rooms::find($id);
-        $this->room_id = $room->room_id;
-        $this->property_id = $room->property_id;
+        $this->room_id = $room->room_id;       
         $this->room_type_id = $room->room_type_id;
         // $this->availability_status = $room->availability_status;
         // $this->price = $room->price;

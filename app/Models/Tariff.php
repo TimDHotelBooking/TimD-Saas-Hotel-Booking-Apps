@@ -14,6 +14,7 @@ class Tariff extends Model
     protected $fillable = [
         'tariff_id',
         'room_type_id',
+        'property_id',
         'start_date',
         'end_date',
         'price',
@@ -26,5 +27,8 @@ class Tariff extends Model
 
     public function room_type(){
         return $this->belongsTo(Type::class,'room_type_id');
+    }
+    public function property(){
+        return $this->belongsTo(Property::class,'property_id');
     }
 }

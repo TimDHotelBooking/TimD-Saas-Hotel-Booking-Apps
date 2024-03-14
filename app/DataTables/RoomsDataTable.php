@@ -45,7 +45,7 @@ class RoomsDataTable extends DataTable
     {
         $query = $model->newQuery();
         if (Auth::user()->isPropertyAdmin()){
-            $query = $model->where('created_by',Auth::user()->user_id);
+            $query = $model->where('created_by',Auth::user()->user_id)->where('property_id',Auth::user()->property_id);
         }
         return $query;
     }
