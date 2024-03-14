@@ -41,7 +41,7 @@
                             <!--end::Label-->
                             <!--begin::Input-->
                             <select class="form-control form-control-solid  mb-3 mb-lg-0" name="property_id"
-                                wire:model="property_id">
+                                wire:model="selectedProperty" wire:change="updateData">
                                 <option aria-hidden="true" aria-disabled="true" value="">Select Property</option>
                                 @if (!empty($properties) && count($properties) > 0)
                                     @foreach ($properties as $property)
@@ -50,9 +50,10 @@
                                     @endforeach
                                 @endif
                             </select>
+                         
                             <!--end::Input-->
-                            @error('property_id')
-                                <span class="text-danger">{{ $message }}</span>
+                            @error('selectedProperty')
+                                <span  class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <!--end::Input group-->
@@ -63,7 +64,7 @@
                             <!--end::Label-->
                             <!--begin::Input-->
                             <select class="form-control form-control-solid  mb-3 mb-lg-0" name="room_type_id"
-                                wire:model="room_type_id">
+                                wire:model="room_type_id" >
                                 <option aria-hidden="true" aria-disabled="true" value="">Select Room Type</option>
                                 @if (!empty($room_types) && count($room_types) > 0)
                                     @foreach ($room_types as $room_type)
@@ -118,10 +119,10 @@
                                 <tr>
                                     <td>{{$aa}}</td>
                                     <td><select name="floor[]" wire:model="formData.{{ $index }}.floor"  class="form-control form-control-solid  mb-3 mb-lg-0"><option value="">Select</option><option value="Ground">Ground</option><option value="First">First</option><option value="Second">Second</option><option value="Third">Third</option><option value="Fourth">Fourth</option><option value="Fifth">Fifth</option></select>
-                                        @error("formData.$index.floor") <span>{{ $message }}</span> @enderror
+                                        @error("formData.$index.floor") <span class="text-danger">Select Floor</span> @enderror
                                     </td>
                                     <td><input type="text" name="room_number[]" wire:model="formData.{{ $index }}.room_number" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Room Number" />
-                                        @error("formData.$index.room_number") <span>{{ $message }}</span> @enderror
+                                        @error("formData.$index.room_number") <span class="text-danger">Type Room Number</span> @enderror
                                     </td></tr>
                                 <?php 
                              } 

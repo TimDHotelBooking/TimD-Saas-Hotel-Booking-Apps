@@ -33,6 +33,9 @@ class DashboardController extends Controller
             $no_of_payments = Payments::count();
             $sum_of_payments = Payments::whereIn('status',[Payments::STATUS_FULLY_PAID,Payments::STATUS_PARTIALLY_PAID])->sum('amount_paid');
             $no_of_customers = Customers::count();
+            $all_properties = [];
+            $selected_property=0;
+
         }
         else if (Auth::user()->isPropertyAdmin()){
             $property_admin_id = Auth::user()->user_id;
@@ -55,6 +58,8 @@ class DashboardController extends Controller
                 $query->where('property_admin_id',$property_admin_id);
             })->pluck('agent_id');
             $no_of_customers = Customers::whereIn('created_by',$all_property_agents_id)->count();
+            $all_properties = Property::where('property_admin_id', $property_admin_id)->get();
+            $selected_property=Auth::user()->property_id;
         }else if(Auth::user()->isPropertyAgent()){
             $property_agent_id = Auth::user()->user_id;
             $total_properties = Property::where('created_by',$property_agent_id)->count();
@@ -63,6 +68,8 @@ class DashboardController extends Controller
             $no_of_payments = Payments::count();
             $sum_of_payments = Payments::whereIn('status',[Payments::STATUS_FULLY_PAID,Payments::STATUS_PARTIALLY_PAID])->sum('amount_paid');
             $no_of_customers = Customers::where('created_by',$property_agent_id)->count();
+            $all_properties = [];
+            $selected_property=0;
         }
         return view("dashboard.index",compact(
             'total_properties',
@@ -74,8 +81,24 @@ class DashboardController extends Controller
             'no_of_payments',
             'sum_of_payments',
             'no_of_tariff',
-            'no_of_customers'
+            'no_of_customers',
+            'all_properties',
+            'selected_property'
         ));
+    } 
+
+    public function change_property (Request $request)  {
+        $user_id = Auth::user()->user_id;
+        $property_id = $request->property_id;
+
+        //echo "user_id=".$user_id." and property_id=".$property_id;
+        $user = Users::where('user_id',$user_id)->first();
+        $user->property_id = $property_id;
+        $user->save();
+       
+        return redirect()->route('dashboard')->with('message', 'Successfully switched');
+
+
     }
 
     /**

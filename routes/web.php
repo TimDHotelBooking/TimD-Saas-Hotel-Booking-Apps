@@ -16,6 +16,7 @@ use App\Http\Controllers\AppInfoController;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [\App\Http\Controllers\DashboardController::class, "index"])->name("dashboard");
+    Route::post('/admin/change_property', [\App\Http\Controllers\DashboardController::class, "change_property"])->name("admin.change_property");
 
     /*Route::prefix('dashboard.')->name("dashboard")->group(function () {
         Route::get('/', [\App\Http\Controllers\DashboardController::class,"index"]);
