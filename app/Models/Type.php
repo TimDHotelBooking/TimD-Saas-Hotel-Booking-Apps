@@ -13,10 +13,17 @@ class Type extends Model
     protected $fillable = [
         'type_id',
         'type_name', 
+        'property_id',
         'description',
         'maximum_occupancy',                  
         'created_by',
         'updated_by',
         'status'
     ];
+
+    
+    public function property(){
+        return $this->belongsTo(Property::class,'property_id');
+    }
+
 }

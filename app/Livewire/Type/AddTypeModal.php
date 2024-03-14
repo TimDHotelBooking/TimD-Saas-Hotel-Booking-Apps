@@ -6,6 +6,7 @@ use App\Models\Rooms;
 use App\Models\Amenity;
 use App\Models\TypeAmenity;
 use App\Models\TypeFacility;
+use App\Models\Property;
 use App\Models\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,10 +21,12 @@ class AddTypeModal extends Component
     public $amenity_id;
     public $facility_id;
     public $status;
+    public $property_id;
 
     public $edit_mode = false;
 
-    protected $rules = [        
+    protected $rules = [     
+        'property_id' => "required",   
         "type_name" => "required",
         "description" => "required",
         "status"=>"required",
@@ -39,12 +42,18 @@ class AddTypeModal extends Component
 
     public function render()
     {
+        $properties = Property::where('status', 1);
+        if (!Auth::user()->isSuperAdmin()) {
+            $properties->where('property_admin_id', Auth::user()->user_id);
+        }
+        $properties = $properties->get();
+
         $amenities = (new Amenity());
         if (Auth::user()->isPropertyAdmin()){
             $amenities->where('status',1);
         }
         $amenities = $amenities->get();
-        return view('livewire.type.add-type-modal',compact('amenities'));
+        return view('livewire.type.add-type-modal',compact('amenities','properties'));
     }
 
     public function submit()
@@ -56,6 +65,7 @@ class AddTypeModal extends Component
         DB::transaction(function () {
             // Prepare the data for creating a new property
             $data = [
+                'property_id' => $this->property_id,
                 'type_name' => $this->type_name, 
                 'description' => $this->description,                    
                 'status' => $this->status,

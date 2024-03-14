@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Property;
+use App\Models\Users;
+
+
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -32,12 +36,28 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+
+
         $request->authenticate();
 
         $request->session()->regenerate();
 
+        $user_id = $request->user()->user_id;
+
+        $property_id = NULL;
+       
+        if (Users::where('user_id',$user_id)->first()->hasRole("Property Admin")) {
+            if (Property::where('property_admin_id', $user_id)->get()->count() > 0) {
+                $property_id = Property::where('property_admin_id', $user_id)->first()->property_id;
+            }
+        }
+       
+
+
+
         $request->user()->update([
             'last_login_at' => Carbon::now()->toDateTimeString(),
+            'property_id'=>$property_id,
             'last_login_ip' => $request->getClientIp()
         ]);
 

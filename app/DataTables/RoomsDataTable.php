@@ -76,7 +76,7 @@ class RoomsDataTable extends DataTable
             Column::make('property_id')->title("Property"),
             Column::make('room_type_id')->title("Room Type"),
             Column::make('availability_status')->title('Status'),
-            Column::make('price'),
+          
             Column::make('created_at'),
             Column::computed('action')
                 ->exportable(false)

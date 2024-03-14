@@ -25,6 +25,7 @@ class Users extends Authenticatable implements MustVerifyEmail
         'phone_number',
         'status',
         'avatar',
+        'property_id',
         'profile_photo_path',
         'last_login_at',
         'last_login_ip',
@@ -46,7 +47,9 @@ class Users extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasRole("Property Admin");
     }
-
+    public function property(){
+        return $this->belongsTo(Property::class,'property_id');
+    }
     public function isPropertyAgent()
     {
         return $this->hasRole("Property Agent");
