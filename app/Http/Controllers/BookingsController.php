@@ -10,6 +10,7 @@ use App\Models\Payments;
 use App\Models\Property;
 use App\Models\Rooms;
 use App\Models\Tariff;
+use App\Models\Type;
 use Carbon\Carbon;
 use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+
 
 class BookingsController extends Controller
 {
@@ -33,11 +35,15 @@ class BookingsController extends Controller
      */
     public function create()
     {
+        //DB::enableQueryLog();
         $properties = Property::with(['rooms' => function ($query) {
             $query->has('tariffs')->where('availability_status', Rooms::AVAILABLE_STATUS);
+           // $query->where('availability_status', Rooms::AVAILABLE_STATUS);
         }])->whereHas('agents', function ($query) {
             $query->where('agent_id', Auth::user()->user_id);
         })->where('status', 1)->get();
+        //print_r(DB::getQueryLog());
+        //die();
         return view('bookings.customer_booking', compact('properties'));
     }
 
@@ -177,7 +183,7 @@ class BookingsController extends Controller
             DB::rollBack();
             return response()->json([
                 "status" => 'error',
-                "msg" => "Something went wrong "
+                "msg" => "Something went wrong 111"
             ], 500);
         }
     }
@@ -293,7 +299,7 @@ class BookingsController extends Controller
             DB::rollBack();
             return response()->json([
                 "status" => 'error',
-                "msg" => "Something went wrong"
+                "msg" => "Something went wrong 222"
             ], 500);
         }
     }
@@ -318,7 +324,7 @@ class BookingsController extends Controller
             Log::info($e->getMessage());
             return response()->json([
                 "status" => 'error',
-                "msg" => "Something went wrong"
+                "msg" => "Something went wrong 333"
             ], 500);
         }
     }
@@ -395,7 +401,7 @@ class BookingsController extends Controller
             Log::info($e->getMessage());
             return response()->json([
                 'status' => 'error',
-                'msg' => 'Something went wrong'
+                'msg' => 'Something went wrong 444'
             ]);
         }
     }

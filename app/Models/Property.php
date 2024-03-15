@@ -32,4 +32,8 @@ class Property extends Model
     public function rooms() {
         return $this->hasMany(Rooms::class,"property_id");
     }
+
+    public function types() {
+        return $this->hasMany(Type::class,"property_id");
+    }
 }

@@ -36,11 +36,15 @@ class Rooms extends Model
     }
 
     public function tariffs(){
-        return $this->hasMany(Tariff::class,'room_id');
+        return $this->hasMany(Tariff::class,'room_type_id','room_type_id');        
     }
 
     public function bookings(){
         return $this->hasMany(Bookings::class,'room_id');
+    }
+
+    public function roomlist(){
+        return $this->hasMany(Roomlist::class,'room_id');
     }
 
     public function type(){
@@ -49,11 +53,15 @@ class Rooms extends Model
 
     public function availableDates()
     {
+        
         // Get all tariff dates for the room
         $tariffDates = $this->tariffs()->get(['start_date', 'end_date']);
+        
 
         // Get all booked dates for the room
         $bookedDates = $this->bookings()->get(['check_in_date', 'check_out_date']);
+
+       
 
         // Initialize array to hold available dates
         $availableDates = [];

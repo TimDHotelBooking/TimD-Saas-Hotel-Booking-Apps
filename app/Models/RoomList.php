@@ -30,6 +30,9 @@ class RoomList extends Model
     const MAINTENANCE_STATUS = 'Maintenance';
     const CLEANING_STATUS = 'Cleaning';
 
+    public function tariffs(){
+        return $this->belongsTo(Tariff::class,'room_type_id','room_type_id');        
+    }
 
     public function property(){
         return $this->belongsTo(Property::class,'property_id');
