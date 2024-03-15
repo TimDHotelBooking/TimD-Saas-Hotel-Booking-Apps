@@ -13,8 +13,8 @@
                     <div class="d-flex flex-center py-10 py-lg-20">
                         <!--begin::Logo-->
 
-                        <a href="{{ route("dashboard") }}">
-                            <img alt="Logo" src="{{ asset('assets/media/logos/TIMD logo_RGB.png') }}" class="h-70px"/>
+                        <a href="{{ route('dashboard') }}">
+                            <img alt="Logo" src="{{ asset('assets/media/logos/TIMD logo_RGB.png') }}" class="h-70px" />
                         </a>
                         <!--end::Logo-->
                     </div>
@@ -163,7 +163,7 @@
                             </div>
 
                             <div class="stepper-item " data-tab-index="4" data-kt-stepper-element="nav"
-                                 data-tab-head="select_payment_meth">
+                                data-tab-head="select_payment_meth">
                                 <!--begin::Wrapper-->
                                 <div class="stepper-wrapper">
                                     <!--begin::Icon-->
@@ -258,14 +258,20 @@
                                                         id="outer_div_{{ $property->property_id }}">
                                                         @foreach ($property->rooms as $room)
                                                             <div class="col-lg-4">
-                                                                <input type="radio" class="btn-check room_list"
+                                                                <?php
+                                                                // echo "<pre>";
+                                                                // print_r($room->availableDates());
+                                                                //  echo "</pre>";
+                                                                ?>
+
+                                                                <input type="radio" class="btn-check room_list "
                                                                     name="room_id" value="{{ $room->room_id }}"
                                                                     id="room_{{ $room->room_id }}"
-                                                                    data-best_price="{{ $room->price }}"
-                                                                    @if (count($room->availableDates()) == 0 && count($room->bookings) > 0) disabled @endif />
+                                                                    data-best_price="{{ $room->price }}" />
                                                                 <label
-                                                                    class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10"
-                                                                    for="room_{{ $room->room_id }}">
+                                                                    class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10 room_list_all"
+                                                                    for="room_{{ $room->room_id }}"
+                                                                    data-id="{{ $room->room_id }}">
                                                                     <i class="fas fa-hotel fs-2x mb-4"></i>
                                                                     <span class="d-block fw-semibold text-start">
                                                                         <span
@@ -279,6 +285,21 @@
                                                                         @endif
                                                                     </span>
                                                                 </label>
+
+                                                            </div>
+                                                        @endforeach
+
+                                                        @foreach ($property->rooms as $room2)
+                                                            <div class="room_list_all_class"
+                                                                id="room_list_all_div_{{ $room2->room_id }}"
+                                                                style="display: none;"> <h6>{{ $room2->type->type_name }}</h6>
+                                                                <table class="table">
+                                                                    <tr><th>Floor</th><th>Room Number</th></tr>
+                                                                    @foreach ($room2->roomlist as $r_list)
+                                                                        <tr><td>{{ $r_list->floor }}</td><td>{{ $r_list->room_number }}</td></tr>
+                                                                    @endforeach
+                                                                </table>
+
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -705,19 +726,15 @@
                                 <!--end::Wrapper-->
                             </div>
 
-                            <div class="tab_content " data-kt-stepper-element="content" id="booking_confirmed" data-tab="booking_confirmed">
+                            <div class="tab_content " data-kt-stepper-element="content" id="booking_confirmed"
+                                data-tab="booking_confirmed">
                                 <!--begin::Wrapper-->
                                 <div class="w-100">
                                     <!--begin::Heading-->
                                     <div class="pb-8 pb-lg-10">
                                         <!--begin::Title-->
-<<<<<<< HEAD
                                         <h2 class="fw-bold text-gray-900">Please Confirm your Booking</h2>
-=======
 
-                                        <h2 class="fw-bold text-gray-900">Your Booking Preview</h2>
-
->>>>>>> 515cf267ddf70a83cbd865a4c2b4f6cc4915b59e
                                         <!--end::Title-->
                                         <!--end::Notice-->
                                     </div>
@@ -877,7 +894,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab_content " data-kt-stepper-element="content" id="confirmation" data-tab="confirmation">
+                            <div class="tab_content " data-kt-stepper-element="content" id="confirmation"
+                                data-tab="confirmation">
                                 <!--begin::Wrapper-->
                                 <div class="w-100">
                                     <!--begin::Heading-->
@@ -891,16 +909,16 @@
                                         <div class="col-md-12">
                                             <!--begin::Input group-->
                                             <div class="mb-10 fv-row">
-                                               
+
                                                 <div id="success_message_after_confirm"></div>
-                                             
+
                                             </div>
                                             <!--end::Input group-->
                                         </div>
-                                        
-                                      
-                                      
-                                       
+
+
+
+
 
                                     </div>
 
@@ -909,97 +927,101 @@
 
                             <div class="tab_content " data-kt-stepper-element="content" data-tab="select_payment_meth">
                                 <div class="col-md-12">
-                                <!--begin::Input group-->
-                                <div class="mb-0 fv-row">
-                                    <!--begin::Label-->
-                                    <label class="d-flex align-items-center form-label mb-5">Payment Method
-                                        <span class="ms-1" data-bs-toggle="tooltip"
-                                              title="Monthly billing will be based on your account plan">
-                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                    </i>
-                                </span></label>
-                                    <!--end::Label-->
-                                    <!--begin::Options-->
-                                    <div class="row mb-0">
-                                        <div class="col-md-6">
-                                            <!--begin:Option-->
-                                            <label class="d-flex flex-stack mb-5 cursor-pointer">
-                                                <!--begin:Label-->
-                                                <span class="d-flex align-items-center me-2">
-                                                    <!--begin::Icon-->
-                                                    <span class="symbol symbol-50px me-6">
-                                                        <span class="symbol-label">
-                                                            <i class="ki-duotone ki-bank fs-1 text-gray-600">
-                                                                <span class="path1"></span>
-                                                                <span class="path2"></span>
-                                                            </i>
+                                    <!--begin::Input group-->
+                                    <div class="mb-0 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="d-flex align-items-center form-label mb-5">Payment Method
+                                            <span class="ms-1" data-bs-toggle="tooltip"
+                                                title="Monthly billing will be based on your account plan">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span></label>
+                                        <!--end::Label-->
+                                        <!--begin::Options-->
+                                        <div class="row mb-0">
+                                            <div class="col-md-6">
+                                                <!--begin:Option-->
+                                                <label class="d-flex flex-stack mb-5 cursor-pointer">
+                                                    <!--begin:Label-->
+                                                    <span class="d-flex align-items-center me-2">
+                                                        <!--begin::Icon-->
+                                                        <span class="symbol symbol-50px me-6">
+                                                            <span class="symbol-label">
+                                                                <i class="ki-duotone ki-bank fs-1 text-gray-600">
+                                                                    <span class="path1"></span>
+                                                                    <span class="path2"></span>
+                                                                </i>
+                                                            </span>
                                                         </span>
-                                                    </span>
-                                                    <!--end::Icon-->
-                                                    <!--begin::Description-->
+                                                        <!--end::Icon-->
+                                                        <!--begin::Description-->
                                                         <span class="d-flex flex-column">
                                                             <span
-                                                                class="fw-bold text-gray-800 text-hover-primary fs-5">Bank Transfer</span>
-                                                            <span class="fs-6 fw-semibold text-muted">Use images to enhance your post flow</span>
+                                                                class="fw-bold text-gray-800 text-hover-primary fs-5">Bank
+                                                                Transfer</span>
+                                                            <span class="fs-6 fw-semibold text-muted">Use images to enhance
+                                                                your post flow</span>
                                                         </span>
-                                                    <!--end:Description-->
-                                                </span>
-                                                <!--end:Label-->
-                                                <!--begin:Input-->
-                                                <span class="form-check form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="radio"
-                                                           name="payment_method"
-                                                           value="bank_transfer"/>
-                                                </span>
-                                                <!--end:Input-->
-                                            </label>
-                                        </div>
-                                        <!--end::Option-->
-                                        <div class="col-md-6">
-                                            <!--begin:Option-->
-                                            <label class="d-flex flex-stack mb-5 cursor-pointer">
-                                                <!--begin:Label-->
-                                                <span class="d-flex align-items-center me-2">
-                                            <!--begin::Icon-->
-                                            <span class="symbol symbol-50px me-6">
-                                                <span class="symbol-label">
-                                                    <i class="ki-duotone ki-chart fs-1 text-gray-600">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                    </i>
-                                                </span>
-                                            </span>
-                                                    <!--end::Icon-->
-                                                    <!--begin::Description-->
-                                            <span class="d-flex flex-column">
-                                                <span class="fw-bold text-gray-800 text-hover-primary fs-5">Credit Card</span>
-                                                <span class="fs-6 fw-semibold text-muted">Use images to your post time</span>
-                                            </span>
-                                                    <!--end:Description-->
-                                        </span>
-                                                <!--end:Label-->
-                                                <!--begin:Input-->
-                                                <span class="form-check form-check-custom form-check-solid">
-                                            <input class="form-check-input" type="radio" checked="checked"
-                                                   name="payment_method" value="credit_card"/>
-                                        </span>
-                                                <!--end:Input-->
-                                            </label>
+                                                        <!--end:Description-->
+                                                    </span>
+                                                    <!--end:Label-->
+                                                    <!--begin:Input-->
+                                                    <span class="form-check form-check-custom form-check-solid">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="payment_method" value="bank_transfer" />
+                                                    </span>
+                                                    <!--end:Input-->
+                                                </label>
+                                            </div>
                                             <!--end::Option-->
-                                        </div>
-                                        <div class="col-12 mt-5 text-end">
-                                            <button type="button" class="btn btn-success">Update Payment Info
+                                            <div class="col-md-6">
+                                                <!--begin:Option-->
+                                                <label class="d-flex flex-stack mb-5 cursor-pointer">
+                                                    <!--begin:Label-->
+                                                    <span class="d-flex align-items-center me-2">
+                                                        <!--begin::Icon-->
+                                                        <span class="symbol symbol-50px me-6">
+                                                            <span class="symbol-label">
+                                                                <i class="ki-duotone ki-chart fs-1 text-gray-600">
+                                                                    <span class="path1"></span>
+                                                                    <span class="path2"></span>
+                                                                </i>
+                                                            </span>
+                                                        </span>
+                                                        <!--end::Icon-->
+                                                        <!--begin::Description-->
+                                                        <span class="d-flex flex-column">
+                                                            <span
+                                                                class="fw-bold text-gray-800 text-hover-primary fs-5">Credit
+                                                                Card</span>
+                                                            <span class="fs-6 fw-semibold text-muted">Use images to your
+                                                                post time</span>
+                                                        </span>
+                                                        <!--end:Description-->
+                                                    </span>
+                                                    <!--end:Label-->
+                                                    <!--begin:Input-->
+                                                    <span class="form-check form-check-custom form-check-solid">
+                                                        <input class="form-check-input" type="radio" checked="checked"
+                                                            name="payment_method" value="credit_card" />
+                                                    </span>
+                                                    <!--end:Input-->
+                                                </label>
+                                                <!--end::Option-->
+                                            </div>
+                                            <div class="col-12 mt-5 text-end">
+                                                <button type="button" class="btn btn-success">Update Payment Info
 
-                                            </button>
+                                                </button>
+                                            </div>
                                         </div>
+                                        <!--end::Options-->
                                     </div>
-                                    <!--end::Options-->
+                                    <!--end::Input group-->
                                 </div>
-                                <!--end::Input group-->
-                                    </div>
                             </div>
 
                             <div class="d-flex flex-stack pt-15">
@@ -1014,7 +1036,6 @@
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-lg btn-primary btn_submit"
-
                                         data-kt-stepper-action="submit">
                                         <span class="indicator-label">Confirm Booking
                                             <i class="ki-duotone ki-arrow-right fs-4 ms-2">
@@ -1063,6 +1084,12 @@
                     dateFormat: "Y-m-d",
                 });
 
+                $(".room_list_all").on('click', function() {
+                    var room_id = $(this).data('id');
+                    $('.room_list_all_class').hide();
+                    $('#room_list_all_div_' + room_id).show();
+                });
+
                 $("select#no_of_guests").off("change");
                 $("select#no_of_guests").on("change", function() {
                     let value = $(this).val();
@@ -1078,6 +1105,10 @@
                     //alert(current_tab_index);
                     //alert(current_tab_name);
                     if (current_tab_index == 0) {
+
+
+
+
                         if ($(".room_list").length > 0) {
                             let room_id = $("input#room_id").val();
                             if (room_id.length == 0) {
@@ -1182,6 +1213,78 @@
                             $("#error_check_out_date").text("This field is required")
                         }
                         if (!is_error) {
+                            alert('availability');
+                            $.ajax({
+                                    type: "GET",
+                                    url: '/rooms/get-room-tariffs/' + room_id,
+                                    success: function(response, status, xhr) {
+                                        let availableDates = response.data.availableDates ||
+                                            undefined;
+                                        let room = response.data.room || undefined;
+                                        if (availableDates !== undefined && availableDates.length >
+                                            0) {
+                                            var enabledDates = [];
+                                            availableDates.forEach(function(availableDate) {
+                                                let startDate = new Date(availableDate
+                                                    .start_date);
+                                                startDate.setDate(startDate
+                                                    .getDate()
+                                                ); // Adjusting start date to make it inclusive
+
+                                                let endDate = new Date(availableDate
+                                                    .end_date);
+
+                                                // Push start date and end date to the array
+                                                enabledDates.push({
+                                                    from: startDate,
+                                                    to: endDate
+                                                });
+
+                                                // Loop through each date range and push dates to the array
+                                                let currentDate = new Date(startDate);
+                                                while (currentDate < endDate) {
+                                                    enabledDates.push(new Date(
+                                                        currentDate));
+                                                    currentDate.setDate(currentDate
+                                                        .getDate() + 1);
+                                                }
+                                            });
+                                            checkInDatepicker.set('enable', enabledDates);
+                                            checkOutDatepicker.set('enable', enabledDates);
+                                        }
+
+
+                                        let no_of_rooms = room.no_of_rooms;
+                                        if (no_of_rooms != undefined) {
+                                            no_of_rooms = parseInt(no_of_rooms);
+                                            for (var i = 1; i <= no_of_rooms; i++) {
+                                                $('select#no_of_rooms').append($('<option>', {
+                                                    value: i,
+                                                    text: i
+                                                }));
+                                            }
+                                            let no_of_guests = no_of_rooms * 2;
+                                            for (var i = 1; i <= no_of_guests; i++) {
+                                                $('select#no_of_guests').append($('<option>', {
+                                                    value: i,
+                                                    text: i
+                                                }));
+                                            }
+                                        }
+                                    },
+                                    error: function(response) {
+                                        toastr.error(
+                                            "Please try it again later.",
+                                            "Something went wrong!", {
+                                                timeOut: 0,
+                                                extendedTimeOut: 0,
+                                                closeButton: true,
+                                                closeDuration: 0
+                                            }
+                                        );
+                                    },
+                                });
+                                
                             showNextTab(current_tab_name, current_tab_index);
                         }
                     } else if (current_tab_index == 2) {
@@ -1374,15 +1477,15 @@
                                 $("button.btn_continue").hide();
                                 $("button.btn_previous").hide();
 
-                               // showNextTab('confirmation', 5);
+                                // showNextTab('confirmation', 5);
 
-                               $('#booking_confirmed').hide();
-                               $('#confirmation').show();
+                                $('#booking_confirmed').hide();
+                                $('#confirmation').show();
 
-                               var mesg = `<h5>Your Booking ID is ${response.booking_id} </h5>`;
-                               $('#success_message_after_confirm').html(mesg);
+                                var mesg = `<h5>Your Booking ID is ${response.booking_id} </h5>`;
+                                $('#success_message_after_confirm').html(mesg);
 
-                                
+
 
                             } else if (response.status == "bill_generate") {
                                 console.log("bill")
