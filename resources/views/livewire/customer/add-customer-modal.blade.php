@@ -79,6 +79,19 @@
                         </div>
                         <!--end::Input group-->
 
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Address</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <textarea wire:model="address" name="address" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Address"></textarea>
+                            <!--end::Input-->
+                            @error('address')
+                            <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <!--end::Input group-->
+
                         <div class="mb-7">
                             <!--begin::Label-->
                             <label class="required fw-semibold fs-6 mb-5">Status</label>

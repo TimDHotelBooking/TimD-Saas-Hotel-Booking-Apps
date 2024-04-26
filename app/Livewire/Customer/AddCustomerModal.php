@@ -15,6 +15,7 @@ class AddCustomerModal extends Component
     public $email;
     public $phone_number;
     public $status;
+    public $address;
 
     public $edit_mode = false;
 
@@ -23,6 +24,7 @@ class AddCustomerModal extends Component
         'last_name' => 'required|string',
         'email' => 'required|string',
         'phone_number' => 'required|string',
+        'address' => 'required'
     ];
 
     protected $listeners = [
@@ -48,7 +50,8 @@ class AddCustomerModal extends Component
                 'email' => $this->email,
                 'phone_number' => $this->phone_number,
                 'status' => $this->status,
-                'updated_by' => Auth::user()->user_id
+                'updated_by' => Auth::user()->user_id,
+                'address' => $this->address
             ];
 
             if (!$this->edit_mode) {
