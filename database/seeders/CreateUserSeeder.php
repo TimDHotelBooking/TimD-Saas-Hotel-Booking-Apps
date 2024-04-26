@@ -28,5 +28,20 @@ class CreateUserSeeder extends Seeder
         if (!empty($role)){
             $user->assignRole($role);
         }
+
+        $user = Users::where('name','Property Admin')->first();
+        if (empty($user)){
+            $user = Users::create([
+                'name' => 'Property Admin',
+                'email' => 'property.admin@gmail.com',
+                'password' => Hash::make("property@admin"),
+                'status' => 1,
+                'phone_number' => '9038146392',
+            ]);
+        }
+        $role = Role::where('name','Property Admin')->first();
+        if (!empty($role)){
+            $user->assignRole($role);
+        }
     }
 }
