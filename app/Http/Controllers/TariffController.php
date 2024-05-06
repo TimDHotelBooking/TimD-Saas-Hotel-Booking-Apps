@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\TariffDataTable;
 use App\Http\Requests\TariffRequest;
-use App\Models\Rooms;
+use App\Models\Type;
 use App\Models\Tariff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -14,6 +14,7 @@ class Bookings extends Model
     protected $fillable = [
         'booking_id',
         'customer_id',
+        'document_number',
         'room_id',
         'check_in_date',
         'check_out_date',
@@ -49,5 +50,10 @@ class Bookings extends Model
             $name .= " - " .$this->customer->full_name;
         }
         return $name;
+    }
+
+    public function booking_detail()
+    {
+        return $this->hasMany(BookingDetail::class,'booking_id','booking_id');
     }
 }

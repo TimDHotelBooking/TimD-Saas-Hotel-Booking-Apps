@@ -7,6 +7,14 @@ if (!function_exists('theme')) {
     }
 }
 
+function responseData($data, $message = "",$status=true)
+{
+    return [
+        "success" => $status,
+        "message" => $message,
+        "data" => $data
+    ];
+}
 
 if (!function_exists('getName')) {
     /**

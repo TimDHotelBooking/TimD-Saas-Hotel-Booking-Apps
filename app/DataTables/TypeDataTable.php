@@ -25,7 +25,9 @@ class TypeDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-           
+        ->editColumn('property_id', function (Type $type) {
+            return !empty($type->property) ? $type->property->property_name ?? '-' : '-';
+        })
             ->editColumn('created_at', function (Type $type) {
                 return $type->created_at->format('d M Y, h:i a') ?? '-';
             })
@@ -47,7 +49,7 @@ class TypeDataTable extends DataTable
     {
         $query = $model->newQuery();
         if (Auth::user()->isPropertyAdmin()){
-            $query->where('created_by',Auth::user()->user_id);
+            $query->where('created_by',Auth::user()->user_id)->where('property_id',Auth::user()->property_id);
         }
         return $query;
     }
@@ -75,6 +77,7 @@ class TypeDataTable extends DataTable
     {
         return [
             Column::make('type_id'),
+            Column::make('property_id')->title("Property"),
             Column::make('type_name'),           
             Column::make('created_at'),
             Column::make('status'),

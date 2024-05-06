@@ -28,6 +28,61 @@
                     <input type="hidden" wire:model="property_id" name="property_id" value="{{ $property_id }}"/>
                     <!--begin::Scroll-->
                     <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_property_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_property_header" data-kt-scroll-wrappers="#kt_modal_add_property_scroll" data-kt-scroll-offset="300px">
+                        
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
+                            <label class="d-block fw-semibold fs-6 mb-5">Photo</label>
+                            <!--end::Label-->
+                            <!--begin::Image placeholder-->
+                            <style>
+                                .image-input-placeholder {
+                                    background-image: url('{{ image('svg/files/blank-image.svg') }}');
+                                }
+
+                                [data-bs-theme="dark"] .image-input-placeholder {
+                                    background-image: url('{{ image('svg/files/blank-image-dark.svg') }}');
+                                }
+                            </style>
+                            <!--end::Image placeholder-->
+                            <!--begin::Image input-->
+                            <div class="image-input image-input-outline image-input-placeholder {{ $save_photo ? '' : 'image-input-empty' }}" data-kt-image-input="true">
+                                <!--begin::Preview existing avatar-->
+                                @if($photo)
+                                    <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{ $photo ? $photo->temporaryUrl() : '' }});"></div>
+                                @else
+                                    <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{ $save_photo }});"></div>
+                                @endif
+                                <!--end::Preview existing avatar-->
+                                <!--begin::Label-->
+                                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                    {!! getIcon('pencil','fs-7') !!}
+                                    <!--begin::Inputs-->
+                                    <input type="file" wire:model="photo" name="photo" accept=".png, .jpg, .jpeg"/>
+                                    <input type="hidden" name="avatar_remove"/>
+                                    <!--end::Inputs-->
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Cancel-->
+                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                    {!! getIcon('cross','fs-2') !!}
+                                </span>
+                                <!--end::Cancel-->
+                                <!--begin::Remove-->
+                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                    {!! getIcon('cross','fs-2') !!}
+                                </span>
+                                <!--end::Remove-->
+                            </div>
+                            <!--end::Image input-->
+                            <!--begin::Hint-->
+                            <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                            <!--end::Hint-->
+                            @error('avatar')
+                            <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <!--end::Input group-->
+                        
                         @if(!Auth::user()->isPropertyAdmin())
                             <!--begin::Input group-->
                             <div class="fv-row mb-7">

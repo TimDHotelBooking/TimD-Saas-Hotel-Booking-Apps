@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Property;
 use App\Models\Tariff;
+use App\Models\Type;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
@@ -25,13 +26,16 @@ class TariffDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+        ->editColumn('property_id', function (Tariff $tariff) {
+            return !empty($tariff->property) ? $tariff->property->property_name ?? '-' : '-';
+        })
             ->editColumn('start_date', function (Tariff $tariff) {
                 return Carbon::parse($tariff->start_date)->format('d M Y');
             })
             ->editColumn('end_date', function (Tariff $tariff) {
                 return Carbon::parse($tariff->end_date)->format('d M Y');
             })
-            ->editColumn('room', function (Tariff $tariff) {
+            ->editColumn('room_type', function (Tariff $tariff) {
                 return view('tariff.columns._room_property', compact('tariff'));
             })
             ->editColumn('created_at', function (Tariff $tariff) {
@@ -50,7 +54,7 @@ class TariffDataTable extends DataTable
     {
         $query = $model->newQuery();
         if (Auth::user()->isPropertyAdmin()){
-            $query->where('created_by',Auth::user()->user_id);
+            $query->where('created_by',Auth::user()->user_id)->where('property_id',Auth::user()->property_id);
         }
         return $query;
     }
@@ -78,7 +82,8 @@ class TariffDataTable extends DataTable
     {
         return [
             Column::make('tariff_id'),
-            Column::make('room','room_id'),
+            Column::make('property_id')->title("Property"),
+            Column::make('room_type','room_type_id'),
             Column::make('start_date'),
             Column::make('end_date'),
             Column::make('price'),

@@ -2,9 +2,11 @@
 
 namespace App\DataTables;
 
+use App\Models\RoomList;
 use App\Models\Rooms;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -23,16 +25,19 @@ class RoomsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('property_id', function (Rooms $room) {
+            ->editColumn('property_id', function (RoomList $room) {
                 return !empty($room->property) ? $room->property->property_name ?? '-' : '-';
             })
-            ->editColumn('room_type_id', function (Rooms $room) {
+            ->editColumn('room_type_id', function (RoomList $room) {
                 return !empty($room->type) ? $room->type->type_name ?? '-' : '-';
             })
-            ->editColumn('created_at', function (Rooms $room) {
+            // ->editColumn('room_number', function (Rooms $room) {
+            //     return !empty($room->)
+            // })
+            ->editColumn('created_at', function (RoomList $room) {
                 return $room->created_at->format('d M Y, h:i a') ?? '-';
             })
-            ->addColumn('action', function (Rooms $room) {
+            ->addColumn('action', function (RoomList $room) {
                 return view('rooms.columns._actions', compact('room'));
             })
             ->setRowId('id');
@@ -41,11 +46,11 @@ class RoomsDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Rooms $model): QueryBuilder
+    public function query(RoomList $model): QueryBuilder
     {
         $query = $model->newQuery();
         if (Auth::user()->isPropertyAdmin()){
-            $query = $model->where('created_by',Auth::user()->user_id);
+            $query = $model->where('created_by',Auth::user()->user_id)->where('property_id',Auth::user()->property_id);
         }
         return $query;
     }
@@ -75,8 +80,10 @@ class RoomsDataTable extends DataTable
             Column::make('room_id'),
             Column::make('property_id')->title("Property"),
             Column::make('room_type_id')->title("Room Type"),
+            Column::make('room_number')->title("Room number"),
+            Column::make('floor')->title("floor"),
             Column::make('availability_status')->title('Status'),
-            Column::make('price'),
+          
             Column::make('created_at'),
             Column::computed('action')
                 ->exportable(false)

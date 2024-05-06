@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Tariff;
 
-use App\Models\Rooms;
+use App\Models\Type;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,21 +11,23 @@ use Livewire\Component;
 class AddTariffModal extends Component
 {
     public $tariff_id;
-    public $room_id;
+    public $room_type_id;
     public $start_date;
     public $end_date;
     public $price;
     public $holiday_price;
     public $promotional_price;
     public $status;
+    public $room_type_ids;
 
     public $edit_mode = false;
 
     protected $rules = [
-        "room_id" => "required",
+        "room_type_id" => "required",
         "start_date" => "required|date",
         "end_date" => "required|date",
         "price" => "required",
+        "status" => "required",
     ];
 
     protected $listeners = [
@@ -35,12 +37,26 @@ class AddTariffModal extends Component
 
     public function render()
     {
-        $rooms = (new Rooms());
-        if (Auth::user()->isPropertyAdmin()){
-            $rooms->where('created_by',Auth::user()->user_id);
+        $room_types = (new Type());
+      
+        if (Auth::user()->isPropertyAdmin()) {
+            
+            $room_types = $room_types->where(['created_by'=> Auth::user()->user_id,'property_id'=> Auth::user()->property_id]);
+            
         }
-        $rooms = $rooms->get();
-        return view('livewire.tariff.add-tariff-modal',compact('rooms'));
+        
+
+        $room_types = $room_types->get();
+
+              
+       
+        if ($this->edit_mode == false) {
+            $this->room_type_ids = $room_type_ids = Tariff::where('created_by', Auth::user()->user_id)->pluck('room_type_id')->toArray();
+            //dd($room_type_ids);
+           
+        }
+
+        return view('livewire.tariff.add-tariff-modal',compact('room_types'));
     }
 
     public function submit()
@@ -50,7 +66,8 @@ class AddTariffModal extends Component
         DB::transaction(function () {
             // Prepare the data for creating a new property
             $data = [
-                'room_id' => $this->room_id,
+                'property_id' =>  Auth::user()->property_id,
+                'room_type_id' => $this->room_type_id,
                 'start_date' => $this->start_date,
                 'end_date' => $this->end_date,
                 'price' => $this->price,
@@ -102,15 +119,24 @@ class AddTariffModal extends Component
     {
         $this->edit_mode = true;
 
+
+       
+
         $tariff = Tariff::find($id);
         $this->tariff_id = $tariff->tariff_id;
-        $this->room_id = $tariff->room_id;
+        $this->room_type_id = $tariff->room_type_id;
         $this->start_date = $tariff->start_date;
         $this->end_date = $tariff->end_date;
         $this->price = $tariff->price;
         $this->holiday_price = $tariff->holiday_price;
         $this->promotional_price = $tariff->promotional_price;
         $this->status = $tariff->status;
+
+        $this->room_type_ids = Tariff::where('created_by', Auth::user()->user_id)->where('room_type_id', '!=', $tariff->room_type_id)->pluck('room_type_id')->toArray();
+        //dd($this->room_type_ids);
+      
+
+    
     }
 
     public function hydrate()
@@ -119,7 +145,8 @@ class AddTariffModal extends Component
         $this->resetValidation();
     }
 
-    public function dismiss(){
+    public function dismiss()
+    {
         $this->reset();
         $this->edit_mode = false;
     }

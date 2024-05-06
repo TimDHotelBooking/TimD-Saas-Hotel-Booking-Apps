@@ -16,6 +16,7 @@ use App\Http\Controllers\AppInfoController;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [\App\Http\Controllers\DashboardController::class, "index"])->name("dashboard");
+    Route::post('/admin/change_property', [\App\Http\Controllers\DashboardController::class, "change_property"])->name("admin.change_property");
 
     /*Route::prefix('dashboard.')->name("dashboard")->group(function () {
         Route::get('/', [\App\Http\Controllers\DashboardController::class,"index"]);
@@ -29,6 +30,9 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('rooms')->name("rooms")->group(function () {
         Route::get('get-room-tariffs/{room_id}', [\App\Http\Controllers\RoomsController::class,"get_room_tariffs"])->name('get_room_tariffs');
     });
+
+    Route::get('get-room-available', [\App\Http\Controllers\RoomsController::class,"get_room_available"])->name('get.room.available');
+   
     Route::resource('offers', \App\Http\Controllers\OfferController::class);
     Route::resource("rooms", \App\Http\Controllers\RoomsController::class);
 
@@ -40,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource("customers", \App\Http\Controllers\CustomersController::class);
     Route::resource("property_agents", \App\Http\Controllers\PropertyAgentsController::class);
 
-    Route::prefix('bookings')->name("bookings")->group(function () {
+    Route::prefix('bookings')->name("bookings.")->group(function () {
         Route::post('calculate-room-booking-amount', [\App\Http\Controllers\BookingsController::class,"calculate_total_bill_amount"])->name('calculate_total_bill_amount');
     });
     Route::resource("bookings", \App\Http\Controllers\BookingsController::class);

@@ -13,7 +13,8 @@ class Tariff extends Model
     protected $primaryKey = 'tariff_id';
     protected $fillable = [
         'tariff_id',
-        'room_id',
+        'room_type_id',
+        'property_id',
         'start_date',
         'end_date',
         'price',
@@ -24,7 +25,10 @@ class Tariff extends Model
         'status'
     ];
 
-    public function room(){
-        return $this->belongsTo(Rooms::class,'room_id');
+    public function room_type(){
+        return $this->belongsTo(Type::class,'room_type_id');
+    }
+    public function property(){
+        return $this->belongsTo(Property::class,'property_id');
     }
 }
