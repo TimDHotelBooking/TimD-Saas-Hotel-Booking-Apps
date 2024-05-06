@@ -12,6 +12,7 @@ use App\Models\Rooms;
 use App\Models\Tariff;
 use App\Models\Type;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

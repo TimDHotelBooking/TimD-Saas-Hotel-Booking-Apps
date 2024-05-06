@@ -292,11 +292,18 @@
                                                         @foreach ($property->rooms as $room2)
                                                             <div class="room_list_all_class"
                                                                 id="room_list_all_div_{{ $room2->room_id }}"
-                                                                style="display: none;"> <h6>{{ $room2->type->type_name }}</h6>
+                                                                style="display: none;">
+                                                                <h6>{{ $room2->type->type_name }}</h6>
                                                                 <table class="table">
-                                                                    <tr><th>Floor</th><th>Room Number</th></tr>
+                                                                    <tr>
+                                                                        <th>Floor</th>
+                                                                        <th>Room Number</th>
+                                                                    </tr>
                                                                     @foreach ($room2->roomlist as $r_list)
-                                                                        <tr><td>{{ $r_list->floor }}</td><td>{{ $r_list->room_number }}</td></tr>
+                                                                        <tr>
+                                                                            <td>{{ $r_list->floor }}</td>
+                                                                            <td>{{ $r_list->room_number }}</td>
+                                                                        </tr>
                                                                     @endforeach
                                                                 </table>
 
@@ -1077,11 +1084,20 @@
                 var checkInDatepicker = $("#check_in_date").flatpickr({
                     enableTime: false,
                     dateFormat: "Y-m-d",
+                    minDate: "today",
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // When the check-in date is selected, update the minDate of the check-out datepicker
+                        if (selectedDates.length > 0) {
+                            var minCheckOutDate = selectedDates[0];
+                            checkOutDatepicker.set("minDate", minCheckOutDate);
+                        }
+                    }
                 });
 
                 var checkOutDatepicker = $("#check_out_date").flatpickr({
                     enableTime: false,
                     dateFormat: "Y-m-d",
+
                 });
 
                 $(".room_list_all").on('click', function() {
@@ -1091,12 +1107,12 @@
                 });
 
                 $("select#no_of_guests").off("change");
-                $("select#no_of_guests").on("change", function() {
-                    let value = $(this).val();
-                    value = parseInt(value);
-                    var roomsNeeded = Math.ceil(value / 2);
-                    $('select#no_of_rooms').val(roomsNeeded);
-                });
+                // $("select#no_of_guests").on("change", function() {
+                //     let value = $(this).val();
+                //     value = parseInt(value);
+                //     var roomsNeeded = Math.ceil(value / 2);
+                //     $('select#no_of_rooms').val(roomsNeeded);
+                // });
 
                 $("button.btn_continue").off('click');
                 $("button.btn_continue").on('click', function() {
@@ -1150,8 +1166,8 @@
                                                         .getDate() + 1);
                                                 }
                                             });
-                                            checkInDatepicker.set('enable', enabledDates);
-                                            checkOutDatepicker.set('enable', enabledDates);
+                                            // checkInDatepicker.set('enable', enabledDates);
+                                            //checkOutDatepicker.set('enable', enabledDates);
                                         }
 
 
@@ -1164,13 +1180,22 @@
                                                     text: i
                                                 }));
                                             }
-                                            let no_of_guests = no_of_rooms * 2;
+                                            let max_occu = parseInt(room.type.maximum_occupancy);
+                                            let no_of_guests = no_of_rooms * max_occu;
                                             for (var i = 1; i <= no_of_guests; i++) {
                                                 $('select#no_of_guests').append($('<option>', {
                                                     value: i,
                                                     text: i
                                                 }));
                                             }
+                                            //$("select#no_of_guests").off("change");
+                                            $("select#no_of_guests").on("change", function() {
+                                                let value = $(this).val();
+                                                value = parseInt(value);
+                                                var roomsNeeded = Math.ceil(value /
+                                                    max_occu);
+                                                $('select#no_of_rooms').val(roomsNeeded);
+                                            });
                                         }
                                     },
                                     error: function(response) {
@@ -1214,79 +1239,88 @@
                         }
                         if (!is_error) {
                             alert('availability');
-                            $.ajax({
-                                    type: "GET",
-                                    url: '/rooms/get-room-tariffs/' + room_id,
-                                    success: function(response, status, xhr) {
-                                        let availableDates = response.data.availableDates ||
-                                            undefined;
-                                        let room = response.data.room || undefined;
-                                        if (availableDates !== undefined && availableDates.length >
-                                            0) {
-                                            var enabledDates = [];
-                                            availableDates.forEach(function(availableDate) {
-                                                let startDate = new Date(availableDate
-                                                    .start_date);
-                                                startDate.setDate(startDate
-                                                    .getDate()
-                                                ); // Adjusting start date to make it inclusive
+                            // $.ajax({
+                            //     type: "GET",
+                            //     url: '/rooms/get-room-tariffs/' + room_id,
+                            // success: function(response, status, xhr) {
+                            //     let availableDates = response.data.availableDates ||
+                            //         undefined;
+                            //     let room = response.data.room || undefined;
+                            //     if (availableDates !== undefined && availableDates.length >
+                            //         0) {
+                            //         var enabledDates = [];
+                            //         availableDates.forEach(function(availableDate) {
+                            //             let startDate = new Date(availableDate
+                            //                 .start_date);
+                            //             startDate.setDate(startDate
+                            //                 .getDate()
+                            //             ); // Adjusting start date to make it inclusive
 
-                                                let endDate = new Date(availableDate
-                                                    .end_date);
+                            //             let endDate = new Date(availableDate
+                            //                 .end_date);
 
-                                                // Push start date and end date to the array
-                                                enabledDates.push({
-                                                    from: startDate,
-                                                    to: endDate
-                                                });
+                            //             // Push start date and end date to the array
+                            //             enabledDates.push({
+                            //                 from: startDate,
+                            //                 to: endDate
+                            //             });
 
-                                                // Loop through each date range and push dates to the array
-                                                let currentDate = new Date(startDate);
-                                                while (currentDate < endDate) {
-                                                    enabledDates.push(new Date(
-                                                        currentDate));
-                                                    currentDate.setDate(currentDate
-                                                        .getDate() + 1);
-                                                }
-                                            });
-                                            checkInDatepicker.set('enable', enabledDates);
-                                            checkOutDatepicker.set('enable', enabledDates);
-                                        }
+                            //             // Loop through each date range and push dates to the array
+                            //             let currentDate = new Date(startDate);
+                            //             while (currentDate < endDate) {
+                            //                 enabledDates.push(new Date(
+                            //                     currentDate));
+                            //                 currentDate.setDate(currentDate
+                            //                     .getDate() + 1);
+                            //             }
+                            //         });
+                            //         //checkInDatepicker.set('enable', enabledDates);
+                            //         //checkOutDatepicker.set('enable', enabledDates);
+                            //     }
 
 
-                                        let no_of_rooms = room.no_of_rooms;
-                                        if (no_of_rooms != undefined) {
-                                            no_of_rooms = parseInt(no_of_rooms);
-                                            for (var i = 1; i <= no_of_rooms; i++) {
-                                                $('select#no_of_rooms').append($('<option>', {
-                                                    value: i,
-                                                    text: i
-                                                }));
-                                            }
-                                            let no_of_guests = no_of_rooms * 2;
-                                            for (var i = 1; i <= no_of_guests; i++) {
-                                                $('select#no_of_guests').append($('<option>', {
-                                                    value: i,
-                                                    text: i
-                                                }));
-                                            }
-                                        }
-                                    },
-                                    error: function(response) {
-                                        toastr.error(
-                                            "Please try it again later.",
-                                            "Something went wrong!", {
-                                                timeOut: 0,
-                                                extendedTimeOut: 0,
-                                                closeButton: true,
-                                                closeDuration: 0
-                                            }
-                                        );
-                                    },
-                                });
-                                
-                            showNextTab(current_tab_name, current_tab_index);
+                            //     let no_of_rooms = room.no_of_rooms;
+                            //     if (no_of_rooms != undefined) {
+                            //         no_of_rooms = parseInt(no_of_rooms);
+                            //         for (var i = 1; i <= no_of_rooms; i++) {
+                            //             $('select#no_of_rooms').append($('<option>', {
+                            //                 value: i,
+                            //                 text: i
+                            //             }));
+                            //         }
+                            //         let max_occu = parseInt(room.type.maximum_occupancy);
+                            //         let no_of_guests = no_of_rooms * max_occu;
+                            //         for (var i = 1; i <= no_of_guests; i++) {
+                            //             $('select#no_of_guests').append($('<option>', {
+                            //                 value: i,
+                            //                 text: i
+                            //             }));
+                            //         }
+                            //         $("select#no_of_guests").on("change", function() {
+                            //             let value = $(this).val();
+                            //             value = parseInt(value);
+                            //             var roomsNeeded = Math.ceil(value / max_occu);
+                            //             $('select#no_of_rooms').val(roomsNeeded);
+                            //         });
+                            //     }
+                            // },
+                            // error: function(response) {
+                        } else {
+                            toastr.error(
+                                "Please try it again later.",
+                                "Something went wrong!", {
+                                    timeOut: 0,
+                                    extendedTimeOut: 0,
+                                    closeButton: true,
+                                    closeDuration: 0
+                                }
+                            );
                         }
+                        // },
+                        // });
+
+                        showNextTab(current_tab_name, current_tab_index);
+
                     } else if (current_tab_index == 2) {
                         let first_name = $("#first_name").val();
                         let last_name = $("#last_name").val();
