@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\DataTables\CustomerDataTable;
 use App\Http\Requests\CustomersRequest;
+use App\Models\CustomerProperty;
 use App\Models\Customers;
+use App\Models\PropertyAgents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -44,22 +46,22 @@ class CustomersController extends Controller
                 "phone_number" => $phone_number,
                 'created_by' => Auth::user()->user_id
             ]);
-            if ($customer){
+            if ($customer) {
                 return response()->json([
                     "status" => 'success',
                     "msg" => "Customer created successfully"
-                ],200);
+                ], 200);
             }
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something is wrong to create customer"
-            ],500);
-        }catch (\Exception $e){
+            ], 500);
+        } catch (\Exception $e) {
             Log::info($e->getMessage());
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something went wrong"
-            ],500);
+            ], 500);
         }
     }
 
@@ -76,7 +78,7 @@ class CustomersController extends Controller
      */
     public function edit(Customers $customer)
     {
-        return view("customers.edit",compact("customer"));
+        return view("customers.edit", compact("customer"));
     }
 
     /**
@@ -96,22 +98,22 @@ class CustomersController extends Controller
                 "phone_number" => $phone_number,
                 'updated_by' => Auth::user()->user_id
             ]);
-            if ($customer){
+            if ($customer) {
                 return response()->json([
                     "status" => 'success',
                     "msg" => "Customer updated successfully"
-                ],200);
+                ], 200);
             }
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something is wrong to update customer"
-            ],500);
-        }catch (\Exception $e){
+            ], 500);
+        } catch (\Exception $e) {
             Log::info($e->getMessage());
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something went wrong"
-            ],500);
+            ], 500);
         }
     }
 
@@ -121,22 +123,42 @@ class CustomersController extends Controller
     public function destroy(Customers $customer)
     {
         try {
-            if ($customer->delete()){
+            if ($customer->delete()) {
                 return response()->json([
                     "status" => 'success',
                     "msg" => "Customer deleted successfully"
-                ],200);
+                ], 200);
             }
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something is wrong to delete customer"
-            ],500);
-        }catch (\Exception $e){
+            ], 500);
+        } catch (\Exception $e) {
             Log::info($e->getMessage());
             return response()->json([
                 "status" => 'error',
                 "msg" => "Something went wrong"
-            ],500);
+            ], 500);
         }
+    }
+
+    public function get_customer($phone)
+    {
+        $cus_details = Customers::where('phone_number', $phone)->first();
+
+        if (!$cus_details) {
+            $data =  "null";
+        } else {
+            $id = auth()->user()->user_id;
+            $propert_agent = PropertyAgents::where('agent_id',$id)->first();
+            $customer = CustomerProperty::where('customer_id', $cus_details->customer_id)->where('property_id', $propert_agent->property_id)->first();
+            if ($customer) {
+                $data = Customers::where('phone_number', $phone)->first();
+            } else {
+                $data = Customers::where('phone_number', $phone)->first();
+            }
+        }
+
+        return $data;
     }
 }

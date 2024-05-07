@@ -420,51 +420,78 @@
                                     </div>
                                     <!--end::Heading-->
                                     <div class="row">
-                                        <div class="col-6">
+
+                                        <div class="col-md-12">
                                             <!--begin::Input group-->
                                             <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="form-label mb-3">First Name</label>
+                                                <label class="form-label mb-3">Phone Number</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text"
+                                                <input type="tel"
                                                     class="form-control form-control-lg form-control-solid"
-                                                    name="first_name" id="first_name" placeholder="First Name"
+                                                    name="phone_number" id="phone_number" placeholder="Phone Number"
                                                     value="" />
                                                 <!--end::Input-->
-                                                <div class="text-danger" id="error_first_name"></div>
+                                                <div class="text-danger" id="error_phone_number"></div>
+                                                <div class="f-group" id="chk_btn">
+
+                                                    <button type="button" class="btn btn-success mt-2"
+                                                        style="border-radius: 0 0.25rem 0.25rem 0; padding: 10px 20px"
+                                                        onclick='checkcustomer()'>Check
+                                                        Customer</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Last Name</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                    class="form-control form-control-lg form-control-solid"
-                                                    name="last_name" id="last_name" placeholder="Last Name"
-                                                    value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_last_name"></div>
+                                    </div>
+                                    <div class="d-none" id="cus_details">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">First Name</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="first_name" id="first_name" placeholder="First Name"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_first_name"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Email</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="email"
-                                                    class="form-control form-control-lg form-control-solid" name="email"
-                                                    id="email" placeholder="Email" value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_email"></div>
+                                            <div class="col-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Last Name</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="last_name" id="last_name" placeholder="Last Name"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_last_name"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                            <div class="col-md-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Email</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="email"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="email" id="email" placeholder="Email"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_email"></div>
+                                                </div>
+                                            </div>
+                                            {{-- <div class="col-md-6">
                                             <!--begin::Input group-->
                                             <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
@@ -478,56 +505,58 @@
                                                 <!--end::Input-->
                                                 <div class="text-danger" id="error_phone_number"></div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="col-md-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Company Name</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                    class="form-control form-control-lg form-control-solid"
-                                                    name="company_name" id="company_name" placeholder="Company Name"
-                                                    value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_company_name"></div>
+                                            <div class="col-md-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Company Name</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="company_name" id="company_name" placeholder="Company Name"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_company_name"></div>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">GST</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                    class="form-control form-control-lg form-control-solid" name="gst"
-                                                    id="gst" placeholder="GST" value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_gst"></div>
+                                            <div class="col-md-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">GST</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="gst" id="gst" placeholder="GST"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_gst"></div>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-12">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Address</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <textarea type="tel" class="form-control form-control-lg form-control-solid" name="address" id="address"
-                                                    placeholder="Address"></textarea>
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_address"></div>
+                                            <div class="col-md-12">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Address</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <textarea type="tel" class="form-control form-control-lg form-control-solid" name="address" id="address"
+                                                        placeholder="Address"></textarea>
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_address"></div>
+                                                </div>
                                             </div>
+                                            <!--end::Input group-->
                                         </div>
-                                        <!--end::Input group-->
-
-
                                     </div>
+
+
                                 </div>
                                 <!--end::Wrapper-->
                             </div>
@@ -1558,6 +1587,34 @@
                     }
                 });
             });
+
+            function checkcustomer() {
+                var phone = document.getElementById('phone_number').value;
+                $('#chk_btn').hide();
+                //console.log(phone);
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('customer.phone', ['phone' => ':phone']) }}".replace(':phone',
+                        phone),
+                    success: function(response) {
+                        if (response == null) {
+                            $("#cus_details").removeClass("d-none");
+                        } else {
+                            $("#cus_details").removeClass("d-none");
+                            $('#first_name, #last_name, #email, #company_name, #gst, #dob, #address, #phone_number')
+                                .prop('readonly', true);
+                            $('#first_name').val(response.first_name);
+                            $('#last_name').val(response.last_name);
+                            $('#email').val(response.email);
+                            $('#company_name').val(response.company_name);
+                            $('#gst').val(response.gst);
+                            $('#address').val(response.address);
+
+                        }
+                    }
+                });
+
+            }
 
             function showPreviousTab() {
                 let current_tab_name = $("div.tab_content.current").data('tab');

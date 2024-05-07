@@ -8,6 +8,7 @@ use App\Models\Bookings;
 use App\Models\Customers;
 use App\Models\Payments;
 use App\Models\Property;
+use App\Models\RoomList;
 use App\Models\Rooms;
 use App\Models\Tariff;
 use App\Models\Type;
@@ -331,79 +332,65 @@ class BookingsController extends Controller
     }
 
     public function calculate_total_bill_amount(\Illuminate\Http\Request $request)
-    {
+{
+    try {
+        $room_id = $request->input("room_id");
+        $check_in_date = $request->input("check_in_date");
+        $check_out_date = $request->input("check_out_date");
+        $no_of_rooms = $request->input("no_of_rooms");
+        $room_type = RoomList::where('room_id', $request->room_id)->first();
 
-        try {
-            $room_id = $request->input("room_id");
-            $check_in_date = $request->input("check_in_date");
-            $check_out_date = $request->input("check_out_date");
-            $no_of_rooms = $request->input("no_of_rooms");
+        if (!empty($room_id) && !empty($check_in_date) && !empty($check_out_date)) {
+            $checkInDate = Carbon::parse($check_in_date);
+            $checkOutDate = Carbon::parse($check_out_date);
 
-            if (!empty($room_id) && !empty($check_in_date) && !empty($check_out_date)) {
-                $checkInDate = Carbon::parse($check_in_date);
-                $checkOutDate = Carbon::parse($check_out_date);
+            $tariff = Tariff::where('room_type_id', $room_type->room_type_id)
+                ->where('property_id', $room_type->property_id)
+                ->first();
 
-                $tariff = Tariff::where('room_id', $room_id)
-                    ->where(function ($query) use ($checkInDate, $checkOutDate) {
-                        $query->whereDate('start_date', '<=', $checkOutDate)
-                            ->whereDate('end_date', '>=', $checkInDate);
-                    })
-                    ->orWhere(function ($query) use ($checkInDate, $checkOutDate) {
-                        $query->whereDate('start_date', '=', $checkInDate)
-                            ->whereDate('end_date', '=', $checkOutDate);
-                    })
-                    ->first();
-                if (!empty($tariff)) {
+            if (!empty($tariff)) {
+                $checkInDay = $checkInDate->dayOfWeek;
+                $checkOutDay = $checkOutDate->dayOfWeek;
 
-                    $checkInDay = Carbon::parse($checkInDate)->dayOfWeek;
-                    $checkOutDay = Carbon::parse($checkOutDate)->dayOfWeek;
+                $isSaturdaySunday = ($checkInDay === Carbon::SATURDAY && $checkOutDay === Carbon::SUNDAY);
 
-                    $isSaturdaySunday = ($checkInDay === Carbon::SATURDAY && $checkOutDay === Carbon::SUNDAY);
+                $room_rate = $isSaturdaySunday ? (float) $tariff->holiday_price : (float) $tariff->price;
+                $ratePerNight = $isSaturdaySunday ? (float) $tariff->holiday_price : (float) $tariff->price;
+                $totalNights = $checkInDate->diffInDays($checkOutDate);
 
-                    $room_rate = $tariff->price;
-                    $holiday_rate_per_night = $tariff->holiday_price;
-                    $promotional_rate_per_night = $tariff->promotional_price;
-                    if ($isSaturdaySunday) {
-                        $room_rate = $tariff->holiday_price;
-                    }
+                $totalAmount = $totalNights * $ratePerNight * $no_of_rooms;
 
-                    $totalNights = $checkInDate->diffInDays($checkOutDate);
-                    $ratePerNight = $room_rate;
-                    if ($totalNights > 0) {
-                        $totalAmount = ($totalNights * $ratePerNight) * $no_of_rooms;
-                    } else {
-                        $totalAmount = $ratePerNight * $no_of_rooms;
-                    }
-                    return response()->json([
-                        'status' => 'success',
-                        'data' => [
-                            'total_night' => $totalNights ?? 0,
-                            'rate_per_night' => $ratePerNight,
-                            'holiday_rate_per_night' => $holiday_rate_per_night,
-                            'promotional_rate_per_night' => $promotional_rate_per_night,
-                            'is_holiday_price' => $isSaturdaySunday,
-                            'total_rooms' => $no_of_rooms,
-                            'total_amount' => $totalAmount
-                        ]
-                    ]);
-                } else {
-                    return response()->json([
-                        'status' => 'error',
-                        'msg' => 'Something is wrong'
-                    ]);
-                }
+                return response()->json([
+                    'status' => 'success',
+                    'data' => [
+                        'total_night' => $totalNights ?? 0,
+                        'rate_per_night' => $ratePerNight,
+                        'holiday_rate_per_night' => (float) $tariff->holiday_price,
+                        'promotional_rate_per_night' => (float) $tariff->promotional_price,
+                        'is_holiday_price' => $isSaturdaySunday,
+                        'total_rooms' => $no_of_rooms,
+                        'total_amount' => $totalAmount
+                    ]
+                ]);
             } else {
                 return response()->json([
-                    'status' => 'error',
-                    'msg' => 'Something is wrong'
+                    'status' => 'error1',
+                    'msg' => 'No tariff found for the given dates'
                 ]);
             }
-        } catch (\Exception $e) {
-            Log::info($e->getMessage());
+        } else {
             return response()->json([
                 'status' => 'error',
-                'msg' => 'Something went wrong 444'
+                'msg' => 'Invalid request parameters'
             ]);
         }
+    } catch (\Exception $e) {
+        Log::error($e->getMessage());
+        return response()->json([
+            'status' => 'error',
+            'msg' => 'Something went wrong'
+        ]);
     }
+}
+
 }

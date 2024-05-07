@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Customer;
 
+use App\Models\CustomerProperty;
 use App\Models\Customers;
+use App\Models\PropertyAgents;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -30,6 +32,7 @@ class AddCustomerModal extends Component
     protected $listeners = [
         'delete_customer' => 'deleteCustomer',
         'update_customer' => 'updateCustomer',
+        'customer_already_added' => 'customerAlreadyAdded',
     ];
 
     public function render()
@@ -60,6 +63,16 @@ class AddCustomerModal extends Component
 
             // Update or Create a new customer record in the database
             $customer = Customers::find($this->customer_id) ?? Customers::create($data);
+            $id = auth()->user()->user_id;
+            $property_agent = PropertyAgents::where('agent_id',$id)->first();
+
+            if($customer->wasRecentlyCreated)
+            {
+                CustomerProperty::create([
+                    'property_id' => $property_agent->property_id,
+                    'customer_id' => $customer->customer_id,
+                ]);
+            }
 
             if ($this->edit_mode) {
                 foreach ($data as $k => $v) {
@@ -111,8 +124,10 @@ class AddCustomerModal extends Component
         $this->resetValidation();
     }
 
-    public function dismiss(){
+    public function dismiss()
+    {
         $this->reset();
         $this->edit_mode = false;
     }
+
 }
