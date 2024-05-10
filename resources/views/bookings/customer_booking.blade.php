@@ -240,7 +240,7 @@
                                             id="room_id" />
                                         @if (!empty($properties) && count($properties) > 0)
                                             @foreach ($properties as $property)
-                                                @if (!empty($property->rooms) && count($property->rooms) > 0)
+                                                @if (!empty($property->rooms_list) && count($property->rooms_list) > 0)
                                                     <div class="mb-5"
                                                         onclick="toggle_outer_div({{ $property->property_id }})">
                                                         <span
@@ -254,64 +254,62 @@
                                                             {{ $property->contact_information }}
                                                         </span>
                                                     </div>
-                                                    <div class="row" style="display: none;"
-                                                        id="outer_div_{{ $property->property_id }}">
-                                                        @foreach ($property->rooms as $room)
-                                                            <div class="col-lg-4">
-                                                                <?php
-                                                                // echo "<pre>";
-                                                                // print_r($room->availableDates());
-                                                                //  echo "</pre>";
-                                                                ?>
-
-                                                                <input type="radio" class="btn-check room_list "
-                                                                    name="room_id" value="{{ $room->room_id }}"
-                                                                    id="room_{{ $room->room_id }}"
-                                                                    data-best_price="{{ $room->price }}" />
-                                                                <label
-                                                                    class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10 room_list_all"
-                                                                    for="room_{{ $room->room_id }}"
-                                                                    data-id="{{ $room->room_id }}">
-                                                                    <i class="fas fa-hotel fs-2x mb-4"></i>
-                                                                    <span class="d-block fw-semibold text-start">
-                                                                        <span
-                                                                            class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
-                                                                        <span
-                                                                            class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->type->type_name }}</span>
-                                                                        @if (count($room->availableDates()) == 0 && count($room->bookings) > 0)
-                                                                            <span
-                                                                                class="text-danger fw-bold d-block fs-6 mb-2">No
-                                                                                Dates Available</span>
-                                                                        @endif
-                                                                    </span>
-                                                                </label>
-
-                                                            </div>
-                                                        @endforeach
-
-                                                        @foreach ($property->rooms as $room2)
-                                                            <div class="room_list_all_class"
-                                                                id="room_list_all_div_{{ $room2->room_id }}"
-                                                                style="display: none;">
-                                                                <h6>{{ $room2->type->type_name }}</h6>
-                                                                <table class="table">
-                                                                    <tr>
-                                                                        <th>Floor</th>
-                                                                        <th>Room Number</th>
-                                                                    </tr>
-                                                                    @foreach ($room2->roomlist as $r_list)
-                                                                        <tr>
-                                                                            <td>{{ $r_list->floor }}</td>
-                                                                            <td>{{ $r_list->room_number }}</td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </table>
-
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
                                                 @endif
                                             @endforeach
+                                            <div class="row" style=""
+                                                id="outer_div_property">
+                                                {{-- @foreach ($property->rooms as $room)
+                                                    <div class="col-lg-4">
+                                                        <?php
+                                                        // echo "<pre>";
+                                                        // print_r($room->availableDates());
+                                                        //  echo "</pre>";
+                                                        ?>
+
+                                                        <input type="radio" class="btn-check room_list " name="room_id"
+                                                            value="{{ $room->room_id }}" id="room_{{ $room->room_id }}"
+                                                            data-best_price="{{ $room->price }}" />
+                                                        <label
+                                                            class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10 room_list_all"
+                                                            for="room_{{ $room->room_id }}"
+                                                            data-id="{{ $room->room_id }}">
+                                                            <i class="fas fa-hotel fs-2x mb-4"></i>
+                                                            <span class="d-block fw-semibold text-start">
+                                                                <span
+                                                                    class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
+                                                                <span
+                                                                    class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->type->type_name }}</span>
+                                                                @if (count($room->availableDates()) == 0 && count($room->bookings) > 0)
+                                                                    <span class="text-danger fw-bold d-block fs-6 mb-2">No
+                                                                        Dates Available</span>
+                                                                @endif
+                                                            </span>
+                                                        </label>
+
+                                                    </div>
+                                                @endforeach
+
+                                                @foreach ($property->rooms as $room2)
+                                                    <div class="room_list_all_class"
+                                                        id="room_list_all_div_{{ $room2->room_id }}"
+                                                        style="display: none;">
+                                                        <h6>{{ $room2->type->type_name }}</h6>
+                                                        <table class="table">
+                                                            <tr>
+                                                                <th>Floor</th>
+                                                                <th>Room Number</th>
+                                                            </tr>
+                                                            @foreach ($room2->roomlist as $r_list)
+                                                                <tr>
+                                                                    <td>{{ $r_list->floor }}</td>
+                                                                    <td>{{ $r_list->room_number }}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </table>
+
+                                                    </div>
+                                                @endforeach --}}
+                                            </div>
                                         @else
                                             <div class="mb-5">
                                                 <span class="text-danger error">No Properties Available</span>
@@ -1129,11 +1127,12 @@
 
                 });
 
-                $(".room_list_all").on('click', function() {
-                    var room_id = $(this).data('id');
-                    $('.room_list_all_class').hide();
-                    $('#room_list_all_div_' + room_id).show();
-                });
+                // $(".room_list_all").on('click', function() {
+                //     var room_id = $(this).data('id');
+                //     alert(room_id);
+                //     $('.room_list_all_class').hide();
+                //     $('#room_list_all_div_' + room_id).show();
+                // });
 
                 $("select#no_of_guests").off("change");
                 // $("select#no_of_guests").on("change", function() {
@@ -1248,6 +1247,7 @@
                         let check_in_date = $("#check_in_date").val();
                         let check_out_date = $("#check_out_date").val();
                         let special_requests = $("#special_requests").val();
+                        //let 
 
                         let is_error = false;
                         if (no_of_guests == undefined || no_of_guests == null || no_of_guests == "") {
@@ -1267,6 +1267,8 @@
                             $("#error_check_out_date").text("This field is required")
                         }
                         if (!is_error) {
+
+
                             alert('availability');
                             // $.ajax({
                             //     type: "GET",
@@ -1579,13 +1581,14 @@
                     });
                 });
 
-                $("input.room_list").off('click');
-                $("input.room_list").on('click', function() {
-                    let value = $(this).val();
-                    if (value != undefined) {
-                        $("input[type=hidden]#room_id").val(value);
-                    }
-                });
+                // $("input.room_list").off('click');
+                // $("input.room_list").on('click', function() {
+                //     let value = $(this).val();
+                //     alert (value);
+                //     if (value != undefined) {
+                //         $("input[type=hidden]#room_id").val(value);
+                //     }
+                // });
             });
 
             function checkcustomer() {
@@ -1665,7 +1668,18 @@
             }
 
             function toggle_outer_div(id) {
-                $('#outer_div_' + id).toggle();
+                //$('#outer_div_' + id).toggle();
+                //alert(id);
+                let prop_id = id;
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('room.type', ['prop_id' => ':prop_id']) }}".replace(':prop_id', prop_id),
+                    success: function(response) {
+                        //console.log(response);
+                        //$('#outer_div_property').toggle();
+                        $('#outer_div_property').html(response);
+                    }
+                });
             }
 
             function readURL(input, id) {
