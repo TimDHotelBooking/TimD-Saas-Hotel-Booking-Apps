@@ -162,7 +162,7 @@
                                 <!--end::Line-->
                             </div>
 
-                            <div class="stepper-item " data-tab-index="4" data-kt-stepper-element="nav"
+                            {{-- <div class="stepper-item " data-tab-index="4" data-kt-stepper-element="nav"
                                 data-tab-head="select_payment_meth">
                                 <!--begin::Wrapper-->
                                 <div class="stepper-wrapper">
@@ -180,7 +180,7 @@
                                     <!--end::Label-->
                                 </div>
                                 <!--end::Wrapper-->
-                            </div>
+                            </div> --}}
 
                         </div>
                         <!--end::Nav-->
@@ -959,7 +959,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab_content " data-kt-stepper-element="content" data-tab="select_payment_meth">
+                            {{-- <div class="tab_content " data-kt-stepper-element="content" data-tab="select_payment_meth">
                                 <div class="col-md-12">
                                     <!--begin::Input group-->
                                     <div class="mb-0 fv-row">
@@ -1056,7 +1056,7 @@
                                     </div>
                                     <!--end::Input group-->
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="d-flex flex-stack pt-15">
                                 <div class="mr-2">

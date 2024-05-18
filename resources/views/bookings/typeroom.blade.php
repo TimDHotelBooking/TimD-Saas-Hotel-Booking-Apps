@@ -24,6 +24,8 @@
     </div>
 @endforeach
 
+
+
 @foreach ($data as $room)
     <div class="room_list_all_class" id="room_list_all_div_{{ $room->room_type_id }}" style="display: none;">
         <h6>{{ $room->type->type_name }}</h6>

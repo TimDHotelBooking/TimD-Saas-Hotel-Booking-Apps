@@ -20,7 +20,7 @@ class AddTypeModal extends Component
     public $description;  
     public $maximum_occupancy;
     public $amenity_id;
-    public $facility_id;
+    //public $facility_id;
     public $status;
    
 
@@ -32,7 +32,7 @@ class AddTypeModal extends Component
         "description" => "required",
         "status"=>"required",
         "amenity_id"=>"required",
-        "facility_id"=>"required",
+        //"facility_id"=>"required",
         "maximum_occupancy"=>"required"
     ];
 
@@ -99,15 +99,15 @@ class AddTypeModal extends Component
                 }
             } 
 
-            TypeFacility::where('type_id',$type_id)->delete();
-            $all_facility_id = $this->facility_id;
-            if(count($all_facility_id) > 0)
-            {
-                foreach($all_facility_id as $amenity_id)
-                {
-                    TypeFacility::create(['type_id'=>$type_id,'amenity_id'=>$amenity_id]);
-                }
-            }
+            // TypeFacility::where('type_id',$type_id)->delete();
+            // $all_facility_id = $this->facility_id;
+            // if(count($all_facility_id) > 0)
+            // {
+            //     foreach($all_facility_id as $amenity_id)
+            //     {
+            //         TypeFacility::create(['type_id'=>$type_id,'amenity_id'=>$amenity_id]);
+            //     }
+            // }
 
             if ($this->edit_mode) {
                 foreach ($data as $k => $v) {
@@ -166,16 +166,16 @@ class AddTypeModal extends Component
         }
         $this->amenity_id = $existing_ids;
 
-        $all_facility_id = TypeFacility::where('type_id',$type->type_id)->get();
-        $existing_ids_2 = [];
-        if($all_facility_id->count() > 0)
-        {
-            foreach($all_facility_id as $all_amenity_id_value)
-            {
-                $existing_ids_2[]=$all_amenity_id_value->amenity_id;
-            }
-        }
-        $this->facility_id = $existing_ids_2;
+        // $all_facility_id = TypeFacility::where('type_id',$type->type_id)->get();
+        // $existing_ids_2 = [];
+        // if($all_facility_id->count() > 0)
+        // {
+        //     foreach($all_facility_id as $all_amenity_id_value)
+        //     {
+        //         $existing_ids_2[]=$all_amenity_id_value->amenity_id;
+        //     }
+        // }
+        // $this->facility_id = $existing_ids_2;
     }
 
     public function hydrate()
