@@ -71,13 +71,13 @@
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-2">Amenity</label>
+                            <label class="required fw-semibold fs-6 mb-2">Amenity & Facility</label>
                             <!--end::Label-->
                             <!--begin::Input-->
 
                             <select class="form-control form-control-solid  mb-3 mb-lg-0" name="amenity_id[]"
                                 wire:model="amenity_id" multiple="multiple">
-                                <option aria-hidden="true" aria-disabled="true" value="">Select Amenity</option>
+                                <option aria-hidden="true" aria-disabled="true" value="">Select Amenity & Facility</option>
                                 @if (!empty($amenities) && count($amenities) > 0)
                                     @foreach ($amenities as $amenity)
                                         <option value="{{ $amenity->amenity_id }}">{{ $amenity->amenity_name }}</option>
@@ -92,7 +92,7 @@
                         </div>
                         <!--end::Input group-->
 
-                        <!--begin::Input group-->
+                        {{-- <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <!--begin::Label-->
                             <label class="required fw-semibold fs-6 mb-2">Facility</label>
@@ -114,7 +114,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <!--end::Input group-->
+                        <!--end::Input group--> --}}
 
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">

@@ -162,7 +162,7 @@
                                 <!--end::Line-->
                             </div>
 
-                            <div class="stepper-item " data-tab-index="4" data-kt-stepper-element="nav"
+                            {{-- <div class="stepper-item " data-tab-index="4" data-kt-stepper-element="nav"
                                 data-tab-head="select_payment_meth">
                                 <!--begin::Wrapper-->
                                 <div class="stepper-wrapper">
@@ -180,7 +180,7 @@
                                     <!--end::Label-->
                                 </div>
                                 <!--end::Wrapper-->
-                            </div>
+                            </div> --}}
 
                         </div>
                         <!--end::Nav-->
@@ -240,7 +240,7 @@
                                             id="room_id" />
                                         @if (!empty($properties) && count($properties) > 0)
                                             @foreach ($properties as $property)
-                                                @if (!empty($property->rooms) && count($property->rooms) > 0)
+                                                @if (!empty($property->rooms_list) && count($property->rooms_list) > 0)
                                                     <div class="mb-5"
                                                         onclick="toggle_outer_div({{ $property->property_id }})">
                                                         <span
@@ -254,64 +254,62 @@
                                                             {{ $property->contact_information }}
                                                         </span>
                                                     </div>
-                                                    <div class="row" style="display: none;"
-                                                        id="outer_div_{{ $property->property_id }}">
-                                                        @foreach ($property->rooms as $room)
-                                                            <div class="col-lg-4">
-                                                                <?php
-                                                                // echo "<pre>";
-                                                                // print_r($room->availableDates());
-                                                                //  echo "</pre>";
-                                                                ?>
-
-                                                                <input type="radio" class="btn-check room_list "
-                                                                    name="room_id" value="{{ $room->room_id }}"
-                                                                    id="room_{{ $room->room_id }}"
-                                                                    data-best_price="{{ $room->price }}" />
-                                                                <label
-                                                                    class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10 room_list_all"
-                                                                    for="room_{{ $room->room_id }}"
-                                                                    data-id="{{ $room->room_id }}">
-                                                                    <i class="fas fa-hotel fs-2x mb-4"></i>
-                                                                    <span class="d-block fw-semibold text-start">
-                                                                        <span
-                                                                            class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
-                                                                        <span
-                                                                            class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->type->type_name }}</span>
-                                                                        @if (count($room->availableDates()) == 0 && count($room->bookings) > 0)
-                                                                            <span
-                                                                                class="text-danger fw-bold d-block fs-6 mb-2">No
-                                                                                Dates Available</span>
-                                                                        @endif
-                                                                    </span>
-                                                                </label>
-
-                                                            </div>
-                                                        @endforeach
-
-                                                        @foreach ($property->rooms as $room2)
-                                                            <div class="room_list_all_class"
-                                                                id="room_list_all_div_{{ $room2->room_id }}"
-                                                                style="display: none;">
-                                                                <h6>{{ $room2->type->type_name }}</h6>
-                                                                <table class="table">
-                                                                    <tr>
-                                                                        <th>Floor</th>
-                                                                        <th>Room Number</th>
-                                                                    </tr>
-                                                                    @foreach ($room2->roomlist as $r_list)
-                                                                        <tr>
-                                                                            <td>{{ $r_list->floor }}</td>
-                                                                            <td>{{ $r_list->room_number }}</td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </table>
-
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
                                                 @endif
                                             @endforeach
+                                            <div class="row" style=""
+                                                id="outer_div_property">
+                                                {{-- @foreach ($property->rooms as $room)
+                                                    <div class="col-lg-4">
+                                                        <?php
+                                                        // echo "<pre>";
+                                                        // print_r($room->availableDates());
+                                                        //  echo "</pre>";
+                                                        ?>
+
+                                                        <input type="radio" class="btn-check room_list " name="room_id"
+                                                            value="{{ $room->room_id }}" id="room_{{ $room->room_id }}"
+                                                            data-best_price="{{ $room->price }}" />
+                                                        <label
+                                                            class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10 room_list_all"
+                                                            for="room_{{ $room->room_id }}"
+                                                            data-id="{{ $room->room_id }}">
+                                                            <i class="fas fa-hotel fs-2x mb-4"></i>
+                                                            <span class="d-block fw-semibold text-start">
+                                                                <span
+                                                                    class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
+                                                                <span
+                                                                    class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->type->type_name }}</span>
+                                                                @if (count($room->availableDates()) == 0 && count($room->bookings) > 0)
+                                                                    <span class="text-danger fw-bold d-block fs-6 mb-2">No
+                                                                        Dates Available</span>
+                                                                @endif
+                                                            </span>
+                                                        </label>
+
+                                                    </div>
+                                                @endforeach
+
+                                                @foreach ($property->rooms as $room2)
+                                                    <div class="room_list_all_class"
+                                                        id="room_list_all_div_{{ $room2->room_id }}"
+                                                        style="display: none;">
+                                                        <h6>{{ $room2->type->type_name }}</h6>
+                                                        <table class="table">
+                                                            <tr>
+                                                                <th>Floor</th>
+                                                                <th>Room Number</th>
+                                                            </tr>
+                                                            @foreach ($room2->roomlist as $r_list)
+                                                                <tr>
+                                                                    <td>{{ $r_list->floor }}</td>
+                                                                    <td>{{ $r_list->room_number }}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </table>
+
+                                                    </div>
+                                                @endforeach --}}
+                                            </div>
                                         @else
                                             <div class="mb-5">
                                                 <span class="text-danger error">No Properties Available</span>
@@ -420,51 +418,78 @@
                                     </div>
                                     <!--end::Heading-->
                                     <div class="row">
-                                        <div class="col-6">
+
+                                        <div class="col-md-12">
                                             <!--begin::Input group-->
                                             <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="form-label mb-3">First Name</label>
+                                                <label class="form-label mb-3">Phone Number</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text"
+                                                <input type="tel"
                                                     class="form-control form-control-lg form-control-solid"
-                                                    name="first_name" id="first_name" placeholder="First Name"
+                                                    name="phone_number" id="phone_number" placeholder="Phone Number"
                                                     value="" />
                                                 <!--end::Input-->
-                                                <div class="text-danger" id="error_first_name"></div>
+                                                <div class="text-danger" id="error_phone_number"></div>
+                                                <div class="f-group" id="chk_btn">
+
+                                                    <button type="button" class="btn btn-success mt-2"
+                                                        style="border-radius: 0 0.25rem 0.25rem 0; padding: 10px 20px"
+                                                        onclick='checkcustomer()'>Check
+                                                        Customer</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Last Name</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                    class="form-control form-control-lg form-control-solid"
-                                                    name="last_name" id="last_name" placeholder="Last Name"
-                                                    value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_last_name"></div>
+                                    </div>
+                                    <div class="d-none" id="cus_details">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">First Name</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="first_name" id="first_name" placeholder="First Name"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_first_name"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Email</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="email"
-                                                    class="form-control form-control-lg form-control-solid" name="email"
-                                                    id="email" placeholder="Email" value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_email"></div>
+                                            <div class="col-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Last Name</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="last_name" id="last_name" placeholder="Last Name"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_last_name"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                            <div class="col-md-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Email</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="email"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="email" id="email" placeholder="Email"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_email"></div>
+                                                </div>
+                                            </div>
+                                            {{-- <div class="col-md-6">
                                             <!--begin::Input group-->
                                             <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
@@ -478,56 +503,58 @@
                                                 <!--end::Input-->
                                                 <div class="text-danger" id="error_phone_number"></div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="col-md-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Company Name</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                    class="form-control form-control-lg form-control-solid"
-                                                    name="company_name" id="company_name" placeholder="Company Name"
-                                                    value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_company_name"></div>
+                                            <div class="col-md-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Company Name</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="company_name" id="company_name" placeholder="Company Name"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_company_name"></div>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">GST</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                    class="form-control form-control-lg form-control-solid" name="gst"
-                                                    id="gst" placeholder="GST" value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_gst"></div>
+                                            <div class="col-md-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">GST</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="gst" id="gst" placeholder="GST"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_gst"></div>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-12">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Address</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <textarea type="tel" class="form-control form-control-lg form-control-solid" name="address" id="address"
-                                                    placeholder="Address"></textarea>
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_address"></div>
+                                            <div class="col-md-12">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Address</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <textarea type="tel" class="form-control form-control-lg form-control-solid" name="address" id="address"
+                                                        placeholder="Address"></textarea>
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_address"></div>
+                                                </div>
                                             </div>
+                                            <!--end::Input group-->
                                         </div>
-                                        <!--end::Input group-->
-
-
                                     </div>
+
+
                                 </div>
                                 <!--end::Wrapper-->
                             </div>
@@ -932,7 +959,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab_content " data-kt-stepper-element="content" data-tab="select_payment_meth">
+                            {{-- <div class="tab_content " data-kt-stepper-element="content" data-tab="select_payment_meth">
                                 <div class="col-md-12">
                                     <!--begin::Input group-->
                                     <div class="mb-0 fv-row">
@@ -1029,7 +1056,7 @@
                                     </div>
                                     <!--end::Input group-->
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="d-flex flex-stack pt-15">
                                 <div class="mr-2">
@@ -1100,11 +1127,12 @@
 
                 });
 
-                $(".room_list_all").on('click', function() {
-                    var room_id = $(this).data('id');
-                    $('.room_list_all_class').hide();
-                    $('#room_list_all_div_' + room_id).show();
-                });
+                // $(".room_list_all").on('click', function() {
+                //     var room_id = $(this).data('id');
+                //     alert(room_id);
+                //     $('.room_list_all_class').hide();
+                //     $('#room_list_all_div_' + room_id).show();
+                // });
 
                 $("select#no_of_guests").off("change");
                 // $("select#no_of_guests").on("change", function() {
@@ -1219,6 +1247,7 @@
                         let check_in_date = $("#check_in_date").val();
                         let check_out_date = $("#check_out_date").val();
                         let special_requests = $("#special_requests").val();
+                        //let 
 
                         let is_error = false;
                         if (no_of_guests == undefined || no_of_guests == null || no_of_guests == "") {
@@ -1238,6 +1267,8 @@
                             $("#error_check_out_date").text("This field is required")
                         }
                         if (!is_error) {
+
+
                             alert('availability');
                             // $.ajax({
                             //     type: "GET",
@@ -1550,14 +1581,43 @@
                     });
                 });
 
-                $("input.room_list").off('click');
-                $("input.room_list").on('click', function() {
-                    let value = $(this).val();
-                    if (value != undefined) {
-                        $("input[type=hidden]#room_id").val(value);
+                // $("input.room_list").off('click');
+                // $("input.room_list").on('click', function() {
+                //     let value = $(this).val();
+                //     alert (value);
+                //     if (value != undefined) {
+                //         $("input[type=hidden]#room_id").val(value);
+                //     }
+                // });
+            });
+
+            function checkcustomer() {
+                var phone = document.getElementById('phone_number').value;
+                $('#chk_btn').hide();
+                //console.log(phone);
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('customer.phone', ['phone' => ':phone']) }}".replace(':phone',
+                        phone),
+                    success: function(response) {
+                        if (response == null) {
+                            $("#cus_details").removeClass("d-none");
+                        } else {
+                            $("#cus_details").removeClass("d-none");
+                            $('#first_name, #last_name, #email, #company_name, #gst, #dob, #address, #phone_number')
+                                .prop('readonly', true);
+                            $('#first_name').val(response.first_name);
+                            $('#last_name').val(response.last_name);
+                            $('#email').val(response.email);
+                            $('#company_name').val(response.company_name);
+                            $('#gst').val(response.gst);
+                            $('#address').val(response.address);
+
+                        }
                     }
                 });
-            });
+
+            }
 
             function showPreviousTab() {
                 let current_tab_name = $("div.tab_content.current").data('tab');
@@ -1608,7 +1668,18 @@
             }
 
             function toggle_outer_div(id) {
-                $('#outer_div_' + id).toggle();
+                //$('#outer_div_' + id).toggle();
+                //alert(id);
+                let prop_id = id;
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('room.type', ['prop_id' => ':prop_id']) }}".replace(':prop_id', prop_id),
+                    success: function(response) {
+                        //console.log(response);
+                        //$('#outer_div_property').toggle();
+                        $('#outer_div_property').html(response);
+                    }
+                });
             }
 
             function readURL(input, id) {

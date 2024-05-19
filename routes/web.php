@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AppInfoController;
+use App\Http\Controllers\BookingsController;
+use App\Http\Controllers\CustomersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,12 +44,15 @@ Route::middleware(['auth'])->group(function () {
     Route::resource("tariff", \App\Http\Controllers\TariffController::class);
     Route::resource("type", \App\Http\Controllers\TypeController::class);
     Route::resource("customers", \App\Http\Controllers\CustomersController::class);
+    Route::get("get/customer/{phone}", [CustomersController::class,'get_customer'])->name('customer.phone');
     Route::resource("property_agents", \App\Http\Controllers\PropertyAgentsController::class);
 
     Route::prefix('bookings')->name("bookings.")->group(function () {
         Route::post('calculate-room-booking-amount', [\App\Http\Controllers\BookingsController::class,"calculate_total_bill_amount"])->name('calculate_total_bill_amount');
     });
     Route::resource("bookings", \App\Http\Controllers\BookingsController::class);
+    Route::get('booking/roomtype/{prop_id}',[BookingsController::class,'room_type'])->name('room.type');
+
     Route::resource("payments", \App\Http\Controllers\PaymentsController::class);
     Route::resource("notifications", \App\Http\Controllers\NotificationController::class);
 
