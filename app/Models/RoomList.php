@@ -45,4 +45,7 @@ class RoomList extends Model
     public function type(){
         return $this->belongsTo(Type::class,'room_type_id');
     }
+    public function type_amenity(){
+        return $this->hasMany(TypeAmenity::class, 'type_id','type_id');
+    }
 }

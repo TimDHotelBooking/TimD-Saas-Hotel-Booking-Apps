@@ -158,7 +158,7 @@
                                 <!--end::Wrapper-->
 
                                 <!--begin::Line-->
-                                <div class="stepper-line h-40px"></div>
+                                {{-- <div class="stepper-line h-40px"></div> --}}
                                 <!--end::Line-->
                             </div>
 
@@ -234,87 +234,34 @@
                                     </div>
                                     <!--end::Heading-->
                                     <!--begin::Input group-->
-                                    <div class="fv-row">
-                                        <!--begin::Row-->
-                                        <input type="hidden" class="btn-check" name="room_id" value=""
-                                            id="room_id" />
-                                        @if (!empty($properties) && count($properties) > 0)
-                                            @foreach ($properties as $property)
-                                                @if (!empty($property->rooms_list) && count($property->rooms_list) > 0)
-                                                    <div class="mb-5"
-                                                        onclick="toggle_outer_div({{ $property->property_id }})">
-                                                        <span
-                                                            class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
-                                                        <span class="text-muted fw-semibold fs-6 d-flex align-items-start">
-                                                            <i class="fas fa-map-marker-alt text-muted me-2 mt-1"></i>
-                                                            {{ $property->location }}
-                                                        </span>
-                                                        <span class="text-muted fw-semibold fs-6 d-flex align-items-start">
-                                                            <i class="fas fa-phone text-muted me-2 mt-1"></i>
-                                                            {{ $property->contact_information }}
-                                                        </span>
-                                                    </div>
-                                                @endif
+                                    <!--begin::Label-->
+                                    <label class="fw-semibold fs-6 mb-2">Amenity & Facility</label>
+                                    <!--end::Label-->
+
+                                    <select class="form-control form-control-solid  mb-3 mb-lg-0" name="amenity_id[]"
+                                        multiple="multiple" id="amenity_id">
+                                        <option aria-hidden="true" aria-disabled="true" value="">Select Amenity &
+                                            Facility</option>
+                                        @if (!empty($aminities) && count($aminities) > 0)
+                                            @foreach ($aminities as $amenity)
+                                                <option value="{{ $amenity->amenity_id }}">{{ $amenity->amenity_name }}
+                                                </option>
                                             @endforeach
-                                            <div class="row" style=""
-                                                id="outer_div_property">
-                                                {{-- @foreach ($property->rooms as $room)
-                                                    <div class="col-lg-4">
-                                                        <?php
-                                                        // echo "<pre>";
-                                                        // print_r($room->availableDates());
-                                                        //  echo "</pre>";
-                                                        ?>
-
-                                                        <input type="radio" class="btn-check room_list " name="room_id"
-                                                            value="{{ $room->room_id }}" id="room_{{ $room->room_id }}"
-                                                            data-best_price="{{ $room->price }}" />
-                                                        <label
-                                                            class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10 room_list_all"
-                                                            for="room_{{ $room->room_id }}"
-                                                            data-id="{{ $room->room_id }}">
-                                                            <i class="fas fa-hotel fs-2x mb-4"></i>
-                                                            <span class="d-block fw-semibold text-start">
-                                                                <span
-                                                                    class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
-                                                                <span
-                                                                    class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->type->type_name }}</span>
-                                                                @if (count($room->availableDates()) == 0 && count($room->bookings) > 0)
-                                                                    <span class="text-danger fw-bold d-block fs-6 mb-2">No
-                                                                        Dates Available</span>
-                                                                @endif
-                                                            </span>
-                                                        </label>
-
-                                                    </div>
-                                                @endforeach
-
-                                                @foreach ($property->rooms as $room2)
-                                                    <div class="room_list_all_class"
-                                                        id="room_list_all_div_{{ $room2->room_id }}"
-                                                        style="display: none;">
-                                                        <h6>{{ $room2->type->type_name }}</h6>
-                                                        <table class="table">
-                                                            <tr>
-                                                                <th>Floor</th>
-                                                                <th>Room Number</th>
-                                                            </tr>
-                                                            @foreach ($room2->roomlist as $r_list)
-                                                                <tr>
-                                                                    <td>{{ $r_list->floor }}</td>
-                                                                    <td>{{ $r_list->room_number }}</td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </table>
-
-                                                    </div>
-                                                @endforeach --}}
-                                            </div>
-                                        @else
-                                            <div class="mb-5">
-                                                <span class="text-danger error">No Properties Available</span>
-                                            </div>
                                         @endif
+                                    </select>
+                                    <button type="button" class="btn btn-lg btn-primary mt-4 mb-4"
+                                        onclick="search()">Search
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        </i></button>
+                                    <div class="mb-5 d-none" id="search">
+                                        <span class="text-danger error">Please Select Aminity</span>
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="fv-row" id="property">
+                                        <!--begin::Row-->
+
                                         <!--end::Row-->
                                     </div>
                                     <!--end::Input group-->
@@ -1600,7 +1547,7 @@
                     url: "{{ route('customer.phone', ['phone' => ':phone']) }}".replace(':phone',
                         phone),
                     success: function(response) {
-                        if (response == null) {
+                        if (response == 'null') {
                             $("#cus_details").removeClass("d-none");
                         } else {
                             $("#cus_details").removeClass("d-none");
@@ -1671,9 +1618,18 @@
                 //$('#outer_div_' + id).toggle();
                 //alert(id);
                 let prop_id = id;
+                let amenitiesSelect = document.getElementById('amenity_id');
+                let selectedAmenities = Array.from(amenitiesSelect.selectedOptions).map(option => option.value);
                 $.ajax({
-                    type: "GET",
+                    type: "post",
                     url: "{{ route('room.type', ['prop_id' => ':prop_id']) }}".replace(':prop_id', prop_id),
+                    data: {
+                        amenities: selectedAmenities
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content') // Include CSRF token in the headers
+                    },
                     success: function(response) {
                         //console.log(response);
                         //$('#outer_div_property').toggle();
@@ -1780,6 +1736,35 @@
                     },
                 });
 
+            }
+
+            function search() {
+                let amenitiesSelect = document.getElementById('amenity_id');
+                let selectedAmenities = Array.from(amenitiesSelect.selectedOptions).map(option => option.value);
+                //console.log(selectedAmenities);
+
+                if (selectedAmenities.length === 0) {
+                    let errorDiv = document.querySelector('#search');
+                    if (errorDiv) {
+                        errorDiv.classList.remove('d-none');
+                    }
+                } else {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('property.list') }}",
+                        data: {
+                            amenities: selectedAmenities
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content') // Include CSRF token in the headers
+                        },
+                        success: function(response) {
+                            $('#property').html(response);
+                        }
+                    });
+                }
             }
         </script>
     @endpush
