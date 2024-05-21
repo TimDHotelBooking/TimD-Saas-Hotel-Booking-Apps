@@ -508,7 +508,10 @@ class BookingsController extends Controller
     public function bookingmail($customer,$booking)
     {
         try{
-            $maildata = [];
+            $customer_detail = Customers::where('customer_id',$customer->customer_id)->first();
+            $maildata = [
+                'name' => $customer_detail->first_name,
+            ];
             Mail::to($customer->email)->send(new BookingMail($maildata));
         } catch (Throwable $t){
             Log::error('Mail sending failed: ' . $t->getMessage());
