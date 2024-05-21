@@ -236,7 +236,7 @@ class RoomsController extends Controller
     {
         try {
             if (!empty($room_id)) {
-                $room = Rooms::find($room_id);
+                $room = Rooms::with('type')->find($room_id);
                 $availableDates = $room->availableDates();
                 return response()->json([
                     'status' => 'success',

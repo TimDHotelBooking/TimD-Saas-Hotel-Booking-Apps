@@ -34,5 +34,7 @@ class Type extends Model
     public function tariffs(){
         return $this->hasMany(Tariff::class,'room_type_id');
     }
-
+    public function type_amenity(){
+        return $this->hasMany(TypeAmenity::class, 'type_id','type_id');
+    }
 }

@@ -39,10 +39,13 @@ class RoomList extends Model
     }
 
     public function room(){
-        return $this->belongsTo(Room::class,'room_id');
+        return $this->belongsTo(Rooms::class,'room_id');
     }
 
     public function type(){
         return $this->belongsTo(Type::class,'room_type_id');
+    }
+    public function type_amenity(){
+        return $this->hasMany(TypeAmenity::class, 'type_id','type_id');
     }
 }

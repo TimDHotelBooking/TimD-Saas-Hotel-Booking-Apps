@@ -158,11 +158,11 @@
                                 <!--end::Wrapper-->
 
                                 <!--begin::Line-->
-                                <div class="stepper-line h-40px"></div>
+                                {{-- <div class="stepper-line h-40px"></div> --}}
                                 <!--end::Line-->
                             </div>
 
-                            <div class="stepper-item " data-tab-index="4" data-kt-stepper-element="nav"
+                            {{-- <div class="stepper-item " data-tab-index="4" data-kt-stepper-element="nav"
                                 data-tab-head="select_payment_meth">
                                 <!--begin::Wrapper-->
                                 <div class="stepper-wrapper">
@@ -180,7 +180,7 @@
                                     <!--end::Label-->
                                 </div>
                                 <!--end::Wrapper-->
-                            </div>
+                            </div> --}}
 
                         </div>
                         <!--end::Nav-->
@@ -234,82 +234,34 @@
                                     </div>
                                     <!--end::Heading-->
                                     <!--begin::Input group-->
-                                    <div class="fv-row">
-                                        <!--begin::Row-->
-                                        <input type="hidden" class="btn-check" name="room_id" value=""
-                                            id="room_id" />
-                                        @if (!empty($properties) && count($properties) > 0)
-                                            @foreach ($properties as $property)
-                                                @if (!empty($property->rooms) && count($property->rooms) > 0)
-                                                    <div class="mb-5"
-                                                        onclick="toggle_outer_div({{ $property->property_id }})">
-                                                        <span
-                                                            class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
-                                                        <span class="text-muted fw-semibold fs-6 d-flex align-items-start">
-                                                            <i class="fas fa-map-marker-alt text-muted me-2 mt-1"></i>
-                                                            {{ $property->location }}
-                                                        </span>
-                                                        <span class="text-muted fw-semibold fs-6 d-flex align-items-start">
-                                                            <i class="fas fa-phone text-muted me-2 mt-1"></i>
-                                                            {{ $property->contact_information }}
-                                                        </span>
-                                                    </div>
-                                                    <div class="row" style="display: none;"
-                                                        id="outer_div_{{ $property->property_id }}">
-                                                        @foreach ($property->rooms as $room)
-                                                            <div class="col-lg-4">
-                                                                <?php
-                                                                // echo "<pre>";
-                                                                // print_r($room->availableDates());
-                                                                //  echo "</pre>";
-                                                                ?>
+                                    <!--begin::Label-->
+                                    <label class="fw-semibold fs-6 mb-2">Amenity & Facility</label>
+                                    <!--end::Label-->
 
-                                                                <input type="radio" class="btn-check room_list "
-                                                                    name="room_id" value="{{ $room->room_id }}"
-                                                                    id="room_{{ $room->room_id }}"
-                                                                    data-best_price="{{ $room->price }}" />
-                                                                <label
-                                                                    class="btn text-start btn-outline btn-outline-dashed btn-active-light-primary p-5 mb-10 room_list_all"
-                                                                    for="room_{{ $room->room_id }}"
-                                                                    data-id="{{ $room->room_id }}">
-                                                                    <i class="fas fa-hotel fs-2x mb-4"></i>
-                                                                    <span class="d-block fw-semibold text-start">
-                                                                        <span
-                                                                            class="text-gray-900 fw-bold d-block fs-4 mb-2">{{ $property->property_name }}</span>
-                                                                        <span
-                                                                            class="text-gray-900 fw-bold d-block fs-6 mb-2">{{ $room->type->type_name }}</span>
-                                                                        @if (count($room->availableDates()) == 0 && count($room->bookings) > 0)
-                                                                            <span
-                                                                                class="text-danger fw-bold d-block fs-6 mb-2">No
-                                                                                Dates Available</span>
-                                                                        @endif
-                                                                    </span>
-                                                                </label>
-
-                                                            </div>
-                                                        @endforeach
-
-                                                        @foreach ($property->rooms as $room2)
-                                                            <div class="room_list_all_class"
-                                                                id="room_list_all_div_{{ $room2->room_id }}"
-                                                                style="display: none;"> <h6>{{ $room2->type->type_name }}</h6>
-                                                                <table class="table">
-                                                                    <tr><th>Floor</th><th>Room Number</th></tr>
-                                                                    @foreach ($room2->roomlist as $r_list)
-                                                                        <tr><td>{{ $r_list->floor }}</td><td>{{ $r_list->room_number }}</td></tr>
-                                                                    @endforeach
-                                                                </table>
-
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
+                                    <select class="form-control form-control-solid  mb-3 mb-lg-0" name="amenity_id[]"
+                                        multiple="multiple" id="amenity_id">
+                                        <option aria-hidden="true" aria-disabled="true" value="">Select Amenity &
+                                            Facility</option>
+                                        @if (!empty($aminities) && count($aminities) > 0)
+                                            @foreach ($aminities as $amenity)
+                                                <option value="{{ $amenity->amenity_id }}">{{ $amenity->amenity_name }}
+                                                </option>
                                             @endforeach
-                                        @else
-                                            <div class="mb-5">
-                                                <span class="text-danger error">No Properties Available</span>
-                                            </div>
                                         @endif
+                                    </select>
+                                    <button type="button" class="btn btn-lg btn-primary mt-4 mb-4"
+                                        onclick="search()">Search
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        </i></button>
+                                    <div class="mb-5 d-none" id="search">
+                                        <span class="text-danger error">Please Select Aminity</span>
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="fv-row" id="property">
+                                        <!--begin::Row-->
+
                                         <!--end::Row-->
                                     </div>
                                     <!--end::Input group-->
@@ -413,51 +365,78 @@
                                     </div>
                                     <!--end::Heading-->
                                     <div class="row">
-                                        <div class="col-6">
+
+                                        <div class="col-md-12">
                                             <!--begin::Input group-->
                                             <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="form-label mb-3">First Name</label>
+                                                <label class="form-label mb-3">Phone Number</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text"
+                                                <input type="tel"
                                                     class="form-control form-control-lg form-control-solid"
-                                                    name="first_name" id="first_name" placeholder="First Name"
+                                                    name="phone_number" id="phone_number" placeholder="Phone Number"
                                                     value="" />
                                                 <!--end::Input-->
-                                                <div class="text-danger" id="error_first_name"></div>
+                                                <div class="text-danger" id="error_phone_number"></div>
+                                                <div class="f-group" id="chk_btn">
+
+                                                    <button type="button" class="btn btn-success mt-2"
+                                                        style="border-radius: 0 0.25rem 0.25rem 0; padding: 10px 20px"
+                                                        onclick='checkcustomer()'>Check
+                                                        Customer</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Last Name</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                    class="form-control form-control-lg form-control-solid"
-                                                    name="last_name" id="last_name" placeholder="Last Name"
-                                                    value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_last_name"></div>
+                                    </div>
+                                    <div class="d-none" id="cus_details">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">First Name</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="first_name" id="first_name" placeholder="First Name"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_first_name"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Email</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="email"
-                                                    class="form-control form-control-lg form-control-solid" name="email"
-                                                    id="email" placeholder="Email" value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_email"></div>
+                                            <div class="col-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Last Name</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="last_name" id="last_name" placeholder="Last Name"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_last_name"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                            <div class="col-md-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Email</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="email"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="email" id="email" placeholder="Email"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_email"></div>
+                                                </div>
+                                            </div>
+                                            {{-- <div class="col-md-6">
                                             <!--begin::Input group-->
                                             <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
@@ -471,56 +450,58 @@
                                                 <!--end::Input-->
                                                 <div class="text-danger" id="error_phone_number"></div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="col-md-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Company Name</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                    class="form-control form-control-lg form-control-solid"
-                                                    name="company_name" id="company_name" placeholder="Company Name"
-                                                    value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_company_name"></div>
+                                            <div class="col-md-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Company Name</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="company_name" id="company_name" placeholder="Company Name"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_company_name"></div>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">GST</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                    class="form-control form-control-lg form-control-solid" name="gst"
-                                                    id="gst" placeholder="GST" value="" />
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_gst"></div>
+                                            <div class="col-md-6">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">GST</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid"
+                                                        name="gst" id="gst" placeholder="GST"
+                                                        value="" />
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_gst"></div>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-12">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label mb-3">Address</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <textarea type="tel" class="form-control form-control-lg form-control-solid" name="address" id="address"
-                                                    placeholder="Address"></textarea>
-                                                <!--end::Input-->
-                                                <div class="text-danger" id="error_address"></div>
+                                            <div class="col-md-12">
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label mb-3">Address</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <textarea type="tel" class="form-control form-control-lg form-control-solid" name="address" id="address"
+                                                        placeholder="Address"></textarea>
+                                                    <!--end::Input-->
+                                                    <div class="text-danger" id="error_address"></div>
+                                                </div>
                                             </div>
+                                            <!--end::Input group-->
                                         </div>
-                                        <!--end::Input group-->
-
-
                                     </div>
+
+
                                 </div>
                                 <!--end::Wrapper-->
                             </div>
@@ -925,7 +906,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab_content " data-kt-stepper-element="content" data-tab="select_payment_meth">
+                            {{-- <div class="tab_content " data-kt-stepper-element="content" data-tab="select_payment_meth">
                                 <div class="col-md-12">
                                     <!--begin::Input group-->
                                     <div class="mb-0 fv-row">
@@ -1022,7 +1003,7 @@
                                     </div>
                                     <!--end::Input group-->
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="d-flex flex-stack pt-15">
                                 <div class="mr-2">
@@ -1077,26 +1058,36 @@
                 var checkInDatepicker = $("#check_in_date").flatpickr({
                     enableTime: false,
                     dateFormat: "Y-m-d",
+                    minDate: "today",
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // When the check-in date is selected, update the minDate of the check-out datepicker
+                        if (selectedDates.length > 0) {
+                            var minCheckOutDate = selectedDates[0];
+                            checkOutDatepicker.set("minDate", minCheckOutDate);
+                        }
+                    }
                 });
 
                 var checkOutDatepicker = $("#check_out_date").flatpickr({
                     enableTime: false,
                     dateFormat: "Y-m-d",
+
                 });
 
-                $(".room_list_all").on('click', function() {
-                    var room_id = $(this).data('id');
-                    $('.room_list_all_class').hide();
-                    $('#room_list_all_div_' + room_id).show();
-                });
+                // $(".room_list_all").on('click', function() {
+                //     var room_id = $(this).data('id');
+                //     alert(room_id);
+                //     $('.room_list_all_class').hide();
+                //     $('#room_list_all_div_' + room_id).show();
+                // });
 
                 $("select#no_of_guests").off("change");
-                $("select#no_of_guests").on("change", function() {
-                    let value = $(this).val();
-                    value = parseInt(value);
-                    var roomsNeeded = Math.ceil(value / 2);
-                    $('select#no_of_rooms').val(roomsNeeded);
-                });
+                // $("select#no_of_guests").on("change", function() {
+                //     let value = $(this).val();
+                //     value = parseInt(value);
+                //     var roomsNeeded = Math.ceil(value / 2);
+                //     $('select#no_of_rooms').val(roomsNeeded);
+                // });
 
                 $("button.btn_continue").off('click');
                 $("button.btn_continue").on('click', function() {
@@ -1150,8 +1141,8 @@
                                                         .getDate() + 1);
                                                 }
                                             });
-                                            checkInDatepicker.set('enable', enabledDates);
-                                            checkOutDatepicker.set('enable', enabledDates);
+                                            // checkInDatepicker.set('enable', enabledDates);
+                                            //checkOutDatepicker.set('enable', enabledDates);
                                         }
 
 
@@ -1164,13 +1155,22 @@
                                                     text: i
                                                 }));
                                             }
-                                            let no_of_guests = no_of_rooms * 2;
+                                            let max_occu = parseInt(room.type.maximum_occupancy);
+                                            let no_of_guests = no_of_rooms * max_occu;
                                             for (var i = 1; i <= no_of_guests; i++) {
                                                 $('select#no_of_guests').append($('<option>', {
                                                     value: i,
                                                     text: i
                                                 }));
                                             }
+                                            //$("select#no_of_guests").off("change");
+                                            $("select#no_of_guests").on("change", function() {
+                                                let value = $(this).val();
+                                                value = parseInt(value);
+                                                var roomsNeeded = Math.ceil(value /
+                                                    max_occu);
+                                                $('select#no_of_rooms').val(roomsNeeded);
+                                            });
                                         }
                                     },
                                     error: function(response) {
@@ -1194,6 +1194,7 @@
                         let check_in_date = $("#check_in_date").val();
                         let check_out_date = $("#check_out_date").val();
                         let special_requests = $("#special_requests").val();
+                        //let 
 
                         let is_error = false;
                         if (no_of_guests == undefined || no_of_guests == null || no_of_guests == "") {
@@ -1213,80 +1214,91 @@
                             $("#error_check_out_date").text("This field is required")
                         }
                         if (!is_error) {
+
+
                             alert('availability');
-                            $.ajax({
-                                    type: "GET",
-                                    url: '/rooms/get-room-tariffs/' + room_id,
-                                    success: function(response, status, xhr) {
-                                        let availableDates = response.data.availableDates ||
-                                            undefined;
-                                        let room = response.data.room || undefined;
-                                        if (availableDates !== undefined && availableDates.length >
-                                            0) {
-                                            var enabledDates = [];
-                                            availableDates.forEach(function(availableDate) {
-                                                let startDate = new Date(availableDate
-                                                    .start_date);
-                                                startDate.setDate(startDate
-                                                    .getDate()
-                                                ); // Adjusting start date to make it inclusive
+                            // $.ajax({
+                            //     type: "GET",
+                            //     url: '/rooms/get-room-tariffs/' + room_id,
+                            // success: function(response, status, xhr) {
+                            //     let availableDates = response.data.availableDates ||
+                            //         undefined;
+                            //     let room = response.data.room || undefined;
+                            //     if (availableDates !== undefined && availableDates.length >
+                            //         0) {
+                            //         var enabledDates = [];
+                            //         availableDates.forEach(function(availableDate) {
+                            //             let startDate = new Date(availableDate
+                            //                 .start_date);
+                            //             startDate.setDate(startDate
+                            //                 .getDate()
+                            //             ); // Adjusting start date to make it inclusive
 
-                                                let endDate = new Date(availableDate
-                                                    .end_date);
+                            //             let endDate = new Date(availableDate
+                            //                 .end_date);
 
-                                                // Push start date and end date to the array
-                                                enabledDates.push({
-                                                    from: startDate,
-                                                    to: endDate
-                                                });
+                            //             // Push start date and end date to the array
+                            //             enabledDates.push({
+                            //                 from: startDate,
+                            //                 to: endDate
+                            //             });
 
-                                                // Loop through each date range and push dates to the array
-                                                let currentDate = new Date(startDate);
-                                                while (currentDate < endDate) {
-                                                    enabledDates.push(new Date(
-                                                        currentDate));
-                                                    currentDate.setDate(currentDate
-                                                        .getDate() + 1);
-                                                }
-                                            });
-                                            checkInDatepicker.set('enable', enabledDates);
-                                            checkOutDatepicker.set('enable', enabledDates);
-                                        }
+                            //             // Loop through each date range and push dates to the array
+                            //             let currentDate = new Date(startDate);
+                            //             while (currentDate < endDate) {
+                            //                 enabledDates.push(new Date(
+                            //                     currentDate));
+                            //                 currentDate.setDate(currentDate
+                            //                     .getDate() + 1);
+                            //             }
+                            //         });
+                            //         //checkInDatepicker.set('enable', enabledDates);
+                            //         //checkOutDatepicker.set('enable', enabledDates);
+                            //     }
 
 
-                                        let no_of_rooms = room.no_of_rooms;
-                                        if (no_of_rooms != undefined) {
-                                            no_of_rooms = parseInt(no_of_rooms);
-                                            for (var i = 1; i <= no_of_rooms; i++) {
-                                                $('select#no_of_rooms').append($('<option>', {
-                                                    value: i,
-                                                    text: i
-                                                }));
-                                            }
-                                            let no_of_guests = no_of_rooms * 2;
-                                            for (var i = 1; i <= no_of_guests; i++) {
-                                                $('select#no_of_guests').append($('<option>', {
-                                                    value: i,
-                                                    text: i
-                                                }));
-                                            }
-                                        }
-                                    },
-                                    error: function(response) {
-                                        toastr.error(
-                                            "Please try it again later.",
-                                            "Something went wrong!", {
-                                                timeOut: 0,
-                                                extendedTimeOut: 0,
-                                                closeButton: true,
-                                                closeDuration: 0
-                                            }
-                                        );
-                                    },
-                                });
-                                
-                            showNextTab(current_tab_name, current_tab_index);
+                            //     let no_of_rooms = room.no_of_rooms;
+                            //     if (no_of_rooms != undefined) {
+                            //         no_of_rooms = parseInt(no_of_rooms);
+                            //         for (var i = 1; i <= no_of_rooms; i++) {
+                            //             $('select#no_of_rooms').append($('<option>', {
+                            //                 value: i,
+                            //                 text: i
+                            //             }));
+                            //         }
+                            //         let max_occu = parseInt(room.type.maximum_occupancy);
+                            //         let no_of_guests = no_of_rooms * max_occu;
+                            //         for (var i = 1; i <= no_of_guests; i++) {
+                            //             $('select#no_of_guests').append($('<option>', {
+                            //                 value: i,
+                            //                 text: i
+                            //             }));
+                            //         }
+                            //         $("select#no_of_guests").on("change", function() {
+                            //             let value = $(this).val();
+                            //             value = parseInt(value);
+                            //             var roomsNeeded = Math.ceil(value / max_occu);
+                            //             $('select#no_of_rooms').val(roomsNeeded);
+                            //         });
+                            //     }
+                            // },
+                            // error: function(response) {
+                        } else {
+                            toastr.error(
+                                "Please try it again later.",
+                                "Something went wrong!", {
+                                    timeOut: 0,
+                                    extendedTimeOut: 0,
+                                    closeButton: true,
+                                    closeDuration: 0
+                                }
+                            );
                         }
+                        // },
+                        // });
+
+                        showNextTab(current_tab_name, current_tab_index);
+
                     } else if (current_tab_index == 2) {
                         let first_name = $("#first_name").val();
                         let last_name = $("#last_name").val();
@@ -1516,14 +1528,43 @@
                     });
                 });
 
-                $("input.room_list").off('click');
-                $("input.room_list").on('click', function() {
-                    let value = $(this).val();
-                    if (value != undefined) {
-                        $("input[type=hidden]#room_id").val(value);
+                // $("input.room_list").off('click');
+                // $("input.room_list").on('click', function() {
+                //     let value = $(this).val();
+                //     alert (value);
+                //     if (value != undefined) {
+                //         $("input[type=hidden]#room_id").val(value);
+                //     }
+                // });
+            });
+
+            function checkcustomer() {
+                var phone = document.getElementById('phone_number').value;
+                $('#chk_btn').hide();
+                //console.log(phone);
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('customer.phone', ['phone' => ':phone']) }}".replace(':phone',
+                        phone),
+                    success: function(response) {
+                        if (response == 'null') {
+                            $("#cus_details").removeClass("d-none");
+                        } else {
+                            $("#cus_details").removeClass("d-none");
+                            $('#first_name, #last_name, #email, #company_name, #gst, #dob, #address, #phone_number')
+                                .prop('readonly', true);
+                            $('#first_name').val(response.first_name);
+                            $('#last_name').val(response.last_name);
+                            $('#email').val(response.email);
+                            $('#company_name').val(response.company_name);
+                            $('#gst').val(response.gst);
+                            $('#address').val(response.address);
+
+                        }
                     }
                 });
-            });
+
+            }
 
             function showPreviousTab() {
                 let current_tab_name = $("div.tab_content.current").data('tab');
@@ -1574,7 +1615,27 @@
             }
 
             function toggle_outer_div(id) {
-                $('#outer_div_' + id).toggle();
+                //$('#outer_div_' + id).toggle();
+                //alert(id);
+                let prop_id = id;
+                let amenitiesSelect = document.getElementById('amenity_id');
+                let selectedAmenities = Array.from(amenitiesSelect.selectedOptions).map(option => option.value);
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('room.type', ['prop_id' => ':prop_id']) }}".replace(':prop_id', prop_id),
+                    data: {
+                        amenities: selectedAmenities
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content') // Include CSRF token in the headers
+                    },
+                    success: function(response) {
+                        //console.log(response);
+                        //$('#outer_div_property').toggle();
+                        $('#outer_div_property').html(response);
+                    }
+                });
             }
 
             function readURL(input, id) {
@@ -1675,6 +1736,35 @@
                     },
                 });
 
+            }
+
+            function search() {
+                let amenitiesSelect = document.getElementById('amenity_id');
+                let selectedAmenities = Array.from(amenitiesSelect.selectedOptions).map(option => option.value);
+                //console.log(selectedAmenities);
+
+                if (selectedAmenities.length === 0) {
+                    let errorDiv = document.querySelector('#search');
+                    if (errorDiv) {
+                        errorDiv.classList.remove('d-none');
+                    }
+                } else {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('property.list') }}",
+                        data: {
+                            amenities: selectedAmenities
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content') // Include CSRF token in the headers
+                        },
+                        success: function(response) {
+                            $('#property').html(response);
+                        }
+                    });
+                }
             }
         </script>
     @endpush

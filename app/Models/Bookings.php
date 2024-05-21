@@ -51,4 +51,9 @@ class Bookings extends Model
         }
         return $name;
     }
+
+    public function booking_detail()
+    {
+        return $this->hasMany(BookingDetail::class,'booking_id','booking_id');
+    }
 }
