@@ -25,7 +25,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use App\Models\PropertyAgents;
-
+use Illuminate\Support\Facades\Mail;
+use Throwable;
+use App\Mail\BookingMail;
 
 class BookingsController extends Controller
 {
@@ -186,9 +188,7 @@ class BookingsController extends Controller
                                 'message' => 'Only allow JPG,JPEG,PNG files'
                             ]);
                         }
-                    } else {
                     }
-
 
                     Payments::create([
                         'booking_id' => $booking->booking_id,
@@ -200,6 +200,10 @@ class BookingsController extends Controller
                         'status' => Payments::STATUS_NOT_PAID
                     ]);
                     DB::commit();
+                    $customer = Customers::where('customer_id', $booking->customer_id)->first();
+                    if($customer->email){
+                        $this->bookingmail($customer,$booking);
+                    }
                     return response()->json([
                         "status" => 'success',
                         "booking_id" => $booking->booking_id,
@@ -422,7 +426,7 @@ class BookingsController extends Controller
                     if ($totalWeekends > 0) {
                         $totalAmount = ((($totalNights - $totalWeekends) * (float) $tariff->price) + ($totalWeekends * (float) $tariff->promotional_price)) * $no_of_rooms;
                     } else {
-                        $totalAmount = ($totalWeekends * (float) $tariff->price) * $no_of_rooms;
+                        $totalAmount = ($totalNights * (float) $tariff->price) * $no_of_rooms;
                     }
                     //$totalAmount = $totalNights * $ratePerNight * $no_of_rooms;
 
@@ -498,6 +502,17 @@ class BookingsController extends Controller
         } else {
             $properties = null;
             return view('bookings.property', compact('properties'));
+        }
+    }
+
+    public function bookingmail($customer,$booking)
+    {
+        try{
+            $maildata = [];
+            Mail::to($customer->email)->send(new BookingMail($maildata));
+        } catch (Throwable $t){
+            Log::error('Mail sending failed: ' . $t->getMessage());
+            throw $t;
         }
     }
 }
