@@ -140,6 +140,7 @@ class BookingsController extends Controller
                     'updated_by' => Auth::user()->user_id,
                     'status' => 1
                 ]);
+
                 if ($booking) {
 
                     $total_nights = $request->input("total_nights");
@@ -204,11 +205,11 @@ class BookingsController extends Controller
                     if($customer->email){
                         $this->bookingmail($customer);
                     }
-                    // return response()->json([
-                    //     "status" => 'success',
-                    //     "booking_id" => $booking->booking_id,
-                    //     "msg" => "Booking created successfully"
-                    // ], 200);
+                    return response()->json([
+                        "status" => 'success',
+                        "booking_id" => $booking->booking_id,
+                        "msg" => "Booking created successfully"
+                    ], 200);
                 }
             }
             // DB::rollBack();
