@@ -105,7 +105,7 @@ class BookingsController extends Controller
                     $cus_property = CustomerProperty::create([
                         'property_id' => $propert_agent->property_id,
                         'customer_id' => $cus_data->customer_id,
-                    ]); 
+                    ]);
                 }
             }
 
@@ -202,7 +202,7 @@ class BookingsController extends Controller
                     DB::commit();
                     $customer = Customers::where('customer_id', $booking->customer_id)->first();
                     if($customer->email){
-                        $this->bookingmail($customer,$booking);
+                        $this->bookingmail($customer);
                     }
                     return response()->json([
                         "status" => 'success',
@@ -505,7 +505,7 @@ class BookingsController extends Controller
         }
     }
 
-    public function bookingmail($customer,$booking)
+    public function bookingmail($customer)
     {
         try{
             $customer_detail = Customers::where('customer_id',$customer->customer_id)->first();
