@@ -204,24 +204,24 @@ class BookingsController extends Controller
                     if($customer->email){
                         $this->bookingmail($customer);
                     }
-                    return response()->json([
-                        "status" => 'success',
-                        "booking_id" => $booking->booking_id,
-                        "msg" => "Booking created successfully"
-                    ], 200);
+                    // return response()->json([
+                    //     "status" => 'success',
+                    //     "booking_id" => $booking->booking_id,
+                    //     "msg" => "Booking created successfully"
+                    // ], 200);
                 }
             }
-            DB::rollBack();
-            return response()->json([
-                "status" => 'error',
-                "msg" => "Something is wrong to create booking"
-            ], 500);
+            // DB::rollBack();
+            // return response()->json([
+            //     "status" => 'error',
+            //     "msg" => "Something is wrong to create booking"
+            // ], 500);
         } catch (\Exception $e) {
             Log::info($e->getMessage());
             DB::rollBack();
             return response()->json([
                 "status" => 'error',
-                "msg" => "Something went wrong 111"
+                "msg" => $e->getMessage()
             ], 500);
         }
     }
