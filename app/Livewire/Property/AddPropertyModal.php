@@ -4,6 +4,7 @@ namespace App\Livewire\Property;
 
 use App\Models\AgentsProperty;
 use App\Models\Property;
+use App\Models\PropertyAgents;
 use App\Models\Users;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -91,6 +92,16 @@ class AddPropertyModal extends Component
 
             // Update or Create a new property record in the database
             $property = Property::find($this->property_id) ?? Property::create($data);
+            if(!$this->edit_mode)
+            {
+                $property_admin = PropertyAgents::create([
+                    'agent_id' => $property->property_admin_id,
+                    'property_id' => $property->property_id,
+                    'updated_by' => Auth::user()->user_id,
+                    'created_by' => Auth::user()->user_id,
+                ]);
+            }
+
 
             if ($this->edit_mode) {
                 foreach ($data as $k => $v) {
