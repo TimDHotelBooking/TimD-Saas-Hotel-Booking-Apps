@@ -219,7 +219,7 @@ class BookingsController extends Controller
             // ], 500);
         } catch (\Exception $e) {
             Log::info($e->getMessage());
-            DB::rollBack();
+            // DB::rollBack();
             return response()->json([
                 "status" => 'error',
                 "msg" => $e->getMessage()
