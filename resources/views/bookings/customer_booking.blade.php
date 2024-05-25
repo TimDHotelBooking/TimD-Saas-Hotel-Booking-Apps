@@ -883,6 +883,7 @@
                                     <div class="pb-8 pb-lg-10">
                                         <!--begin::Title-->
                                         <h2 class="fw-bold text-gray-900">Success</h2>
+                                        There is 
                                         <!--end::Title-->
                                         <!--end::Notice-->
                                     </div>
@@ -1194,7 +1195,7 @@
                         let check_in_date = $("#check_in_date").val();
                         let check_out_date = $("#check_out_date").val();
                         let special_requests = $("#special_requests").val();
-                        //let 
+                        //let
 
                         let is_error = false;
                         if (no_of_guests == undefined || no_of_guests == null || no_of_guests == "") {
