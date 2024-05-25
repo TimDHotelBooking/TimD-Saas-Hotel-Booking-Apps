@@ -202,9 +202,9 @@ class BookingsController extends Controller
                     ]);
                     DB::commit();
                     $customer = Customers::where('customer_id', $booking->customer_id)->first();
-                    if($customer->email){
-                        $this->bookingmail($customer);
-                    }
+                    // if($customer->email){
+                    //     $this->bookingmail($customer);
+                    // }
                     return response()->json([
                         "status" => 'success',
                         "booking_id" => $booking->booking_id,
