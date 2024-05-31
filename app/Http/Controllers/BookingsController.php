@@ -208,8 +208,11 @@ class BookingsController extends Controller
                     return response()->json([
                         "status" => 'success',
                         "booking_id" => $booking->booking_id,
+                        "payment_method"=> $booking->payment_method,
+                        "data" => $booking,
                         "msg" => "Booking created successfully"
                     ], 200);
+                    // return ['data'=> $booking];
                 }
             }
             // DB::rollBack();
