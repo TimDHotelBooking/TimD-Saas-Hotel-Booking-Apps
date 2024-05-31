@@ -51,7 +51,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('calculate-room-booking-amount', [\App\Http\Controllers\BookingsController::class,"calculate_total_bill_amount"])->name('calculate_total_bill_amount');
     });
     Route::resource("bookings", \App\Http\Controllers\BookingsController::class);
-    Route::get('booking/roomtype/{prop_id}',[BookingsController::class,'room_type'])->name('room.type');
+    Route::post('booking/roomtype/{prop_id}',[BookingsController::class,'room_type'])->name('room.type');
+    Route::post('show/property/list',[BookingsController::class, 'propertyList'])->name('property.list');
 
     Route::resource("payments", \App\Http\Controllers\PaymentsController::class);
     Route::resource("notifications", \App\Http\Controllers\NotificationController::class);

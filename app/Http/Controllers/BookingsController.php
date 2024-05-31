@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\DataTables\BookingDataTable;
 use App\Http\Requests\BookingsRequest;
+use App\Models\Amenity;
 use App\Models\Bookings;
+use App\Models\CustomerProperty;
 use App\Models\Customers;
 use App\Models\Payments;
 use App\Models\Property;
@@ -12,16 +14,20 @@ use App\Models\RoomList;
 use App\Models\Rooms;
 use App\Models\Tariff;
 use App\Models\Type;
+use App\Models\TypeAmenity;
 use Carbon\Carbon;
 use Nette\Utils\DateTime;
 use Illuminate\Support\Facades\Session;
-use http\Env\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
-
+use App\Models\PropertyAgents;
+use Illuminate\Support\Facades\Mail;
+use Throwable;
+use App\Mail\BookingMail;
 
 class BookingsController extends Controller
 {
@@ -49,11 +55,12 @@ class BookingsController extends Controller
         // //die();
         // return view('bookings.customer_booking', compact('properties'));
 
-        $properties = Property::with('rooms_list')->whereHas('agents', function ($query) {
-            $query->where('agent_id', auth()->user()->user_id);
-        })
-            ->where('status', 1)->get();
-        return view('bookings.customer_booking', compact('properties'));
+        // $properties = Property::with('rooms_list')->whereHas('agents', function ($query) {
+        //     $query->where('agent_id', auth()->user()->user_id);
+        // })
+        //    ->where('status', 1)->get();
+        $aminities = Amenity::get();
+        return view('bookings.customer_booking', compact('aminities'));
     }
 
     /**
@@ -70,21 +77,41 @@ class BookingsController extends Controller
             $company_name = $request->input("company_name");
             $gst = $request->input("gst");
             $address = $request->input("address");
+            $cus_data = Customers::where('phone_number', $phone_number)->first();
+            if (!$cus_data) {
+                $customer = Customers::create([
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
+                    'email' => $email,
+                    'phone_number' => $phone_number,
+                    'company_name' => $company_name,
+                    'gst' => $gst,
+                    'address' => $address,
+                    'created_by' => Auth::user()->user_id,
+                    'updated_by' => Auth::user()->user_id,
+                    'status' => 1,
+                ]);
+                $id = auth()->user()->user_id;
+                $propert_agent = PropertyAgents::where('agent_id', $id)->first();
+                $cus_property = CustomerProperty::create([
+                    'property_id' => $propert_agent->property_id,
+                    'customer_id' => $customer->customer_id,
+                ]);
+            } else {
+                $id = auth()->user()->user_id;
+                $propert_agent = PropertyAgents::where('agent_id', $id)->first();
+                $cus_property = CustomerProperty::where('customer_id', $cus_data->customer_id)->where('property_id',$propert_agent->property_id)->first();
+                if(!$cus_property){
+                    $cus_property = CustomerProperty::create([
+                        'property_id' => $propert_agent->property_id,
+                        'customer_id' => $cus_data->customer_id,
+                    ]);
+                }
+            }
 
-            $customer = Customers::create([
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'email' => $email,
-                'phone_number' => $phone_number,
-                'company_name' => $company_name,
-                'gst' => $gst,
-                'address' => $address,
-                'created_by' => Auth::user()->user_id,
-                'updated_by' => Auth::user()->user_id,
-                'status' => 1,
-            ]);
+
             if (!empty($customer)) {
-                $customer_id = $customer->customer_id;
+                $customer_id = $cus_property->customer_id;
                 $room_id = $request->input("room_id");
                 $check_in_date = $request->input("check_in_date");
                 $check_out_date = $request->input("check_out_date");
@@ -113,6 +140,7 @@ class BookingsController extends Controller
                     'updated_by' => Auth::user()->user_id,
                     'status' => 1
                 ]);
+
                 if ($booking) {
 
                     $total_nights = $request->input("total_nights");
@@ -161,9 +189,7 @@ class BookingsController extends Controller
                                 'message' => 'Only allow JPG,JPEG,PNG files'
                             ]);
                         }
-                    } else {
                     }
-
 
                     Payments::create([
                         'booking_id' => $booking->booking_id,
@@ -175,24 +201,31 @@ class BookingsController extends Controller
                         'status' => Payments::STATUS_NOT_PAID
                     ]);
                     DB::commit();
+                    $customer = Customers::where('customer_id', $booking->customer_id)->first();
+                    // if($customer->email){
+                    //     $this->bookingmail($customer);
+                    // }
                     return response()->json([
                         "status" => 'success',
                         "booking_id" => $booking->booking_id,
+                        "payment_method"=> $booking->payment_method,
+                        "data" => $booking,
                         "msg" => "Booking created successfully"
                     ], 200);
+                    // return ['data'=> $booking];
                 }
             }
-            DB::rollBack();
-            return response()->json([
-                "status" => 'error',
-                "msg" => "Something is wrong to create booking"
-            ], 500);
+            // DB::rollBack();
+            // return response()->json([
+            //     "status" => 'error',
+            //     "msg" => "Something is wrong to create booking"
+            // ], 500);
         } catch (\Exception $e) {
             Log::info($e->getMessage());
-            DB::rollBack();
+            // DB::rollBack();
             return response()->json([
                 "status" => 'error',
-                "msg" => "Something went wrong 111"
+                "msg" => $e->getMessage()
             ], 500);
         }
     }
@@ -363,7 +396,7 @@ class BookingsController extends Controller
 
                     // $room_rate = $isSaturdaySunday ? (float) $tariff->holiday_price : (float) $tariff->price;
                     // $ratePerNight = $isSaturdaySunday ? (float) $tariff->holiday_price : (float) $tariff->price;
-                     $totalNights = $checkInDate->diffInDays($checkOutDate);
+                    $totalNights = $checkInDate->diffInDays($checkOutDate);
 
                     $resultDays = array(
                         'saturday' => 0,
@@ -394,10 +427,10 @@ class BookingsController extends Controller
                     }
 
                     $totalWeekends = $resultDays['saturday'] + $resultDays['sunday'];
-                    if($totalWeekends > 0){
+                    if ($totalWeekends > 0) {
                         $totalAmount = ((($totalNights - $totalWeekends) * (float) $tariff->price) + ($totalWeekends * (float) $tariff->promotional_price)) * $no_of_rooms;
-                    }else{
-                        $totalAmount = ($totalWeekends * (float) $tariff->price) * $no_of_rooms;
+                    } else {
+                        $totalAmount = ($totalNights * (float) $tariff->price) * $no_of_rooms;
                     }
                     //$totalAmount = $totalNights * $ratePerNight * $no_of_rooms;
 
@@ -434,10 +467,59 @@ class BookingsController extends Controller
         }
     }
 
-    public function room_type($prop_id)
+    public function room_type($prop_id, Request $request)
     {
-        $type = Type::with('property')->where('property_id', $prop_id)->get();
+        $amenityIds = $request->input('amenities');
+        $properties = Property::with('rooms_list')->whereHas('agents', function ($query) {
+            $query->where('agent_id', auth()->user()->user_id);
+        })
+            ->where('status', 1)->get();
+
+        $propertyIds = $properties->pluck('property_id')->toArray();
+
+        $data1 = TypeAmenity::whereIn('amenity_id', $amenityIds)->whereHas('type', function ($query) use ($propertyIds) {
+            $query->where('property_id', $propertyIds);
+        })->get();
+        $typeIds = $data1->pluck('type_id')->toArray();
+        $type = Type::with('property')->whereIn('type_id', $typeIds)->get();
         $data = RoomList::with('type', 'property', 'room')->where('property_id', $prop_id)->get();
         return view('bookings.typeroom', compact('data', 'type'));
+    }
+
+    public function propertyList(Request $request)
+    {
+        //return $request->all();
+        $amenityIds = $request->input('amenities');
+        $properties = Property::with('rooms_list')->whereHas('agents', function ($query) {
+            $query->where('agent_id', auth()->user()->user_id);
+        })
+            ->where('status', 1)->get();
+
+        $propertyIds = $properties->pluck('property_id')->toArray();
+
+        $data = TypeAmenity::whereIn('amenity_id', $amenityIds)->whereHas('type', function ($query) use ($propertyIds) {
+            $query->where('property_id', $propertyIds);
+        })->get();
+
+        if ($data->isNotEmpty()) {
+            return view('bookings.property', compact('properties'));
+        } else {
+            $properties = null;
+            return view('bookings.property', compact('properties'));
+        }
+    }
+
+    public function bookingmail($customer)
+    {
+        try{
+            $customer_detail = Customers::where('customer_id',$customer->customer_id)->first();
+            $maildata = [
+                'name' => $customer_detail->first_name,
+            ];
+            Mail::to($customer->email)->send(new BookingMail($maildata));
+        } catch (Throwable $t){
+            Log::error('Mail sending failed: ' . $t->getMessage());
+            throw $t;
+        }
     }
 }
