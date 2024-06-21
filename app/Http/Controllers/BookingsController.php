@@ -205,13 +205,15 @@ class BookingsController extends Controller
                     // if($customer->email){
                     //     $this->bookingmail($customer);
                     // }
-                    return response()->json([
-                        "status" => 'success',
-                        "booking_id" => $booking->booking_id,
-                        "payment_method"=> $booking->payment_method,
-                        "data" => $booking,
-                        "msg" => "Booking created successfully"
-                    ], 200);
+
+                    return view('bookings.payment', compact('booking'));
+                    // return response()->json([
+                    //     "status" => 'success',
+                    //     "booking_id" => $booking->booking_id,
+                    //     "payment_method"=> $booking->payment_method,
+                    //     "data" => $booking,
+                    //     "msg" => "Booking created successfully"
+                    // ], 200);
                     // return ['data'=> $booking];
                 }
             }
