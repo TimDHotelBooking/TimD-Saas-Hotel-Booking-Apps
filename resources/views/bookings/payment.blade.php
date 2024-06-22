@@ -113,7 +113,6 @@
                     </div>
                     <h4 class="text-gray-900 fw-bold">
                         <span id="label_amount_paid">44000</span>
-
                     </h4>
                 </div>
                 <div class="fw-semibold">
@@ -126,20 +125,13 @@
                     <div class="fs-6 text-gray-700">Payment Method
                     </div>
                     <h4 class="text-gray-900 fw-bold" id="label_payment_method">Cash</h4>
-
                 </div>
-
+                
 
             </div>
             <div class="col d-flex flex-stack flex-grow-1">
                 <img src="" width="200" id="blah_2">
-
             </div>
-
-
-
         </div>
-
-
     </div>
 
