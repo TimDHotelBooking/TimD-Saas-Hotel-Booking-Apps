@@ -707,8 +707,7 @@
                                 <!--end::Wrapper-->
                             </div>
 
-                            <div class="tab_content " data-kt-stepper-element="content" id="booking_confirmed"
-                                data-tab="booking_confirmed">
+                            <div class="tab_content " data-kt-stepper-element="content" data-tab="booking_confirmed">
                                 <!--begin::Wrapper-->
                                 <div class="w-100">
                                     <!--begin::Heading-->
@@ -876,9 +875,23 @@
                                 </div>
                             </div>
 
-                            <div class="mb-0" id="show">
+                            <div class="tab_content " data-kt-stepper-element="content" data-tab="confirmation">
+                                <!--begin::Wrapper-->
+                                <div class="w-100">
+                                    <!--begin::Heading-->
+                                    <div class="pb-8 pb-lg-10">
+                                        <!--begin::Title-->
+                                        <h2 class="fw-bold text-gray-900">Your Booking Confirm</h2>
 
-
+                                        <!--end::Title-->
+                                        <!--end::Notice-->
+                                    </div>
+                                    <!--end::Heading-->
+                                    <!--begin::Body-->
+                                    <div class="mb-0" id="show1">
+                                        
+                                    </div>
+                                </div>
                             </div>
                             {{-- <div class="tab_content " data-kt-stepper-element="content" id="confirmation"
                                 data-tab="confirmation">
@@ -1475,7 +1488,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
                                 'content') // Include CSRF token in the headers
                         },
-                        success: function(response, status, xhr) {
+                        success: function(response) {
                             //alert('success');
                             // alert(JSON.stringify(response));
                             // if (response.status == 'success') {
@@ -1523,11 +1536,16 @@
                             //         }
                             //     );
                             // }
-                            $("button.btn_submit").hide();
+                            // if (response.status === 'success'){
+                                
+                                $("#show1").html(response);
+                                showNextTab('booking_confirmed', 4);
+                                $("button.btn_submit").hide();
                                 $("button.btn_continue").hide();
                                 $("button.btn_previous").hide();
-                                $('#booking_confirmed').hide();
-                                $('#show').html(response);
+                                
+                            // }
+                            
                         },
                         error: function(response) {
                             //alert('error');

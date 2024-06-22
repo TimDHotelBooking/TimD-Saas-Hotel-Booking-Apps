@@ -191,7 +191,7 @@ class BookingsController extends Controller
                         }
                     }
 
-                    Payments::create([
+                    $payment = Payments::create([
                         'booking_id' => $booking->booking_id,
                         'amount_paid' => $amount_paid,
                         'photo' => $photo,
@@ -200,13 +200,17 @@ class BookingsController extends Controller
                         'transaction_reference' => $transaction_reference,
                         'status' => Payments::STATUS_NOT_PAID
                     ]);
+                    //$view = view('bookings.payment', compact('booking'))->render();
                     DB::commit();
                     $customer = Customers::where('customer_id', $booking->customer_id)->first();
                     // if($customer->email){
                     //     $this->bookingmail($customer);
                     // }
-
-                    return view('bookings.payment', compact('booking'));
+                    return view('bookings.payment', compact('booking', 'customer', 'payment'));
+                    // return response()->json([
+                    //     "status" => 'success',
+                    //     "view" => $view
+                    // ], 200);
                     // return response()->json([
                     //     "status" => 'success',
                     //     "booking_id" => $booking->booking_id,
